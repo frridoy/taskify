@@ -19,6 +19,7 @@ Route::middleware(['auth', 'isSuperAdmin'])->group(function () {
     Route::get('super-admin/dashboard', [SuperAdminController::class, 'dashboard'])->name('superAdmin.dashboard');
     Route::get('user-create', [UserController::class, 'create'])->name('users.create');
     Route::post('user-store', [UserController::class, 'store'])->name('users.store');
+    Route::get('user-index', [UserController::class, 'index'])->name('users.index');
 });
 
 Route::middleware(['auth', 'isHR'])->group(function () {
