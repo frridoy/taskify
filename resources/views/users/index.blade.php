@@ -18,6 +18,7 @@
                 <th>Role</th>
                 <th>Phone Number</th>
                 <th>Status</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -28,6 +29,9 @@
                     <td>{{ $user->role == 2 ? 'HR' : 'Employee' }}</td>
                     <td>{{ $user->phone_no }}</td>
                     <td>{{ $user->status == 1 ? 'Active' : 'Inactive' }}</td>
+                    <td>
+                        <a href="{{ route('users.edit', $user->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                    </td>
                 </tr>
             @endforeach
         </tbody>

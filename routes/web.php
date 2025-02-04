@@ -20,6 +20,8 @@ Route::middleware(['auth', 'isSuperAdmin'])->group(function () {
     Route::get('user-create', [UserController::class, 'create'])->name('users.create');
     Route::post('user-store', [UserController::class, 'store'])->name('users.store');
     Route::get('user-index', [UserController::class, 'index'])->name('users.index');
+    Route::get('user-edit/{id}', [UserController::class, 'edit'])->name('users.edit');
+    Route::put('user-update/{id}', [UserController::class, 'update'])->name('users.update');
 });
 
 Route::middleware(['auth', 'isHR'])->group(function () {
@@ -29,4 +31,4 @@ Route::middleware(['auth', 'isHR'])->group(function () {
 Route::middleware(['auth', 'isEmployee'])->group(function () {
     Route::get('employee/dashboard', [EmployeeController::class, 'dashboard'])->name('employee.dashboard');
 });
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
