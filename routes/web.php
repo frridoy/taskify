@@ -4,6 +4,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\HRController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -16,6 +17,8 @@ Route::middleware('auth')->group(function () {
 });
 Route::middleware(['auth', 'isSuperAdmin'])->group(function () {
     Route::get('super-admin/dashboard', [SuperAdminController::class, 'dashboard'])->name('superAdmin.dashboard');
+    Route::get('user-create', [UserController::class, 'create'])->name('users.create');
+    Route::post('user-store', [UserController::class, 'store'])->name('users.store');
 });
 
 Route::middleware(['auth', 'isHR'])->group(function () {
