@@ -1,5 +1,9 @@
+@extends('setup.layout')
+@section('content')
+
 <h4>
     {{Auth::user()->name}}
+    Super ADmin
 </h4>
 
 
@@ -12,3 +16,6 @@
         {{ __('Log Out') }}
     </x-dropdown-link>
 </form>
+
+
+@endsection

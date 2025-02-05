@@ -1,0 +1,27 @@
+.select2-selection--multiple {
+    display: flex !important;
+}
+.select2-selection__rendered {
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+}
+.select2-results__option {
+    font-size: 12px !important;
+}
+.select2-selection__choice {
+    border: 1px solid #dee2e6 !important;
+    padding: 0px 10px !important;
+    background-color: #f2e3e9 !important;
+}
+.select2-selection__choice__remove {
+    border: 0 !important;
+    background-color: #f2e3e9 !important;
+}
+.select2-search__field {
+    background-color: transparent !important;
+}
+.select2-search__field:focus {
+    outline: none !important;
+}
