@@ -9,7 +9,7 @@
 <body>
 <div class="container">
     <h2>{{ isset($user) ? 'Update User' : 'Create User' }}</h2>
-    <form action="{{ isset($user) ? route('users.update', $user->id) : route('users.store') }}" method="POST">
+    <form action="{{ isset($user) ? route('users.update', $user->id) : route('users.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @if(isset($user))
             @method('PUT')
@@ -33,6 +33,10 @@
         <div class="form-group">
             <label for="phone_no">Phone Number:</label>
             <input type="text" class="form-control" id="phone_no" name="phone_no" value="{{ isset($user) ? $user->phone_no : '' }}">
+        </div>
+        <div class="form-group">
+            <label for="profile_photo">Profile Photo:</label>
+            <input type="file" class="form-control" id="profile_photo" name="profile_photo" value="{{ isset($user) ? $user->profile_photo : '' }}">
         </div>
         <div class="form-group">
             <label for="status">Status:</label>

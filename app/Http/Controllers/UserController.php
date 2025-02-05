@@ -14,6 +14,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -23,19 +24,27 @@ class UserController extends Controller
             'password' => 'required|string|min:6|confirmed',
         ]);
 
-        $user = new User([
-            'name' => $request->get('name'),
-            'email' => $request->get('email'),
-            'role' => $request->get('role'),
-            'phone_no' => $request->get('phone_no'),
-            'status' => $request->get('status'),
-            'password' => bcrypt($request->get('password')),
-        ]);
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->role = $request->role;
+        $user->phone_no = $request->phone_no;
+        $user->status = $request->status;
+        $user->password = bcrypt($request->password);
+
+        if ($request->hasFile('profile_photo')) {
+            $image = $request->file('profile_photo');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            // Store the image directly in the public directory
+            $image->move(public_path('profile_photos'), $imageName);
+            $user->profile_photo = $imageName;  // Store the image name in the database
+        }
 
         $user->save();
 
-        // return redirect()->route('users.index')->with('success', 'User created successfully.');
+        return redirect()->route('users.index')->with('success', 'User created successfully.');
     }
+
     public function index()
     {
         $users = User::where('role', '!=', 1)->get();

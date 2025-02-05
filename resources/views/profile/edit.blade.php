@@ -45,8 +45,7 @@
                                 <input type="file" id="profile-img" accept="image/*" name="image"
                                     class="d-none profile-edited" />
                                 <label for="profile-img" class="edit-profile-img">
-                                    <img src="{{ @Auth::user()->profile_photo ? Storage::url(Auth::user()->profile_photo) : asset('assets/icon/user-avatar.svg') }}"
-                                        alt="avatar" />
+                                    <img src="{{ Auth::user()->profile_photo ? asset('storage/profile_photos/' . Auth::user()->profile_photo) : asset('assets/icon/user-avatar.svg') }}" alt="avatar" />
                                     <div class="profile-camera-icon">
                                         <i class="bi bi-camera-fill"></i>
                                     </div>
