@@ -29,7 +29,7 @@
             </li>
         </ul>
 
-        @if (auth()->user()->role == 1)
+        @if (auth()->user()->role == 1 || auth()->user()->role == 2)
             <ul class="d-flex flex-column gap-3">
                 <p class="admin-title mt-3">User Management</p>
                 <li>
@@ -45,6 +45,36 @@
                 </li>
             </ul>
         @endif
+        @if (auth()->user()->role == 1 || auth()->user()->role == 2)
+        <ul class="d-flex flex-column gap-3">
+            <p class="admin-title mt-3">Task Management</p>
+            <li>
+                <div class="dashboard-sidebar-option">
+                    <a href="{{ route('tasks.index') }}"
+                        class="d-flex align-items-center gap-3 p-3 rounded-lg hover:bg-primary-100 transition-all">
+                        <i class="fas fa-tasks text-primary text-2xl"></i> <!-- Updated icon -->
+                        <span class="text-lg font-medium">Task List</span>
+                    </a>
+                    <div class="sidebar-vertical-line"></div>
+                </div>
+            </li>
+        </ul>
+    @endif
+    @if (auth()->user()->role == 3)
+    <ul class="d-flex flex-column gap-3">
+        <p class="admin-title mt-3">Task Management</p>
+        <li>
+            <div class="dashboard-sidebar-option">
+                <a href="{{ route('my.tasks') }}"
+                    class="d-flex align-items-center gap-3 p-3 rounded-lg hover:bg-primary-100 transition-all">
+                    <i class="fas fa-tasks text-primary text-2xl"></i> <!-- Updated icon -->
+                    <span class="text-lg font-medium">My Tasks</span>
+                </a>
+                <div class="sidebar-vertical-line"></div>
+            </div>
+        </li>
+    </ul>
+@endif
         <ul class="d-flex flex-column gap-1">
 
             <p class="admin-title mt-3">Account</p>

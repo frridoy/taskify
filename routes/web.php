@@ -4,6 +4,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\HRController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,8 +16,47 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+//only super admin can access
+
 Route::middleware(['auth', 'isSuperAdmin'])->group(function () {
     Route::get('super-admin/dashboard', [SuperAdminController::class, 'dashboard'])->name('superAdmin.dashboard');
+});
+
+
+//only HR can access
+Route::middleware(['auth', 'isHR'])->group(function () {
+
+    Route::get('hr/dashboard', [HRController::class, 'dashboard'])->name('hr.dashboard');
+});
+
+
+//only employee can access
+
+Route::middleware(['auth', 'isEmployee'])->group(function () {
+
+    Route::get('employee/dashboard', [EmployeeController::class, 'dashboard'])->name('employee.dashboard');
+    Route::get('my-task', [EmployeeController::class, 'index'])->name('my.tasks');
+    Route::patch('/tasks/{task}/receive', [EmployeeController::class, 'receive'])->name('task.receive');
+    Route::get('graph', [EmployeeController::class, 'graph'])->name('monthly.graph');
+
+
+});
+
+
+
+//only super admin and HR can access
+
+Route::middleware(['auth', 'isHR'])->group(function () {
+
+    //tasks
+
+    Route::get('task-assign-index', [TaskController::class, 'index'])->name('tasks.index');
+    Route::get('task-assign', [TaskController::class, 'assign'])->name('tasks.assign');
+    Route::post('task-assign-store', [TaskController::class, 'store'])->name('tasks.store');
+
+    //users
+
     Route::get('user-create', [UserController::class, 'create'])->name('users.create');
     Route::post('user-store', [UserController::class, 'store'])->name('users.store');
     Route::get('user-index', [UserController::class, 'index'])->name('users.index');
@@ -24,11 +64,4 @@ Route::middleware(['auth', 'isSuperAdmin'])->group(function () {
     Route::put('user-update/{id}', [UserController::class, 'update'])->name('users.update');
 });
 
-Route::middleware(['auth', 'isHR'])->group(function () {
-    Route::get('hr/dashboard', [HRController::class, 'dashboard'])->name('hr.dashboard');
-});
-
-Route::middleware(['auth', 'isEmployee'])->group(function () {
-    Route::get('employee/dashboard', [EmployeeController::class, 'dashboard'])->name('employee.dashboard');
-});
 require __DIR__ . '/auth.php';
