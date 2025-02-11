@@ -36,8 +36,17 @@ Route::middleware(['auth', 'isHR'])->group(function () {
 Route::middleware(['auth', 'isEmployee'])->group(function () {
 
     Route::get('employee/dashboard', [EmployeeController::class, 'dashboard'])->name('employee.dashboard');
+    //pending tasks list
     Route::get('my-task', [EmployeeController::class, 'index'])->name('my.tasks');
+    //processing tasks list
+    Route::get('processing-task', [EmployeeController::class, 'processing_tasks'])->name('processing_tasks');
+    //receive task
     Route::patch('/tasks/{task}/receive', [EmployeeController::class, 'receive'])->name('task.receive');
+    //complete task
+    Route::patch('/tasks/{task}/complete', [EmployeeController::class, 'complete'])->name('task.complete');
+    //completed tasks list
+    Route::get('completed-task', [EmployeeController::class, 'completed_tasks'])->name('completed_tasks');
+    
     Route::get('graph', [EmployeeController::class, 'graph'])->name('monthly.graph');
 
 

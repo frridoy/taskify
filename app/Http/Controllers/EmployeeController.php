@@ -17,21 +17,11 @@ class EmployeeController extends Controller
         $tasks = Task::where('user_id', auth()->id())
                      ->orderBy('created_at', 'desc')
                      ->get();
+        $list_title = 'Pending Tasks';
 
-        return view('tasks.index', compact('tasks'));
+        return view('tasks.index', compact('tasks', 'list_title'));
     }
 
-    // public function receive(Task $task)
-    // {
-
-    //     if ($task->status == 0) {
-    //         $task->status = 1;
-    //         $task->save();
-
-    //         return redirect()->back();
-    //     }
-    //     return redirect()->route('tasks.index')->with('error', 'This task cannot be received as it is already processed or completed.');
-    // }
     public function receive(Task $task)
     {
         if (Auth::user()->role == 3 && $task->status == 0) {
@@ -46,6 +36,39 @@ class EmployeeController extends Controller
 
     public function graph(){
         return view('graph.view');
+    }
+
+    public function processing_tasks(){
+        $tasks = Task::where('user_id', auth()->id())
+                     ->where('status', 1)
+                     ->orderBy('created_at', 'desc')
+                     ->get();
+        $list_title = 'Processing Tasks';
+
+        return view('tasks.index', compact('tasks', 'list_title'));
+    }
+
+    public function complete(Task $task){
+        if(Auth::user()->role == 3 && $task->status == 1) {
+            $task->status =2;
+            $task->save();
+
+            return redirect()->back()->with('success', 'Task completed successfully.');
+
+        }
+        return redirect()->back()->with('error', 'You are not authorized to complete this task.');
+
+    }
+
+    public function completed_tasks(){
+        $tasks = Task::where('user_id', auth()->id())
+                     ->where('status', 2)
+                     ->orderBy('created_at', 'desc')
+                     ->get();
+
+        $list_title = 'Completed Tasks';
+
+        return view('tasks.index', compact('tasks', 'list_title'));
     }
 
 }

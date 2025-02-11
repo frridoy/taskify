@@ -1,7 +1,10 @@
 @extends('setup.layout')
 @section('content')
-<div class="container">
-    <h2 class="text-center mb-1">All Tasks</h2>
+<div class="container">        
+
+    {{-- <h2 class="text-center mb-1">All Tasks</h2> --}}
+    <h2 class="text-center mb-1">{{$list_title}}</h2>
+
 
     @if(Auth::user()->role == 1 || Auth::user()->role == 2)
         <a href="{{ route('tasks.assign') }}" class="btn btn-primary mb-3">

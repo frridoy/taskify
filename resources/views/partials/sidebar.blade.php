@@ -68,7 +68,23 @@
                 <a href="{{ route('my.tasks') }}"
                     class="d-flex align-items-center gap-3 p-3 rounded-lg hover:bg-primary-100 transition-all">
                     <i class="fas fa-tasks text-primary text-2xl"></i> <!-- Updated icon -->
-                    <span class="text-lg font-medium">My Tasks</span>
+                    <span class="text-lg font-medium">Pending Tasks</span>
+                </a>
+                <div class="sidebar-vertical-line"></div>
+            </div>
+            <div class="dashboard-sidebar-option">
+                <a href="{{ route('processing_tasks') }}"
+                    class="d-flex align-items-center gap-3 p-3 rounded-lg hover:bg-primary-100 transition-all">
+                    <i class="fas fa-tasks text-primary text-2xl"></i> <!-- Updated icon -->
+                    <span class="text-lg font-medium">Processing Tasks</span>
+                </a>
+                <div class="sidebar-vertical-line"></div>
+            </div>
+            <div class="dashboard-sidebar-option">
+                <a href="{{ route('completed_tasks') }}"
+                    class="d-flex align-items-center gap-3 p-3 rounded-lg hover:bg-primary-100 transition-all">
+                    <i class="fas fa-tasks text-primary text-2xl"></i> <!-- Updated icon -->
+                    <span class="text-lg font-medium">Completed Tasks</span>
                 </a>
                 <div class="sidebar-vertical-line"></div>
             </div>
