@@ -10,8 +10,4 @@ class SuperAdminController extends Controller
     {
         return view('superAdmin.dashbaord');
     }
-    public function home()
-    {
-        return view('welcome');
-    }
 }

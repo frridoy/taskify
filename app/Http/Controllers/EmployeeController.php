@@ -33,7 +33,7 @@ class EmployeeController extends Controller
 
 
         $total_tasks = $pending_tasks + $processing_tasks + $completed_tasks;
-        return view('dashboard', compact('pending_tasks', 'processing_tasks', 'completed_tasks', 'total_tasks', 'missed_pending_tasks', 'missed_processing_tasks'));
+        return view('employee.dashboard', compact('pending_tasks', 'processing_tasks', 'completed_tasks', 'total_tasks', 'missed_pending_tasks', 'missed_processing_tasks'));
     }
     public function index()
     {
