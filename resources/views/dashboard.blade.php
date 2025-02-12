@@ -118,6 +118,7 @@
     .stat-card.processing::after { background: linear-gradient(to right, #0ea5e9, #38bdf8); }
     .stat-card.completed::after { background: linear-gradient(to right, #10b981, #34d399); }
     .stat-card.missed::after { background: linear-gradient(to right, #ef4444, #f87171); }
+    .stat-card.missed2::after { background: linear-gradient(to right, #efe944, #f8e671); }
     .stat-card.upcoming::after { background: linear-gradient(to right, #8b5cf6, #a78bfa); }
 
     .total .stat-icon { background: linear-gradient(135deg, #4f46e5, #6366f1); }
@@ -125,6 +126,7 @@
     .processing .stat-icon { background: linear-gradient(135deg, #0ea5e9, #38bdf8); }
     .completed .stat-icon { background: linear-gradient(135deg, #10b981, #34d399); }
     .missed .stat-icon { background: linear-gradient(135deg, #ef4444, #f87171); }
+    .missed2 .stat-icon { background: linear-gradient(135deg, #b7a416, #dbf871); }
     .upcoming .stat-icon { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
 
     .trend-up { color: #10b981; }
@@ -153,7 +155,7 @@
                 </div>
             </div>
             <div class="stat-label">Total Tasks</div>
-            <div class="stat-value">320</div>
+            <div class="stat-value">{{$total_tasks}}</div>
             <div class="stat-description">All tasks assigned to you</div>
             <div class="stat-trend">
                 <i class="fas fa-arrow-up me-1 trend-up"></i>
@@ -162,62 +164,62 @@
         </div>
 
         <!-- Pending Tasks -->
-        <div class="stat-card pending">
+        <a href="{{route('pending_tasks')}}" class="stat-card pending">
             <div class="stat-header">
                 <div class="stat-icon">
                     <i class="fas fa-clock"></i>
                 </div>
             </div>
             <div class="stat-label">Pending Tasks</div>
-            <div class="stat-value">80</div>
+            <div class="stat-value">{{$pending_tasks}}</div>
             <div class="stat-description">Tasks yet to be started</div>
             <div class="stat-trend">
                 <i class="fas fa-arrow-down me-1 trend-down"></i>
                 <span>2% vs last week</span>
             </div>
-        </div>
+        </a>
 
         <!-- Processing Tasks -->
-        <div class="stat-card processing">
-            <div class="stat-header">
+        <a href="{{route('processing_tasks')}}" class="stat-card pending">
+        <div class="stat-header">
                 <div class="stat-icon">
                     <i class="fas fa-spinner"></i>
                 </div>
             </div>
             <div class="stat-label">Processing Tasks</div>
-            <div class="stat-value">50</div>
+            <div class="stat-value">{{$processing_tasks}}</div>
             <div class="stat-description">Tasks in progress</div>
             <div class="stat-trend">
                 <i class="fas fa-arrow-up me-1 trend-up"></i>
                 <span>12% vs last week</span>
             </div>
-        </div>
+        </a>
 
         <!-- Completed Tasks -->
-        <div class="stat-card completed">
+        <a href="{{route('completed_tasks')}}" class="stat-card pending">
             <div class="stat-header">
                 <div class="stat-icon">
                     <i class="fas fa-check-circle"></i>
                 </div>
             </div>
             <div class="stat-label">Completed Tasks</div>
-            <div class="stat-value">100</div>
+            <div class="stat-value">{{$completed_tasks}}</div>
             <div class="stat-description">Successfully completed tasks</div>
             <div class="stat-trend">
                 <i class="fas fa-arrow-up me-1 trend-up"></i>
                 <span>8% vs last week</span>
             </div>
-        </div>
+        </a>
 
         <!-- Missed Tasks -->
-        <div class="stat-card missed">
+        <div class="stat-card missed2">
             <div class="stat-header">
                 <div class="stat-icon">
                     <i class="fas fa-exclamation-circle"></i>
                 </div>
             </div>
-            <div class="stat-label">Missed Tasks</div>
-            <div class="stat-value">15</div>
+            <div class="stat-label">Missed Pending Tasks</div>
+            <div class="stat-value">{{$missed_pending_tasks}}</div>
             <div class="stat-description">Tasks that missed deadline</div>
             <div class="stat-trend">
                 <i class="fas fa-arrow-down me-1 trend-down"></i>
@@ -226,18 +228,18 @@
         </div>
 
         <!-- Upcoming Tasks -->
-        <div class="stat-card upcoming">
+        <div class="stat-card missed">
             <div class="stat-header">
                 <div class="stat-icon">
-                    <i class="fas fa-calendar-alt"></i>
+                    <i class="fas fa-exclamation-circle"></i>
                 </div>
             </div>
-            <div class="stat-label">Upcoming Tasks</div>
-            <div class="stat-value">45</div>
+            <div class="stat-label">Missed Processing Tasks</div>
+            <div class="stat-value">{{$missed_processing_tasks}}</div>
             <div class="stat-description">Tasks due this week</div>
             <div class="stat-trend">
-                <i class="fas fa-arrow-up me-1 trend-up"></i>
-                <span>10% vs last week</span>
+                <i class="fas fa-arrow-down me-1 trend-down"></i>
+                <span>3% vs last week</span>
             </div>
         </div>
     </div>

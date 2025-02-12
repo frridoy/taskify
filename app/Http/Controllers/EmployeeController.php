@@ -4,19 +4,54 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class EmployeeController extends Controller
 {
     public function dashboard()
     {
-        return view('dashboard');
+        $pending_tasks = Task::where('user_id', auth()->id())
+            ->where('status', 0)
+            ->count();
+        $processing_tasks = Task::where('user_id', auth()->id())
+            ->where('status', 1)
+            ->count();
+        $completed_tasks = Task::where('user_id', auth()->id())
+            ->where('status', 2)
+            ->count();
+
+            $missed_pending_tasks = Task::where('user_id', auth()->id())
+            ->where('status', 0)
+            ->whereDate('dateLimit', '<', Carbon::now()->format('Y-m-d'))
+            ->count();
+
+            $missed_processing_tasks = Task::where('user_id', auth()->id())
+            ->where('status', 1)
+            ->whereDate('dateLimit', '<', Carbon::now()->format('Y-m-d'))
+            ->count();
+
+
+        $total_tasks = $pending_tasks + $processing_tasks + $completed_tasks;
+        return view('dashboard', compact('pending_tasks', 'processing_tasks', 'completed_tasks', 'total_tasks', 'missed_pending_tasks', 'missed_processing_tasks'));
     }
     public function index()
     {
         $tasks = Task::where('user_id', auth()->id())
-                     ->orderBy('created_at', 'desc')
-                     ->get();
+            ->orderBy('created_at', 'desc')
+            ->get();
+        $list_title = 'ALL Tasks';
+
+        return view('tasks.index', compact('tasks', 'list_title'));
+    }
+
+    public function pending_tasks()
+    {
+        $tasks = Task::where('user_id', auth()->id())
+            ->where('status', 0)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         $list_title = 'Pending Tasks';
 
         return view('tasks.index', compact('tasks', 'list_title'));
@@ -34,41 +69,42 @@ class EmployeeController extends Controller
         return redirect()->back()->with('error', 'You are not authorized to receive this task.');
     }
 
-    public function graph(){
+    public function graph()
+    {
         return view('graph.view');
     }
 
-    public function processing_tasks(){
+    public function processing_tasks()
+    {
         $tasks = Task::where('user_id', auth()->id())
-                     ->where('status', 1)
-                     ->orderBy('created_at', 'desc')
-                     ->get();
+            ->where('status', 1)
+            ->orderBy('created_at', 'desc')
+            ->get();
         $list_title = 'Processing Tasks';
 
         return view('tasks.index', compact('tasks', 'list_title'));
     }
 
-    public function complete(Task $task){
-        if(Auth::user()->role == 3 && $task->status == 1) {
-            $task->status =2;
+    public function complete(Task $task)
+    {
+        if (Auth::user()->role == 3 && $task->status == 1) {
+            $task->status = 2;
             $task->save();
 
             return redirect()->back()->with('success', 'Task completed successfully.');
-
         }
         return redirect()->back()->with('error', 'You are not authorized to complete this task.');
-
     }
 
-    public function completed_tasks(){
+    public function completed_tasks()
+    {
         $tasks = Task::where('user_id', auth()->id())
-                     ->where('status', 2)
-                     ->orderBy('created_at', 'desc')
-                     ->get();
+            ->where('status', 2)
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         $list_title = 'Completed Tasks';
 
         return view('tasks.index', compact('tasks', 'list_title'));
     }
-
 }

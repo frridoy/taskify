@@ -12,12 +12,13 @@ class TaskController extends Controller
     public function index()
     {
         $tasks = Task::with('user')
-        ->orderBy('created_at', 'desc')
-        ->get();
+            ->orderBy('created_at', 'desc')
+            ->paginate(8);
 
-return view('tasks.index', compact('tasks'));
+        $list_title = "ALL Tasks";
+
+        return view('tasks.index', compact('tasks', 'list_title'));
     }
-
 
 
     public function assign()
@@ -53,7 +54,7 @@ return view('tasks.index', compact('tasks'));
             $selectedUser = $users[$helperFlag->assign_flag];
 
             Task::create([
-                'task_name' =>ucwords($request->task_name),
+                'task_name' => ucwords($request->task_name),
                 'user_id' => $selectedUser->id,
                 'status' => 0,
                 'dateLimit' => $request->dateLimit,
@@ -65,8 +66,6 @@ return view('tasks.index', compact('tasks'));
             ]);
 
             return redirect()->back()->with('success', 'Task assigned to ' . $selectedUser->name);
-
-
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Error occurred: ' . $e->getMessage());
         }

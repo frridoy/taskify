@@ -1,6 +1,6 @@
 @extends('setup.layout')
 @section('content')
-<div class="container">        
+<div class="container">
 
     {{-- <h2 class="text-center mb-1">All Tasks</h2> --}}
     <h2 class="text-center mb-1">{{$list_title}}</h2>
@@ -36,7 +36,7 @@
                     <th>Status</th>
                     <th>Created At</th>
                     @if(auth()->user()->role == 3)
-                        <th>Receive</th>
+                        <th>Action</th>
                     @endif
                 </tr>
             </thead>
@@ -70,10 +70,27 @@
                                 </form>
                             </td>
                         @endif
+                        @if(auth()->user()->role == 3 && $task->status == 1)
+                        <td>
+                            <form action="{{ route('task.complete', $task->id) }}" method="POST" class="d-inline" id="complete-form-{{ $task->id }}">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="btn btn-primary btn-sm" onclick="return confirm('Are you sure you want to complete this task?')">
+                                    <i class="fas fa-check"></i> Complete
+                                </button>
+                            </form>
+                        </td>
+                    @endif
                     </tr>
                 @endforeach
             </tbody>
         </table>
+        <div>
+            @if(Auth::user()->role == 1 || Auth::user()->role == 2)
+                {{ $tasks->links() }}
+            @endif
+           
+        </div>
     </div>
 </div>
 
