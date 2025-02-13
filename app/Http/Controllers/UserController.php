@@ -42,7 +42,9 @@ class UserController extends Controller
 
         $user->save();
 
-        return redirect()->route('users.index')->with('success', 'User created successfully.');
+        // return redirect()->route('users.index')->with('success', 'User created successfully.');
+        notify()->success('User created successfully.');
+        return redirect()->route('users.index');
     }
 
     public function index()

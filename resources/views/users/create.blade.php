@@ -135,12 +135,6 @@
                         </div>
                     </div>
                     <div class="row">
-                        {{-- <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="password">Password:</label>
-                                <input type="password" class="form-control" id="password" name="password" {{ isset($user) ? '' : 'required' }}>
-                            </div>
-                        </div> --}}
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="password">Password:</label>
@@ -154,12 +148,6 @@
                                 </div>
                             </div>
                         </div>
-                        {{-- <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="password_confirmation">Confirm Password:</label>
-                                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" {{ isset($user) ? '' : 'required' }}>
-                            </div>
-                        </div> --}}
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="password_confirmation">Confirm Password:</label>

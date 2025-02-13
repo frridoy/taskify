@@ -65,7 +65,9 @@ class TaskController extends Controller
                 'assign_flag' => ($helperFlag->assign_flag + 1) % $totalUsers
             ]);
 
-            return redirect()->back()->with('success', 'Task assigned to ' . $selectedUser->name);
+
+            notify()->success('Task assigned to ' . $selectedUser->name);
+            return back();
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Error occurred: ' . $e->getMessage());
         }

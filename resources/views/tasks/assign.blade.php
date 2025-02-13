@@ -10,12 +10,6 @@
                 </div>
                 <div class="card-body p-5">
                     <!-- Display success message -->
-                    @if(session('success'))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    @endif
 
                     <!-- Form to assign task -->
                     <form action="{{ route('tasks.store') }}" method="POST">
