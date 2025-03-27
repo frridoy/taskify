@@ -32,6 +32,7 @@
                     <th>Task Name</th>
                     <th>Description</th>
                     <th>Assigned To</th>
+                    <th>Created By</th>
                     <th>Date Limit</th>
                     <th>Status</th>
                     <th>Created At</th>
@@ -47,8 +48,9 @@
                         <td>{{ $task->task_name }}</td>
                         <td>{{ $task->task_description }}</td>
                         <td>{{ $task->user->name ?? 'Unassigned' }}</td>
-                        <td>{{ $task->dateLimit ? \Carbon\Carbon::parse($task->dateLimit)->format('d M, Y') : 'N/A' }}</td>
+                        <td>{{ $task->creator->name ?? 'Unknown' }}</td>
 
+                        <td>{{ $task->dateLimit ? \Carbon\Carbon::parse($task->dateLimit)->format('d M, Y') : 'N/A' }}</td>
                         <td>
                             @if($task->status == 0)
                                 <span class="badge bg-danger">Pending ....</span>
@@ -89,7 +91,7 @@
             @if(Auth::user()->role == 1 || Auth::user()->role == 2)
                 {{ $tasks->links() }}
             @endif
-           
+
         </div>
     </div>
 </div>

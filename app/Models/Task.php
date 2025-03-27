@@ -13,10 +13,17 @@ class Task extends Model
         'status',
         'dateLimit',
         'task_description',
+        'created_by',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
+    public function creator()
+{
+    return $this->belongsTo(User::class, 'created_by');
+}
+
 }

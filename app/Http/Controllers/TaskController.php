@@ -6,12 +6,12 @@ use App\Models\HelperFlag;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
     public function index()
-    {
-        $tasks = Task::with('user')
+    {        $tasks = Task::with(['user', 'creator:id,name'])
             ->orderBy('created_at', 'desc')
             ->paginate(8);
 
@@ -53,12 +53,15 @@ class TaskController extends Controller
 
             $selectedUser = $users[$helperFlag->assign_flag];
 
+            $created_by = Auth::id();
+
             Task::create([
                 'task_name' => ucwords($request->task_name),
                 'user_id' => $selectedUser->id,
                 'status' => 0,
                 'dateLimit' => $request->dateLimit,
                 'task_description' => $request->task_description,
+                'created_by' => $created_by,
             ]);
 
             $helperFlag->update([

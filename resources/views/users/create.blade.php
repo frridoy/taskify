@@ -1,6 +1,5 @@
 @extends('setup.layout')
 @section('content')
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -67,7 +66,7 @@
             height: 45px;
         }
         .row {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
