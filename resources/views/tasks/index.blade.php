@@ -60,27 +60,49 @@
 
                             <td lass="text-center">
 
-                                @if ((auth()->user()->role == 1 || auth()->user()->role == 2) && $task->status != 2)
-                                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                        data-bs-target="#transferModal{{ $task->id }}">
-                                        <i class="fas fa-exchange-alt"></i>
-                                    </button>
-                                @else
-                                    <span class="btn btn-outline-success btn-sm">
-                                        <i class="fas fa-check-circle"></i>
-                                    </span>
+                                @if (Auth::user()->role == 1 || Auth::user()->role == 2)
+                                    <a href="{{ route('tasks.show', $task->id) }}" class="btn btn-info btn-sm">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
                                 @endif
 
-
-                                @if (auth()->user()->role == 3)
-                                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                        data-bs-target="#transferRequestModal{{ $task->id }}">
-                                        <i class="fas fa-exchange-alt"></i> Request
-                                    </button>
+                                @if (auth()->user()->role == 3 && $task->status == 0)
+                                    <form action="{{ route('task.receive', $task->id) }}" method="POST" class="d-inline"
+                                        id="receive-form-{{ $task->id }}">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="btn btn-primary btn-sm"
+                                            onclick="return confirm('Are you sure you want to receive this task?')">
+                                            <i class="fas fa-clipboard-check"></i>
+                                        </button>
+                                    </form>
                                 @endif
-                            </td>
 
-                        </tr>
+                    @if (auth()->user()->role == 3 && $task->status == 1)
+                        <form action="{{ route('task.complete', $task->id) }}" method="POST" class="d-inline"
+                            id="complete-form-{{ $task->id }}">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" class="btn btn-primary btn-sm"
+                                onclick="return confirm('Are you sure you want to complete this task?')">
+                                <i class="fas fa-check"></i>
+                            </button>
+                        </form>
+                    @endif
+
+                    @if ((auth()->user()->role == 1 || auth()->user()->role == 2) && $task->status != 2)
+                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#transferModal{{ $task->id }}">
+                            <i class="fas fa-exchange-alt"></i>
+                        </button>
+                    @else
+                        <span class="btn btn-outline-success btn-sm">
+                            <i class="fas fa-check-circle"></i>
+                        </span>
+                    @endif
+                    </td>
+
+                    </tr>
                     @endforeach
                 </tbody>
             </table>

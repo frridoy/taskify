@@ -75,6 +75,8 @@ Route::middleware(['auth', 'isHR'])->group(function () {
     Route::get('task-assign-index', [TaskController::class, 'index'])->name('tasks.index');
     Route::get('task-assign', [TaskController::class, 'assign'])->name('tasks.assign');
     Route::post('task-assign-store', [TaskController::class, 'store'])->name('tasks.store');
+    Route::get('/tasks/{task}/details', [TaskController::class, 'show'])->name('tasks.show');
+
 
     //users
 

@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Auth;
 class TaskController extends Controller
 {
     public function index()
-    {        $tasks = Task::with(['user', 'creator:id,name'])
+    {
+        $tasks = Task::with(['user', 'creator:id,name'])
             ->orderBy('created_at', 'desc')
             ->paginate(8);
 
@@ -76,5 +77,14 @@ class TaskController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Error occurred: ' . $e->getMessage());
         }
+    }
+
+    public function show($taskId)
+    {
+        // Fetch the task with related transfer info, if available
+        $task = Task::with('transfers')->findOrFail($taskId);
+
+        // Pass the task data to the view
+        return view('tasks.show', compact('task'));
     }
 }
