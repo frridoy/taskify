@@ -58,13 +58,19 @@
                             </td>
                             <td>{{ \Carbon\Carbon::parse($task->created_at)->format('d M, Y') }}</td>
 
-                            <td>
-                                @if (auth()->user()->role == 1 || auth()->user()->role == 2)
+                            <td lass="text-center">
+
+                                @if ((auth()->user()->role == 1 || auth()->user()->role == 2) && $task->status != 2)
                                     <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                         data-bs-target="#transferModal{{ $task->id }}">
-                                        <i class="fas fa-exchange-alt"></i> Transfer
+                                        <i class="fas fa-exchange-alt"></i>
                                     </button>
+                                @else
+                                    <span class="btn btn-outline-success btn-sm">
+                                        <i class="fas fa-check-circle"></i>
+                                    </span>
                                 @endif
+
 
                                 @if (auth()->user()->role == 3)
                                     <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
@@ -112,13 +118,11 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="task_description" class="form-label">Task Description</label>
-                                    <textarea name="task_description" id="task_description" class="form-control"
-                                        rows="3">{{ $task->task_description }}</textarea>
+                                    <textarea name="task_description" id="task_description" class="form-control" rows="3">{{ $task->task_description }}</textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="task_remark" class="form-label">Task Remark</label>
-                                    <textarea name="task_remark" id="task_remark" class="form-control"
-                                    rows="3"></textarea>
+                                    <textarea name="task_remark" id="task_remark" class="form-control" rows="3"></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Transfer Task</button>
                             </form>
