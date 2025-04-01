@@ -1,116 +1,152 @@
 @extends('setup.layout')
 @section('content')
-<div class="container">
+    <div class="container">
 
-    {{-- <h2 class="text-center mb-1">All Tasks</h2> --}}
-    <h2 class="text-center mb-1">{{$list_title}}</h2>
+        <h2 class="text-center mb-1">{{ $list_title }}</h2>
 
+        @if (Auth::user()->role == 1 || Auth::user()->role == 2)
+            <a href="{{ route('tasks.assign') }}" class="btn btn-primary mb-3">
+                <i class="fas fa-tasks"></i> Create Task
+            </a>
+        @endif
 
-    @if(Auth::user()->role == 1 || Auth::user()->role == 2)
-        <a href="{{ route('tasks.assign') }}" class="btn btn-primary mb-3">
-            <i class="fas fa-tasks"></i> Create Task
-        </a>
-    @endif
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @elseif(session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
 
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @elseif(session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-
-    <div class="table-responsive">
-        <table class="table table-striped table-hover">
-            <thead class="table-dark">
-                <tr>
-                    <th>SI</th>
-                    <th>Task Name</th>
-                    <th>Description</th>
-                    <th>Assigned To</th>
-                    <th>Created By</th>
-                    <th>Date Limit</th>
-                    <th>Status</th>
-                    <th>Created At</th>
-                    @if(auth()->user()->role == 3)
-                        <th>Action</th>
-                    @endif
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($tasks as $task)
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
                     <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $task->task_name }}</td>
-                        <td>{{ $task->task_description }}</td>
-                        <td>{{ $task->user->name ?? 'Unassigned' }}</td>
-                        <td>{{ $task->creator->name ?? 'Unknown' }}</td>
-
-                        <td>{{ $task->dateLimit ? \Carbon\Carbon::parse($task->dateLimit)->format('d M, Y') : 'N/A' }}</td>
-                        <td>
-                            @if($task->status == 0)
-                                <span class="badge bg-danger">Pending ....</span>
-                            @elseif($task->status == 1)
-                                <span class="badge bg-warning">Processing</span>
-                            @else
-                                <span class="badge bg-success">Completed</span>
-                            @endif
-                        </td>
-                        <td>{{ \Carbon\Carbon::parse($task->created_at)->format('d M, Y') }}</td>
-                        @if(auth()->user()->role == 3 && $task->status == 0)
-                            <td>
-                                <form action="{{ route('task.receive', $task->id) }}" method="POST" class="d-inline" id="receive-form-{{ $task->id }}">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button type="submit" class="btn btn-primary btn-sm" onclick="return confirm('Are you sure you want to receive this task?')">
-                                        <i class="fas fa-check"></i> Receive
-                                    </button>
-                                </form>
-                            </td>
-                        @endif
-                        @if(auth()->user()->role == 3 && $task->status == 1)
-                        <td>
-                            <form action="{{ route('task.complete', $task->id) }}" method="POST" class="d-inline" id="complete-form-{{ $task->id }}">
-                                @csrf
-                                @method('PATCH')
-                                <button type="submit" class="btn btn-primary btn-sm" onclick="return confirm('Are you sure you want to complete this task?')">
-                                    <i class="fas fa-check"></i> Complete
-                                </button>
-                            </form>
-                        </td>
-                    @endif
+                        <th>SI</th>
+                        <th>Task Name</th>
+                        <th>Description</th>
+                        <th>Assigned To</th>
+                        <th>Created By</th>
+                        <th>Date Limit</th>
+                        <th>Status</th>
+                        <th>Created At</th>
+                        <th>Action</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
-        <div>
-            @if(Auth::user()->role == 1 || Auth::user()->role == 2)
-                {{ $tasks->links() }}
-            @endif
+                </thead>
+                <tbody>
+                    @foreach ($tasks as $task)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $task->task_name }}</td>
+                            <td>{{ $task->task_description }}</td>
+                            <td>{{ $task->user->name ?? 'Unassigned' }}</td>
+                            <td>{{ $task->creator->name ?? 'Unknown' }}</td>
+                            <td>{{ $task->dateLimit ? \Carbon\Carbon::parse($task->dateLimit)->format('d M, Y') : 'N/A' }}
+                            </td>
+                            <td>
+                                @if ($task->status == 0)
+                                    <span class="badge bg-danger">Pending ....</span>
+                                @elseif($task->status == 1)
+                                    <span class="badge bg-warning">Processing</span>
+                                @else
+                                    <span class="badge bg-success">Completed</span>
+                                @endif
+                            </td>
+                            <td>{{ \Carbon\Carbon::parse($task->created_at)->format('d M, Y') }}</td>
 
+                            <td>
+                                @if (auth()->user()->role == 1 || auth()->user()->role == 2)
+                                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#transferModal{{ $task->id }}">
+                                        <i class="fas fa-exchange-alt"></i> Transfer
+                                    </button>
+                                @endif
+
+                                @if (auth()->user()->role == 3)
+                                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#transferRequestModal{{ $task->id }}">
+                                        <i class="fas fa-exchange-alt"></i> Request
+                                    </button>
+                                @endif
+                            </td>
+
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            <div>
+                @if (Auth::user()->role == 1 || Auth::user()->role == 2)
+                    {{ $tasks->links() }}
+                @endif
+            </div>
         </div>
+
+        {{-- Transfer Modal --}}
+        @foreach ($tasks as $task)
+            <div class="modal fade" id="transferModal{{ $task->id }}" tabindex="-1"
+                aria-labelledby="transferModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="transferModalLabel">Transfer Task: {{ $task->task_name }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{ route('tasks.transfer.store', $task->id) }}" method="POST">
+                                @csrf
+                                <div class="mb-3">
+                                    <label for="new_user_id" class="form-label">Select New User</label>
+                                    <select name="new_user_id" id="new_user_id" class="form-select" required>
+                                        @if (auth()->check() && (auth()->user()->role == 1 || auth()->user()->role == 2))
+                                            @foreach ($users as $user)
+                                                @if ($user->role == 3)
+                                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="task_description" class="form-label">Task Description</label>
+                                    <textarea name="task_description" id="task_description" class="form-control"
+                                        rows="3">{{ $task->task_description }}</textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="task_remark" class="form-label">Task Remark</label>
+                                    <textarea name="task_remark" id="task_remark" class="form-control"
+                                    rows="3"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Transfer Task</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
     </div>
-</div>
 
-<style>
-    .table th, .table td {
-        vertical-align: middle;
-    }
-    .badge {
-        font-size: 0.9em;
-        padding: 0.5em 0.75em;
-    }
-    .btn-sm {
-        padding: 0.25em 0.5em;
-        font-size: 0.875em;
-    }
-    .alert {
-        margin-top: 1em;
-    }
-</style>
+    <style>
+        .table th,
+        .table td {
+            vertical-align: middle;
+        }
 
+        .badge {
+            font-size: 0.9em;
+            padding: 0.5em 0.75em;
+        }
+
+        .btn-sm {
+            padding: 0.25em 0.5em;
+            font-size: 0.875em;
+        }
+
+        .alert {
+            margin-top: 1em;
+        }
+    </style>
 @endsection

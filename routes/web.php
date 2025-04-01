@@ -6,6 +6,7 @@ use App\Http\Controllers\HRController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TaskTransferController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -82,6 +83,11 @@ Route::middleware(['auth', 'isHR'])->group(function () {
     Route::get('user-index', [UserController::class, 'index'])->name('users.index');
     Route::get('user-edit/{id}', [UserController::class, 'edit'])->name('users.edit');
     Route::put('user-update/{id}', [UserController::class, 'update'])->name('users.update');
+
+    //transfer
+    Route::get('/tasks/transfer/{id}', [TaskTransferController::class, 'transfer'])->name('tasks.transfer.create');
+    Route::post('/tasks/{id}/transfer', [TaskTransferController::class, 'store'])->name('tasks.transfer.store');
+
 });
 
 require __DIR__ . '/auth.php';

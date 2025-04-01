@@ -17,7 +17,9 @@ class TaskController extends Controller
 
         $list_title = "ALL Tasks";
 
-        return view('tasks.index', compact('tasks', 'list_title'));
+        $users = User::where('role', 3)->where('status', 1)->get();
+
+        return view('tasks.index', compact('tasks', 'list_title', 'users'));
     }
 
 
