@@ -16,7 +16,8 @@ class TeamController extends Controller
         return view('team.build', compact('employees'));
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
 
 
         $validated = Validator::make($request->all(), [
@@ -43,7 +44,33 @@ class TeamController extends Controller
             ]);
         }
 
-       notify()->success('Team created successfully.');
+        notify()->success('Team created successfully.');
         return redirect()->back();
+    }
+
+    public function team_index()
+    {
+        $teams = Team::select('team_number', 'team_name')
+            ->orderBy('team_number')
+            ->get()
+            ->groupBy('team_number');
+
+        $teamSummary = $teams->map(function ($teamGroup, $teamNumber) {
+            return [
+                'team_number' => $teamNumber,
+                'team_name' => $teamGroup->first()->team_name,
+                'total_members' => $teamGroup->count(),
+            ];
+        });
+
+        return view('team.index', compact('teamSummary'));
+    }
+
+    public function team_view($team_number)
+    {
+        $team = Team::where('team_number', $team_number)->first();
+        $members = Team::where('team_number', $team_number)->get();
+
+        return view('team.view', compact('team', 'members'));
     }
 }

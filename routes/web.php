@@ -94,6 +94,8 @@ Route::middleware(['auth', 'isHR'])->group(function () {
     //build team
     Route::get('/team', [TeamController::class, 'team_build'])->name('team.build');
     Route::post('/team/store', [TeamController::class, 'store'])->name('team.store');
+    Route::get('/team/index', [TeamController::class, 'team_index'])->name('team.index');
+    Route::get('/team/view/{team_number}', [TeamController::class, 'team_view'])->name('team.view');
 
 });
 
