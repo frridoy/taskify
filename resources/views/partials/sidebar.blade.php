@@ -57,17 +57,42 @@
                     </a>
                     <div class="sidebar-vertical-line"></div>
                 </div>
-                <div class="dashboard-sidebar-option">
-                    <a href="{{ route('team.build') }}"
-                        class="d-flex align-items-center gap-3 p-3 rounded-lg hover:bg-primary-100 transition-all">
-                        <i class="fas fa-tasks text-primary text-2xl"></i> <!-- Updated icon -->
-                        <span class="text-lg font-medium">Team Build</span>
-                    </a>
-                    <div class="sidebar-vertical-line"></div>
-                </div>
             </li>
         </ul>
     @endif
+    <ul class="d-flex flex-column gap-3">
+        <p class="admin-title mt-3 text-white">Team Management</p>
+
+        <!-- Team Dropdown -->
+        <li>
+            <div class="dashboard-sidebar-option d-flex align-items-center gap-3 p-3 rounded-lg hover:bg-primary-100 transition-all text-white"
+                data-bs-toggle="collapse" data-bs-target="#teamMenu" aria-expanded="false">
+                <i class="fas fa-users text-blue-500 text-2xl"></i> <!-- Team Icon (Blue) -->
+                <span class="text-lg font-medium">Team</span>
+                <i class="fas fa-chevron-down ml-auto text-white"></i> <!-- Dropdown Indicator (White) -->
+            </div>
+
+            <!-- Submenu (Indented) -->
+            <ul id="teamMenu" class="collapse pl-6">
+
+                @if (auth()->user()->role == 1 || auth()->user()->role == 2)
+                <li>
+                    <a href="{{ route('team.build') }}" class="d-flex align-items-center gap-3 p-2 rounded-lg hover:bg-primary-200 transition-all text-white">
+                        <i class="fas fa-tasks text-blue-500"></i> <!-- Task Icon (Blue) -->
+                        <span>Task Build</span>
+                    </a>
+                </li>
+                @endif
+                <li>
+                    <a href="{{ route('team.index') }}" class="d-flex align-items-center gap-3 p-2 rounded-lg hover:bg-primary-200 transition-all text-white">
+                        <i class="fas fa-users text-blue-500"></i> <!-- Team List Icon (Blue) -->
+                        <span>Team List</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
     @if (auth()->user()->role == 3)
     <ul class="d-flex flex-column gap-3">
         <p class="admin-title mt-3">Task Management</p>
