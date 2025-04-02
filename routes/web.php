@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskTransferController;
+use App\Http\Controllers\TeamController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -89,6 +90,10 @@ Route::middleware(['auth', 'isHR'])->group(function () {
     //transfer
     Route::get('/tasks/transfer/{id}', [TaskTransferController::class, 'transfer'])->name('tasks.transfer.create');
     Route::post('/tasks/{id}/transfer', [TaskTransferController::class, 'store'])->name('tasks.transfer.store');
+
+    //build team
+    Route::get('/team', [TeamController::class, 'team_build'])->name('team.build');
+    Route::post('/team/store', [TeamController::class, 'store'])->name('team.store');
 
 });
 

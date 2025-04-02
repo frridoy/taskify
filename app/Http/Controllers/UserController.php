@@ -25,7 +25,7 @@ class UserController extends Controller
         ]);
 
         $user = new User();
-        $user->name = $request->name;
+        $user->name = ucwords($request->name);
         $user->email = $request->email;
         $user->role = $request->role;
         $user->phone_no = $request->phone_no;
