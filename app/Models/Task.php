@@ -14,6 +14,7 @@ class Task extends Model
         'dateLimit',
         'task_description',
         'created_by',
+        'task_urgency',
     ];
 
     public function user()

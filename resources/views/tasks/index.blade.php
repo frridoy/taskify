@@ -10,18 +10,6 @@
             </a>
         @endif
 
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @elseif(session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-
         <div class="table-responsive">
             <table class="table table-striped table-hover">
                 <thead class="table-dark">
@@ -33,6 +21,7 @@
                         <th>Created By</th>
                         <th>Date Limit</th>
                         <th>Status</th>
+                        <th>Task Urgency</th>
                         <th>Created At</th>
                         <th>Action</th>
                     </tr>
@@ -54,6 +43,17 @@
                                     <span class="badge bg-warning">Processing</span>
                                 @else
                                     <span class="badge bg-success">Completed</span>
+                                @endif
+                            </td>
+                            <td>
+                                @if ($task->task_urgency == 'emergency')
+                                    <span class="fw-bold text-danger">🔴 Emergency</span>
+                                @elseif($task->task_urgency == 'high_priority')
+                                    <span class="fw-bold text-warning">🟡 High Priority</span>
+                                @elseif($task->task_urgency == 'normal_priority')
+                                    <span class="fw-bold text-success">🟢 Normal Priority</span>
+                                @else
+                                    <span class="fw-bold text-secondary">⚪ Low Priority</span>
                                 @endif
                             </td>
                             <td>{{ \Carbon\Carbon::parse($task->created_at)->format('d M, Y') }}</td>
@@ -78,31 +78,31 @@
                                     </form>
                                 @endif
 
-                    @if (auth()->user()->role == 3 && $task->status == 1)
-                        <form action="{{ route('task.complete', $task->id) }}" method="POST" class="d-inline"
-                            id="complete-form-{{ $task->id }}">
-                            @csrf
-                            @method('PATCH')
-                            <button type="submit" class="btn btn-primary btn-sm"
-                                onclick="return confirm('Are you sure you want to complete this task?')">
-                                <i class="fas fa-check"></i>
-                            </button>
-                        </form>
-                    @endif
+                                @if (auth()->user()->role == 3 && $task->status == 1)
+                                    <form action="{{ route('task.complete', $task->id) }}" method="POST" class="d-inline"
+                                        id="complete-form-{{ $task->id }}">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="btn btn-primary btn-sm"
+                                            onclick="return confirm('Are you sure you want to complete this task?')">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                    </form>
+                                @endif
 
-                    @if ((auth()->user()->role == 1 || auth()->user()->role == 2) && $task->status != 2)
-                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                            data-bs-target="#transferModal{{ $task->id }}">
-                            <i class="fas fa-exchange-alt"></i>
-                        </button>
-                    @else
-                        <span class="btn btn-outline-success btn-sm">
-                            <i class="fas fa-check-circle"></i>
-                        </span>
-                    @endif
-                    </td>
+                                @if ((auth()->user()->role == 1 || auth()->user()->role == 2) && $task->status != 2)
+                                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#transferModal{{ $task->id }}">
+                                        <i class="fas fa-exchange-alt"></i>
+                                    </button>
+                                @else
+                                    <span class="btn btn-outline-success btn-sm">
+                                        <i class="fas fa-check-circle"></i>
+                                    </span>
+                                @endif
+                            </td>
 
-                    </tr>
+                        </tr>
                     @endforeach
                 </tbody>
             </table>

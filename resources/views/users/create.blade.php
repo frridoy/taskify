@@ -84,13 +84,13 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="name">Name:</label>
+                                <label for="name">Name:</label> <span class="text-danger">*</span>
                                 <input type="text" class="form-control" id="name" name="name" value="{{ isset($user) ? $user->name : '' }}" placeholder="example" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="email">Email:</label>
+                                <label for="email">Email:</label> <span class="text-danger">*</span>
                                 <input type="email" class="form-control" id="email" name="email" value="{{ isset($user) ? $user->email : '' }}" placeholder="example@app.com" required>
                             </div>
                         </div>
@@ -98,7 +98,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="role">Role:</label>
+                                <label for="role">Role:</label> <span class="text-danger">*</span>
                                 <select class="custom-select" id="role" name="role">
                                     <option value="">Select User Role</option>
                                     <option value="2" {{ isset($user) && $user->role == 2 ? 'selected' : '' }}>HR</option>
@@ -108,7 +108,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="phone_no">Phone Number:</label>
+                                <label for="phone_no">Phone Number:</label> <span class="text-danger">*</span>
                                 <input type="text" class="form-control" id="phone_no" name="phone_no" value="{{ isset($user) ? $user->phone_no : '' }}" placeholder="01614898789"
                                 >
                             </div>
@@ -117,7 +117,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="status">Status:</label>
+                                <label for="status">Status:</label> <span class="text-danger">*</span>
                                 <select class="custom-select" id="status" name="status">
                                     <option value="1" {{ isset($user) && $user->status == 1 ? 'selected' : '' }}>Active</option>
                                     <option value="0" {{ isset($user) && $user->status == 0 ? 'selected' : '' }}>Inactive</option>
@@ -136,7 +136,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="password">Password:</label>
+                                <label for="password">Password:</label> <span class="text-danger">*</span>
                                 <div class="input-group">
                                     <input type="password" class="form-control" id="password" name="password" {{ isset($user) ? '' : 'required' }}>
                                     <div class="input-group-append">
@@ -149,7 +149,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="password_confirmation">Confirm Password:</label>
+                                <label for="password_confirmation">Confirm Password:</label> <span class="text-danger">*</span>
                                 <div class="input-group">
                                     <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" {{ isset($user) ? '' : 'required' }}>
                                     <div class="input-group-append">

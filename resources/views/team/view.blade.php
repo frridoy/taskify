@@ -46,15 +46,30 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $member->employee->name }}</td>
                                     <td>{{ $member->employee->id }}</td>
-                                    <td>{{ $member->employee->role == 2 ? 'HR Manager' : 'Employee' }}</td>
-                                    <td>{{ $member->employee->status == 1 ? 'Active' : 'Inactive' }}</td>
-                                    {{-- <td>
-                                        @if($member->is_team_leader)
-                                            <span>Team Leader</span>
+                                    <td>
+                                        @if($member->employee->role == 2)
+                                            <span class="text-primary fw-bold">
+                                                <i class="fas fa-user-tie me-1"></i> HR Manager
+                                            </span>
                                         @else
-                                            <span>Member</span>
+                                            <span class="text-secondary fw-bold">
+                                                <span><i class="fas fa-user"></i></span> Sales Person
+                                            </span>
                                         @endif
-                                    </td> --}}
+                                    </td>
+
+                                    <td>
+                                        @if($member->employee->status == 1)
+                                            <span class="text-success fw-bold">
+                                                <i class="fas fa-check-circle me-1"></i>
+                                            </span>
+                                        @else
+                                            <span class="text-danger fw-bold">
+                                                <i class="fas fa-times-circle me-1"></i>
+                                            </span>
+                                        @endif
+                                    </td>
+
                                     <td>
                                         @if($member->is_team_leader)
                                             <span><i class="fas fa-crown"></i></span>

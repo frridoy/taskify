@@ -4,20 +4,18 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card shadow-lg border-0 rounded-lg">
-                <!-- Card Header with Smaller Blue Background -->
+                <!-- Card Header -->
                 <div class="card-header bg-primary text-white py-3">
                     <h3 class="text-center mb-0" style="font-size: 1.5rem;">Assign Task</h3>
                 </div>
                 <div class="card-body p-5">
-                    <!-- Display success message -->
-
                     <!-- Form to assign task -->
                     <form action="{{ route('tasks.store') }}" method="POST">
                         @csrf
 
                         <!-- Task Name -->
                         <div class="form-group mb-2">
-                            <label for="task_name" class="form-label fw-bold">Task Name</label>
+                            <label for="task_name" class="form-label fw-bold">Task Name</label> <span class="text-danger">*</span>
                             <div class="input-group">
                                 <span class="input-group-text bg-light border-end-0">
                                     <i class="fas fa-tasks text-primary"></i>
@@ -39,7 +37,7 @@
 
                         <!-- Date Limit -->
                         <div class="form-group mb-2">
-                            <label for="dateLimit" class="form-label fw-bold">Date Limit</label>
+                            <label for="dateLimit" class="form-label fw-bold">Date Limit</label> <span class="text-danger">*</span>
                             <div class="input-group">
                                 <span class="input-group-text bg-light border-end-0">
                                     <i class="fas fa-calendar-alt text-primary"></i>
@@ -48,7 +46,38 @@
                             </div>
                         </div>
 
-                        <!-- Submit Button (Smaller Size) -->
+                        <!-- Task Urgency Level (Updated) -->
+                        <div class="form-group mb-3">
+                            <label class="form-label fw-bold">Task Urgency</label> <span class="text-danger">*</span>
+                            <div class="d-flex gap-4">
+                                <div class="form-check">
+                                    <input type="radio" id="emergency" name="task_urgency" value="emergency" class="form-check-input" required>
+                                    <label for="emergency" class="form-check-label text-danger fw-bold">
+                                        <i class="fas fa-exclamation-triangle text-danger me-1"></i> Emergency
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="radio" id="high_priority" name="task_urgency" value="high_priority" class="form-check-input">
+                                    <label for="high_priority" class="form-check-label text-warning fw-bold">
+                                        <i class="fas fa-exclamation-circle text-warning me-1"></i> High Priority
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="radio" id="normal_priority" name="task_urgency" value="normal_priority" class="form-check-input">
+                                    <label for="normal_priority" class="form-check-label text-primary fw-bold">
+                                        <i class="fas fa-info-circle text-primary me-1"></i> Normal Priority
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="radio" id="low_priority" name="task_urgency" value="low_priority" class="form-check-input">
+                                    <label for="low_priority" class="form-check-label text-secondary fw-bold">
+                                        <i class="fas fa-check-circle text-secondary me-1"></i> Low Priority
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary btn-sm">
                                 <i class="fas fa-paper-plane me-2"></i> Assign Task
@@ -79,8 +108,8 @@
         padding: 0.5rem 1rem; /* Smaller button size */
         font-size: 0.9rem; /* Smaller font size for the button */
     }
-    .alert {
-        margin-bottom: 1.5rem;
+    .form-check-label {
+        cursor: pointer;
     }
 </style>
 @endsection

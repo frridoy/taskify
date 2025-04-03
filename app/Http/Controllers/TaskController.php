@@ -65,6 +65,7 @@ class TaskController extends Controller
                 'dateLimit' => $request->dateLimit,
                 'task_description' => $request->task_description,
                 'created_by' => $created_by,
+                'task_urgency' => $request->task_urgency,
             ]);
 
             $helperFlag->update([
