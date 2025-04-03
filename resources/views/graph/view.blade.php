@@ -1,4 +1,4 @@
-@extends('setup.layout')
+@extends('setup.master')
 @section('content')
 <!-- Previous styles remain the same -->
 <style>

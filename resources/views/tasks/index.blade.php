@@ -1,4 +1,4 @@
-@extends('setup.layout')
+@extends('setup.master')
 @section('content')
     <div class="container">
 
@@ -127,12 +127,13 @@
                             <form action="{{ route('tasks.transfer.store', $task->id) }}" method="POST">
                                 @csrf
                                 <div class="mb-3">
-                                    <label for="new_user_id" class="form-label">Select New User</label>
+                                    <label for="new_user_id" class="form-label">Transfer To</label> <span class="text-danger">*</span>
                                     <select name="new_user_id" id="new_user_id" class="form-select" required>
                                         @if (auth()->check() && (auth()->user()->role == 1 || auth()->user()->role == 2))
+                                        <option value="">Select</option>
                                             @foreach ($users as $user)
                                                 @if ($user->role == 3)
-                                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                                    <option value="{{ $user->id }}">{{$user->id}}-{{ $user->name }}</option>
                                                 @endif
                                             @endforeach
                                         @endif
@@ -140,7 +141,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="task_description" class="form-label">Task Description</label>
-                                    <textarea name="task_description" id="task_description" class="form-control" rows="3">{{ $task->task_description }}</textarea>
+                                    <textarea name="task_description" id="task_description" readonly class="form-control" rows="3">{{ $task->task_description }}</textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="task_remark" class="form-label">Task Remark</label>

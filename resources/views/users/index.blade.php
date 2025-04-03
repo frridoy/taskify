@@ -1,5 +1,4 @@
-@extends('setup.layout')
-
+@extends('setup.master')
 @section('content')
     <div class="container-fluid px-4">
         <div class="card shadow-sm mt-4">
@@ -75,7 +74,7 @@
                                     <td class="align-middle">{{ $user->email }}</td>
                                     <td class="align-middle">
                                         <span class="badge {{ $user->role == 2 ? 'bg-primary' : 'bg-secondary' }} rounded-pill">
-                                            {{ $user->role == 2 ? 'HR Manager' : 'Employee' }}
+                                            {{ $user->role == 2 ? 'Manager' : 'Employee' }}
                                         </span>
                                     </td>
                                     <td class="align-middle">{{ $user->phone_no }}</td>

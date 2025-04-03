@@ -1,4 +1,4 @@
-@extends('setup.layout')
+@extends('setup.master')
 @section('content')
 <style>
     /* Previous styles remain the same until card-specific styles */

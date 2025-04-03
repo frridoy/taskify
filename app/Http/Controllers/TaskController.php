@@ -82,10 +82,7 @@ class TaskController extends Controller
 
     public function show($taskId)
     {
-        // Fetch the task with related transfer info, if available
         $task = Task::with('transfers')->findOrFail($taskId);
-
-        // Pass the task data to the view
         return view('tasks.show', compact('task'));
     }
 }
