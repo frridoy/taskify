@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\HomeContoller;
 use App\Http\Controllers\HRController;
@@ -63,6 +64,9 @@ Route::middleware(['auth', 'isEmployee'])->group(function () {
     Route::get('graph', [EmployeeController::class, 'graph'])->name('monthly.graph');
 
 
+    Route::get('/attendance', [AttendanceController::class, 'attendance'])->name('attendance.index');
+    Route::get('/attendance/index', [AttendanceController::class, 'index'])->name('attendance.list');
+    Route::post('/attendance/store', [AttendanceController::class, 'store'])->name('attendance.store');
 });
 
 
@@ -96,7 +100,6 @@ Route::middleware(['auth', 'isHR'])->group(function () {
     Route::post('/team/store', [TeamController::class, 'store'])->name('team.store');
     Route::get('/team/index', [TeamController::class, 'team_index'])->name('team.index');
     Route::get('/team/view/{team_number}', [TeamController::class, 'team_view'])->name('team.view');
-
 });
 
 require __DIR__ . '/auth.php';
