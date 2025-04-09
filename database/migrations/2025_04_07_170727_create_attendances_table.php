@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('user_name');
-            $table->time('check_in');
+            $table->string('check_in');
             $table->string('location')->nullable();
-            $table->time('check_out')->nullable();
+            $table->string('check_out')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

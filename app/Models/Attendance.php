@@ -14,4 +14,9 @@ class Attendance extends Model
         'location',
         'check_out',
     ];
+
+    public function user(){
+
+        return $this->belongsTo(User::class,'user_id', 'id');
+    }
 }
