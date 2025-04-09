@@ -60,11 +60,9 @@
 
                             <td lass="text-center">
 
-                                @if (Auth::user()->role == 1 || Auth::user()->role == 2)
                                     <a href="{{ route('tasks.show', $task->id) }}" class="btn btn-info btn-sm">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                @endif
 
                                 @if (auth()->user()->role == 3 && $task->status == 0)
                                     <form action="{{ route('task.receive', $task->id) }}" method="POST" class="d-inline"

@@ -19,6 +19,8 @@ return new class extends Migration
             $table->tinyInteger('status')->default(0)->comment('0: Pending, 1: Processing, 2: Completed');
             $table->string('dateLimit')->nullable();
             $table->text('task_description')->nullable();
+            $table->string('created_by')->nullable();
+            $table->string('task_urgency')->nullable();
             $table->timestamps();
         });
     }
@@ -31,3 +33,5 @@ return new class extends Migration
         Schema::dropIfExists('tasks');
     }
 };
+
+

@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('task_transfers', function (Blueprint $table) {
             $table->id();
+            $table->string('task_description')->nullable();
+            $table->string('task_remark')->nullable();
             $table->foreignId('task_id')->constrained()->onDelete('cascade');
             $table->foreignId('old_user_id')->nullable()->constrained('users')->onDelete('set null');
             $table->foreignId('new_user_id')->constrained('users')->onDelete('cascade');

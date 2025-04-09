@@ -12,22 +12,25 @@ class EmployeeController extends Controller
 {
     public function dashboard()
     {
-        $pending_tasks = Task::where('user_id', auth()->id())
+
+        $user = Auth::user();
+
+        $pending_tasks = Task::where('user_id', $user)
             ->where('status', 0)
             ->count();
-        $processing_tasks = Task::where('user_id', auth()->id())
+        $processing_tasks = Task::where('user_id', $user)
             ->where('status', 1)
             ->count();
-        $completed_tasks = Task::where('user_id', auth()->id())
+        $completed_tasks = Task::where('user_id', $user)
             ->where('status', 2)
             ->count();
 
-            $missed_pending_tasks = Task::where('user_id', auth()->id())
+        $missed_pending_tasks = Task::where('user_id', $user)
             ->where('status', 0)
             ->whereDate('dateLimit', '<', Carbon::now()->format('Y-m-d'))
             ->count();
 
-            $missed_processing_tasks = Task::where('user_id', auth()->id())
+        $missed_processing_tasks = Task::where('user_id', $user)
             ->where('status', 1)
             ->whereDate('dateLimit', '<', Carbon::now()->format('Y-m-d'))
             ->count();
@@ -38,7 +41,9 @@ class EmployeeController extends Controller
     }
     public function index()
     {
-        $tasks = Task::where('user_id', auth()->id())
+        $user = Auth::id();
+
+        $tasks = Task::where('user_id', $user)
             ->orderBy('created_at', 'desc')
             ->get();
         $list_title = 'ALL Tasks';
@@ -48,7 +53,8 @@ class EmployeeController extends Controller
 
     public function pending_tasks()
     {
-        $tasks = Task::where('user_id', auth()->id())
+        $user = Auth::id();
+        $tasks = Task::where('user_id', $user)
             ->where('status', 0)
             ->orderBy('created_at', 'desc')
             ->get();
@@ -77,7 +83,9 @@ class EmployeeController extends Controller
 
     public function processing_tasks()
     {
-        $tasks = Task::where('user_id', auth()->id())
+
+        $user = Auth::id();
+        $tasks = Task::where('user_id', $user)
             ->where('status', 1)
             ->orderBy('created_at', 'desc')
             ->get();
@@ -99,7 +107,8 @@ class EmployeeController extends Controller
 
     public function completed_tasks()
     {
-        $tasks = Task::where('user_id', auth()->id())
+        $user = Auth::id();
+        $tasks = Task::where('user_id', $user)
             ->where('status', 2)
             ->orderBy('created_at', 'desc')
             ->get();

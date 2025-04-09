@@ -53,14 +53,14 @@ class UserController extends Controller
         return view('users.index', compact('users'));
     }
     public function edit($id)
-{
+    {
         $user = User::findOrFail($id);
         return view('users.create', compact('user'));
     }
 
     public function update(Request $request, $id)
     {
-            // dd($request->all());
+        // dd($request->all());
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $id,

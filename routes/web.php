@@ -54,7 +54,6 @@ Route::middleware(['auth', 'isHR'])->group(function () {
     Route::get('task-assign-index', [TaskController::class, 'index'])->name('tasks.index');
     Route::get('task-assign', [TaskController::class, 'assign'])->name('tasks.assign');
     Route::post('task-assign-store', [TaskController::class, 'store'])->name('tasks.store');
-    Route::get('/tasks/{task}/details', [TaskController::class, 'show'])->name('tasks.show');
 
     Route::get('user-create', [UserController::class, 'create'])->name('users.create');
     Route::post('user-store', [UserController::class, 'store'])->name('users.store');
@@ -78,5 +77,6 @@ Route::middleware(['auth', 'isHR'])->group(function () {
 });
 
 Route::get('/attendance/index', [AttendanceController::class, 'index'])->name('attendance.list')->middleware(['auth', 'isHR_isEmployee']);
+Route::get('/tasks/{task}/details', [TaskController::class, 'show'])->name('tasks.show')->middleware(['auth', 'isHR_isEmployee']);
 
 require __DIR__ . '/auth.php';
