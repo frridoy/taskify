@@ -32,13 +32,6 @@ Route::middleware(['auth', 'isSuperAdmin'])->group(function () {
     Route::get('super-admin/dashboard', [SuperAdminController::class, 'dashboard'])->name('superAdmin.dashboard');
 });
 
-
-Route::middleware(['auth', 'isHR'])->group(function () {
-
-    Route::get('hr/dashboard', [HRController::class, 'dashboard'])->name('hr.dashboard');
-});
-
-
 Route::middleware(['auth', 'isEmployee'])->group(function () {
 
     Route::get('employee/dashboard', [EmployeeController::class, 'dashboard'])->name('employee.dashboard');
@@ -51,11 +44,12 @@ Route::middleware(['auth', 'isEmployee'])->group(function () {
     Route::get('graph', [EmployeeController::class, 'graph'])->name('monthly.graph');
 
     Route::get('/attendance', [AttendanceController::class, 'attendance'])->name('attendance.index');
-    Route::get('/attendance/index', [AttendanceController::class, 'index'])->name('attendance.list');
     Route::post('/attendance/store', [AttendanceController::class, 'store'])->name('attendance.store');
 });
 
 Route::middleware(['auth', 'isHR'])->group(function () {
+
+    Route::get('hr/dashboard', [HRController::class, 'dashboard'])->name('hr.dashboard');
 
     Route::get('task-assign-index', [TaskController::class, 'index'])->name('tasks.index');
     Route::get('task-assign', [TaskController::class, 'assign'])->name('tasks.assign');
@@ -82,5 +76,7 @@ Route::middleware(['auth', 'isHR'])->group(function () {
     Route::get('/office_info_setup/edit/{id}', [SettingController::class, 'edit'])->name('office_info_setup.edit');
     Route::put('/office_info_setup/update', [SettingController::class, 'update'])->name('office_info_setup.update');
 });
+
+Route::get('/attendance/index', [AttendanceController::class, 'index'])->name('attendance.list')->middleware(['auth', 'isHR_isEmployee']);
 
 require __DIR__ . '/auth.php';
