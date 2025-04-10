@@ -64,7 +64,7 @@
                                         <i class="fas fa-eye"></i>
                                     </a>
 
-                                @if (auth()->user()->role == 3 && $task->status == 0)
+                                @if (auth()->user()->role == 3 && $task->status == 0 && $task->user_id == $userId)
                                     <form action="{{ route('task.receive', $task->id) }}" method="POST" class="d-inline"
                                         id="receive-form-{{ $task->id }}">
                                         @csrf
@@ -76,7 +76,7 @@
                                     </form>
                                 @endif
 
-                                @if (auth()->user()->role == 3 && $task->status == 1)
+                                @if (auth()->user()->role == 3 && $task->status == 1 && $task->user_id == $userId)
                                     <form action="{{ route('task.complete', $task->id) }}" method="POST" class="d-inline"
                                         id="complete-form-{{ $task->id }}">
                                         @csrf
@@ -88,7 +88,7 @@
                                     </form>
                                 @endif
 
-                                @if ((auth()->user()->role == 1 || auth()->user()->role == 2) && $task->status != 2)
+                                @if ((auth()->user()->role == 1 || auth()->user()->role == 2 || $teamLeader) && $task->status != 2)
                                     <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                         data-bs-target="#transferModal{{ $task->id }}">
                                         <i class="fas fa-exchange-alt"></i>
@@ -127,7 +127,7 @@
                                 <div class="mb-3">
                                     <label for="new_user_id" class="form-label">Transfer To</label> <span class="text-danger">*</span>
                                     <select name="new_user_id" id="new_user_id" class="form-select" required>
-                                        @if (auth()->check() && (auth()->user()->role == 1 || auth()->user()->role == 2))
+                                        @if (auth()->check() && (auth()->user()->role == 1 || auth()->user()->role == 2 || $teamLeader != null))
                                         <option value="">Select</option>
                                             @foreach ($users as $user)
                                                 @if ($user->role == 3)

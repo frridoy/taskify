@@ -61,9 +61,6 @@ Route::middleware(['auth', 'isHR'])->group(function () {
     Route::get('user-edit/{id}', [UserController::class, 'edit'])->name('users.edit');
     Route::put('user-update/{id}', [UserController::class, 'update'])->name('users.update');
 
-    Route::get('/tasks/transfer/{id}', [TaskTransferController::class, 'transfer'])->name('tasks.transfer.create');
-    Route::post('/tasks/{id}/transfer', [TaskTransferController::class, 'store'])->name('tasks.transfer.store');
-
     Route::get('/team', [TeamController::class, 'team_build'])->name('team.build');
     Route::post('/team/store', [TeamController::class, 'store'])->name('team.store');
     Route::get('/team/index', [TeamController::class, 'team_index'])->name('team.index');
@@ -78,5 +75,6 @@ Route::middleware(['auth', 'isHR'])->group(function () {
 
 Route::get('/attendance/index', [AttendanceController::class, 'index'])->name('attendance.list')->middleware(['auth', 'isHR_isEmployee']);
 Route::get('/tasks/{task}/details', [TaskController::class, 'show'])->name('tasks.show')->middleware(['auth', 'isHR_isEmployee']);
+Route::post('/tasks/{id}/transfer', [TaskTransferController::class, 'store'])->name('tasks.transfer.store')->middleware(['auth', 'isHR_isEmployee']);
 
 require __DIR__ . '/auth.php';
