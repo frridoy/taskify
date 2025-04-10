@@ -12,7 +12,17 @@ class TeamController extends Controller
 {
     public function team_build()
     {
-        $employees = User::where('role', 3)->where('status', 1)->get();
+        $already_under_a_team = Team::pluck('employee_id')->toArray();
+
+        // dd($already_under_a_team);
+        
+        $employees = User::where('role', 3)
+            ->where('status', 1)
+            ->whereNotIn('id', $already_under_a_team)
+            ->get(['id', 'name']);
+
+            // dd($employees->toArray());
+
         return view('team.build', compact('employees'));
     }
 
