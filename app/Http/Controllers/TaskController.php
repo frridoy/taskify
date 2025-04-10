@@ -29,55 +29,56 @@ class TaskController extends Controller
         return view('tasks.assign');
     }
 
+
     public function store(Request $request)
     {
         $request->validate([
             'task_name' => 'required|string',
             'dateLimit' => 'nullable|date',
-            'task_description' => 'nullable|string'
+            'task_description' => 'nullable|string',
         ]);
 
-        try {
-            $users = User::where('role', 3)
-                ->where('status', 1)
-                ->orderBy('id')
-                ->get();
+        $users = User::where('role', 3)
+            ->where('status', 1)
+            ->orderBy('id')
+            ->get(['id', 'name']);
 
-            $totalUsers = $users->count();
+        $totalUsers = $users->count();
 
-            if ($totalUsers == 0) {
-                return redirect()->back()->with('error', 'No active users found.');
-            }
-
-            $helperFlag = HelperFlag::firstOrCreate(
-                ['id' => 1],
-                ['assign_flag' => 0]
-            );
-
-            $selectedUser = $users[$helperFlag->assign_flag];
-
-            $created_by = Auth::id();
-
-            Task::create([
-                'task_name' => ucwords($request->task_name),
-                'user_id' => $selectedUser->id,
-                'status' => 0,
-                'dateLimit' => $request->dateLimit,
-                'task_description' => $request->task_description,
-                'created_by' => $created_by,
-                'task_urgency' => $request->task_urgency,
-            ]);
-
-            $helperFlag->update([
-                'assign_flag' => ($helperFlag->assign_flag + 1) % $totalUsers
-            ]);
-
-
-            notify()->success('Task assigned to ' . $selectedUser->name);
-            return back();
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Error occurred: ' . $e->getMessage());
+        if ($totalUsers === 0) {
+            return redirect()->back()->with('error', 'No active users found.');
         }
+
+        $helperFlag = HelperFlag::firstOrCreate(
+            ['id' => 1],
+            ['assign_flag' => 0]
+        );
+
+        $selectedUser = $users[$helperFlag->assign_flag];
+        $created_by = Auth::id();
+
+        Task::create([
+            'task_name' => ucwords($request->task_name),
+            'user_id' => $selectedUser->id,
+            'status' => 0,
+            'dateLimit' => $request->dateLimit,
+            'task_description' => $request->task_description,
+            'created_by' => $created_by,
+            'task_urgency' => $request->task_urgency,
+        ]);
+
+        $updateFlag = $helperFlag->assign_flag + 1;
+
+        if ($updateFlag >= $totalUsers) {
+            $updateFlag = 0;
+        }
+
+        $helperFlag->update([
+            'assign_flag' => $updateFlag,
+        ]);
+
+        notify()->success('Task assigned to ' . $selectedUser->name);
+        return back();
     }
 
     public function show($taskId)
