@@ -14,14 +14,10 @@ class TeamController extends Controller
     {
         $already_under_a_team = Team::pluck('employee_id')->toArray();
 
-        // dd($already_under_a_team);
-        
         $employees = User::where('role', 3)
             ->where('status', 1)
             ->whereNotIn('id', $already_under_a_team)
             ->get(['id', 'name']);
-
-            // dd($employees->toArray());
 
         return view('team.build', compact('employees'));
     }
@@ -29,10 +25,9 @@ class TeamController extends Controller
     public function store(Request $request)
     {
 
-
         $validated = Validator::make($request->all(), [
             'employee_id' => 'required|array',
-            'employee_id.*' => 'exists:users,id',
+            'employee_id.*' => 'distinct|exists:users,id',
             'team_leader' => 'required|exists:users,id',
             'team_name' => 'required|unique:teams,team_name|string|max:255',
         ]);
