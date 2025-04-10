@@ -14,31 +14,82 @@ class EmployeeController extends Controller
     public function dashboard()
     {
 
-        $user = Auth::id();
+        $userId = Auth::id();
 
-        $pending_tasks = Task::where('user_id', $user)
-            ->where('status', 0)
-            ->count();
-        $processing_tasks = Task::where('user_id', $user)
-            ->where('status', 1)
-            ->count();
-        $completed_tasks = Task::where('user_id', $user)
-            ->where('status', 2)
-            ->count();
+        $teamLeader = Team::where('employee_id', $userId)
+            ->where('is_team_leader', 1)
+            ->first();
 
-        $missed_pending_tasks = Task::where('user_id', $user)
+        if ($teamLeader) {
+            $teamMemberIds = Team::where('team_number', $teamLeader->team_number)
+                ->pluck('employee_id')
+                ->toArray();
+
+            $pending_tasks = Task::whereIn('user_id', $teamMemberIds)
+                ->where('status', 0)
+                ->get();
+
+        } else {
+
+            $pending_tasks = Task::where('user_id', $userId)
+                ->where('status', 0)
+                ->get();
+        }
+
+        $pending_tasks_count = $pending_tasks->count();
+
+        if ($teamLeader) {
+            $teamMemberIds = Team::where('team_number', $teamLeader->team_number)
+                ->pluck('employee_id')
+                ->toArray();
+
+            $processing_tasks = Task::whereIn('user_id', $teamMemberIds)
+                ->where('status', 1)
+                ->get();
+
+        } else {
+
+            $processing_tasks = Task::where('user_id', $userId)
+                ->where('status', 1)
+                ->get();
+        }
+
+        $processing_tasks_count = $processing_tasks->count();
+
+
+        if ($teamLeader) {
+            $teamMemberIds = Team::where('team_number', $teamLeader->team_number)
+                ->pluck('employee_id')
+                ->toArray();
+
+            $completed_tasks = Task::whereIn('user_id', $teamMemberIds)
+                ->where('status', 2)
+                ->get();
+
+        } else {
+
+            $completed_tasks = Task::where('user_id', $userId)
+                ->where('status', 2)
+                ->get();
+        }
+
+        $completed_tasks_count = $completed_tasks->count();
+
+
+        $missed_pending_tasks = Task::where('user_id', $userId)
             ->where('status', 0)
             ->whereDate('dateLimit', '<', Carbon::now()->format('Y-m-d'))
             ->count();
 
-        $missed_processing_tasks = Task::where('user_id', $user)
+        $missed_processing_tasks = Task::where('user_id', $userId)
             ->where('status', 1)
             ->whereDate('dateLimit', '<', Carbon::now()->format('Y-m-d'))
             ->count();
 
 
-        $total_tasks = $pending_tasks + $processing_tasks + $completed_tasks;
-        return view('employee.dashboard', compact('pending_tasks', 'processing_tasks', 'completed_tasks', 'total_tasks', 'missed_pending_tasks', 'missed_processing_tasks'));
+        $total_tasks = $pending_tasks_count + $processing_tasks_count + $completed_tasks_count;
+
+        return view('employee.dashboard', compact('pending_tasks_count', 'processing_tasks_count', 'completed_tasks_count', 'total_tasks', 'missed_pending_tasks', 'missed_processing_tasks'));
     }
     public function index()
     {

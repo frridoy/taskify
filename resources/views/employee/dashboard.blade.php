@@ -171,7 +171,7 @@
                 </div>
             </div>
             <div class="stat-label">Pending Tasks</div>
-            <div class="stat-value">{{$pending_tasks}}</div>
+            <div class="stat-value">{{$pending_tasks_count}}</div>
             <div class="stat-description">Tasks yet to be started</div>
             <div class="stat-trend">
                 <i class="fas fa-arrow-down me-1 trend-down"></i>
@@ -187,7 +187,7 @@
                 </div>
             </div>
             <div class="stat-label">Processing Tasks</div>
-            <div class="stat-value">{{$processing_tasks}}</div>
+            <div class="stat-value">{{$processing_tasks_count}}</div>
             <div class="stat-description">Tasks in progress</div>
             <div class="stat-trend">
                 <i class="fas fa-arrow-up me-1 trend-up"></i>
@@ -203,7 +203,7 @@
                 </div>
             </div>
             <div class="stat-label">Completed Tasks</div>
-            <div class="stat-value">{{$completed_tasks}}</div>
+            <div class="stat-value">{{$completed_tasks_count}}</div>
             <div class="stat-description">Successfully completed tasks</div>
             <div class="stat-trend">
                 <i class="fas fa-arrow-up me-1 trend-up"></i>
