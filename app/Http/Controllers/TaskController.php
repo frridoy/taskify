@@ -55,7 +55,7 @@ class TaskController extends Controller
 
         $users = User::where('role', 3)->where('status', 1)->get();
 
-        return view('tasks.index', compact('tasks', 'list_title', 'users', 'teamLeader', 'userId', 'teamMemberIds'));
+        return view('tasks.index', compact('tasks', 'list_title', 'users', 'teamLeader', 'userId'));
     }
 
     public function assign()
