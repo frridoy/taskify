@@ -12,7 +12,7 @@
             </div>
             <div class="card-body">
                 <!-- Filter Section -->
-                <form action="{{ route('tasks.index') }}" method="GET" id="filterForm">
+                <form action="{{ route('my.tasks') }}" method="GET" id="filterForm">
                     <div class="row mb-3">
                         <div class="col-md-3 mb-2">
                             <label for="status_filter" class="form-label">Status</label>
@@ -53,7 +53,7 @@
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fas fa-filter"></i> Filter
                                 </button>
-                                <a href="{{ route('tasks.index') }}" class="btn btn-secondary">
+                                <a href="{{ route('my.tasks') }}" class="btn btn-secondary">
                                     <i class="fas fa-sync"></i> Reset
                                 </a>
                             </div>

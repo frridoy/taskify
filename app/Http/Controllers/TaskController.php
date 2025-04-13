@@ -4,25 +4,59 @@ namespace App\Http\Controllers;
 
 use App\Models\HelperFlag;
 use App\Models\Task;
+use App\Models\Team;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $tasks = Task::with(['user', 'creator:id,name'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(8);
+        $userId = Auth::id();
+
+        $teamLeader = Team::where('employee_id', $userId)
+            ->where('is_team_leader', 1)
+            ->first();
+
+        if ($teamLeader) {
+            $teamMemberIds = Team::where('team_number', $teamLeader->team_number)
+                ->pluck('employee_id')
+                ->toArray();
+
+            $users = User::whereIn('id', $teamMemberIds)
+                ->where('role', 3)
+                ->where('status', 1)
+                ->get();
+        } else {
+            $users = User::where('role', 3)
+                ->where('status', 1)
+                ->get();
+        }
+
+        $query = Task::with(['user', 'creator:id,name'])
+            ->orderBy('created_at', 'desc');
 
         $list_title = "ALL Tasks";
 
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->has('user_id') && $request->user_id != '') {
+            $query->where('user_id', $request->user_id);
+        }
+
+        if ($request->has('urgency') && $request->urgency != '') {
+            $query->where('task_urgency', $request->urgency);
+        }
+
+        $tasks = $query->paginate(10);
+
         $users = User::where('role', 3)->where('status', 1)->get();
 
-        return view('tasks.index', compact('tasks', 'list_title', 'users'));
+        return view('tasks.index', compact('tasks', 'list_title', 'users', 'teamLeader', 'userId', 'teamMemberIds'));
     }
-
 
     public function assign()
     {

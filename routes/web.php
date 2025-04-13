@@ -35,7 +35,7 @@ Route::middleware(['auth', 'isSuperAdmin'])->group(function () {
 Route::middleware(['auth', 'isEmployee'])->group(function () {
 
     Route::get('employee/dashboard', [EmployeeController::class, 'dashboard'])->name('employee.dashboard');
-    Route::get('my-task', [EmployeeController::class, 'index'])->name('my.tasks');
+    Route::get('all-task', [EmployeeController::class, 'index'])->name('my.tasks');
     Route::get('pending-task', [EmployeeController::class, 'pending_tasks'])->name('pending_tasks');
     Route::get('processing-task', [EmployeeController::class, 'processing_tasks'])->name('processing_tasks');
     Route::patch('/tasks/{task}/receive', [EmployeeController::class, 'receive'])->name('task.receive');
@@ -76,5 +76,8 @@ Route::middleware(['auth', 'isHR'])->group(function () {
 Route::get('/attendance/index', [AttendanceController::class, 'index'])->name('attendance.list')->middleware(['auth', 'isHR_isEmployee']);
 Route::get('/tasks/{task}/details', [TaskController::class, 'show'])->name('tasks.show')->middleware(['auth', 'isHR_isEmployee']);
 Route::post('/tasks/{id}/transfer', [TaskTransferController::class, 'store'])->name('tasks.transfer.store')->middleware(['auth', 'isHR_isEmployee']);
+
+// Route::get('task-assign-index', [TaskController::class, 'index'])->name('tasks.index');
+
 
 require __DIR__ . '/auth.php';

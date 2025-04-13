@@ -6,23 +6,16 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-wrap justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Task Management</h6>
+
                     <a href="{{ route('tasks.assign') }}" class="btn btn-primary mt-2 mt-md-0">
                         <i class="fas fa-tasks"></i> Create Task
                     </a>
+            
             </div>
             <div class="card-body">
                 <!-- Filter Section -->
-                <form action="{{ route('tasks.index') }}" method="GET" id="filterForm">
+                <form action="{{ route('processing_tasks') }}" method="GET" id="filterForm">
                     <div class="row mb-3">
-                        <div class="col-md-3 mb-2">
-                            <label for="status_filter" class="form-label">Status</label>
-                            <select name="status" id="status_filter" class="form-select">
-                                <option value="">All Status</option>
-                                <option value="0" {{ isset($_GET['status']) && $_GET['status'] == '0' ? 'selected' : '' }}>Pending</option>
-                                <option value="1" {{ isset($_GET['status']) && $_GET['status'] == '1' ? 'selected' : '' }}>Processing</option>
-                                <option value="2" {{ isset($_GET['status']) && $_GET['status'] == '2' ? 'selected' : '' }}>Completed</option>
-                            </select>
-                        </div>
                         @if(auth()->user()->role == 1 || auth()->user()->role == 2 ||  $teamLeader ==true)
                         <div class="col-md-3 mb-2">
                             <label for="assigned_to_filter" class="form-label">Assigned To</label>
@@ -53,7 +46,7 @@
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fas fa-filter"></i> Filter
                                 </button>
-                                <a href="{{ route('tasks.index') }}" class="btn btn-secondary">
+                                <a href="{{ route('processing_tasks') }}" class="btn btn-secondary">
                                     <i class="fas fa-sync"></i> Reset
                                 </a>
                             </div>

@@ -91,7 +91,7 @@ class EmployeeController extends Controller
 
         return view('employee.dashboard', compact('pending_tasks_count', 'processing_tasks_count', 'completed_tasks_count', 'total_tasks', 'missed_pending_tasks', 'missed_processing_tasks'));
     }
-    public function index()
+    public function index(Request $request)
     {
         $userId = Auth::id();
 
@@ -104,26 +104,51 @@ class EmployeeController extends Controller
                 ->pluck('employee_id')
                 ->toArray();
 
-            $tasks = Task::whereIn('user_id', $teamMemberIds)
-                ->orderBy('created_at', 'desc')
-                ->get();
-
+            $query = Task::whereIn('user_id', $teamMemberIds)
+                ->orderBy('created_at', 'desc');
             $list_title = 'My Team Tasks';
         } else {
 
-            $tasks = Task::where('user_id', $userId)
-                ->orderBy('created_at', 'desc')
-                ->get();
+            $query = Task::where('user_id', $userId)
+                ->orderBy('created_at', 'desc');
 
             $list_title = $teamLeader ? 'My Team Tasks' : 'My Tasks';
         }
 
-        $users = User::where('role', 3)->where('status', 1)->get();
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', $request->status);
+        }
 
-        return view('tasks.index', compact('tasks', 'list_title', 'teamLeader', 'users', 'userId'));
+        if ($request->has('user_id') && $request->user_id != '') {
+            $query->where('user_id', $request->user_id);
+        }
+
+        if ($request->has('urgency') && $request->urgency != '') {
+            $query->where('task_urgency', $request->urgency);
+        }
+
+        $tasks = $query->paginate(10);
+
+
+        if ($teamLeader) {
+            $teamMemberIds = Team::where('team_number', $teamLeader->team_number)
+                ->pluck('employee_id')
+                ->toArray();
+
+            $users = User::whereIn('id', $teamMemberIds)
+                ->where('role', 3)
+                ->where('status', 1)
+                ->get();
+        } else {
+            $users = User::where('role', 3)
+                ->where('status', 1)
+                ->get();
+        }
+
+        return view('tasks.my_task', compact('tasks', 'list_title', 'teamLeader', 'users', 'userId'));
     }
 
-    public function pending_tasks()
+    public function pending_tasks(Request $request)
     {
         $userId = Auth::id();
 
@@ -136,25 +161,51 @@ class EmployeeController extends Controller
                 ->pluck('employee_id')
                 ->toArray();
 
-            $tasks = Task::whereIn('user_id', $teamMemberIds)
+            $query = Task::whereIn('user_id', $teamMemberIds)
                 ->orderBy('created_at', 'desc')
-                ->where('status', 0)
-                ->get();
+                ->where('status', 0);
 
             $list_title = 'My Team Pending Tasks';
         } else {
 
-            $tasks = Task::where('user_id', $userId)
+            $query = Task::where('user_id', $userId)
                 ->where('status', 0)
-                ->orderBy('created_at', 'desc')
-                ->get();
+                ->orderBy('created_at', 'desc');
 
             $list_title = $teamLeader ? 'My Team Pending Tasks' : 'My Pending Tasks';
         }
 
-        $users = User::where('role', 3)->where('status', 1)->get();
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', $request->status);
+        }
 
-        return view('tasks.index', compact('tasks', 'list_title', 'teamLeader', 'users', 'userId'));
+        if ($request->has('user_id') && $request->user_id != '') {
+            $query->where('user_id', $request->user_id);
+        }
+
+        if ($request->has('urgency') && $request->urgency != '') {
+            $query->where('task_urgency', $request->urgency);
+        }
+
+        $tasks = $query->paginate(10);
+
+
+        if ($teamLeader) {
+            $teamMemberIds = Team::where('team_number', $teamLeader->team_number)
+                ->pluck('employee_id')
+                ->toArray();
+
+            $users = User::whereIn('id', $teamMemberIds)
+                ->where('role', 3)
+                ->where('status', 1)
+                ->get();
+        } else {
+            $users = User::where('role', 3)
+                ->where('status', 1)
+                ->get();
+        }
+
+        return view('tasks.pending_tasks', compact('tasks', 'list_title', 'teamLeader', 'users', 'userId'));
     }
 
     public function receive(Task $task)
@@ -174,7 +225,7 @@ class EmployeeController extends Controller
         return view('graph.view');
     }
 
-    public function processing_tasks()
+    public function processing_tasks(Request $request)
     {
 
         $userId = Auth::id();
@@ -188,25 +239,51 @@ class EmployeeController extends Controller
                 ->pluck('employee_id')
                 ->toArray();
 
-            $tasks = Task::whereIn('user_id', $teamMemberIds)
+            $query = Task::whereIn('user_id', $teamMemberIds)
                 ->orderBy('created_at', 'desc')
-                ->where('status', 1)
-                ->get();
+                ->where('status', 1);
 
             $list_title = 'My Team Processing Tasks';
         } else {
 
-            $tasks = Task::where('user_id', $userId)
+            $query = Task::where('user_id', $userId)
                 ->where('status', 1)
-                ->orderBy('created_at', 'desc')
-                ->get();
+                ->orderBy('created_at', 'desc');
 
             $list_title = $teamLeader ? 'My Team Processing Tasks' : 'My Processing Tasks';
         }
 
-        $users = User::where('role', 3)->where('status', 1)->get();
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', $request->status);
+        }
 
-        return view('tasks.index', compact('tasks', 'list_title', 'users', 'teamLeader', 'userId'));
+        if ($request->has('user_id') && $request->user_id != '') {
+            $query->where('user_id', $request->user_id);
+        }
+
+        if ($request->has('urgency') && $request->urgency != '') {
+            $query->where('task_urgency', $request->urgency);
+        }
+
+        $tasks = $query->paginate(10);
+
+
+        if ($teamLeader) {
+            $teamMemberIds = Team::where('team_number', $teamLeader->team_number)
+                ->pluck('employee_id')
+                ->toArray();
+
+            $users = User::whereIn('id', $teamMemberIds)
+                ->where('role', 3)
+                ->where('status', 1)
+                ->get();
+        } else {
+            $users = User::where('role', 3)
+                ->where('status', 1)
+                ->get();
+        }
+
+        return view('tasks.processing_tasks', compact('tasks', 'list_title', 'users', 'teamLeader', 'userId'));
     }
 
     public function complete(Task $task)
@@ -220,7 +297,7 @@ class EmployeeController extends Controller
         return redirect()->back()->with('error', 'You are not authorized to complete this task.');
     }
 
-    public function completed_tasks()
+    public function completed_tasks(Request $request)
     {
         $userId = Auth::id();
 
@@ -233,24 +310,50 @@ class EmployeeController extends Controller
                 ->pluck('employee_id')
                 ->toArray();
 
-            $tasks = Task::whereIn('user_id', $teamMemberIds)
+            $query = Task::whereIn('user_id', $teamMemberIds)
                 ->orderBy('created_at', 'desc')
-                ->where('status', 2)
-                ->get();
+                ->where('status', 2);
 
             $list_title = 'My Team Completed Tasks';
         } else {
 
-            $tasks = Task::where('user_id', $userId)
+            $query = Task::where('user_id', $userId)
                 ->where('status', 2)
-                ->orderBy('created_at', 'desc')
-                ->get();
+                ->orderBy('created_at', 'desc');
 
             $list_title = $teamLeader ? 'My Team Completed Tasks' : 'My Completed Tasks';
         }
 
-        $users = User::where('role', 3)->where('status', 1)->get();
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', $request->status);
+        }
 
-        return view('tasks.index', compact('tasks', 'list_title', 'users', 'teamLeader', 'userId'));
+        if ($request->has('user_id') && $request->user_id != '') {
+            $query->where('user_id', $request->user_id);
+        }
+
+        if ($request->has('urgency') && $request->urgency != '') {
+            $query->where('task_urgency', $request->urgency);
+        }
+
+        $tasks = $query->paginate(10);
+
+
+        if ($teamLeader) {
+            $teamMemberIds = Team::where('team_number', $teamLeader->team_number)
+                ->pluck('employee_id')
+                ->toArray();
+
+            $users = User::whereIn('id', $teamMemberIds)
+                ->where('role', 3)
+                ->where('status', 1)
+                ->get();
+        } else {
+            $users = User::where('role', 3)
+                ->where('status', 1)
+                ->get();
+        }
+
+        return view('tasks.completed_tasks', compact('tasks', 'list_title', 'users', 'teamLeader', 'userId'));
     }
 }
