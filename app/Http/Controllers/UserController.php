@@ -35,21 +35,31 @@ class UserController extends Controller
         if ($request->hasFile('profile_photo')) {
             $image = $request->file('profile_photo');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
-            // Store the image directly in the public directory
             $image->move(public_path('profile_photos'), $imageName);
-            $user->profile_photo = $imageName;  // Store the image name in the database
+            $user->profile_photo = $imageName;
         }
 
         $user->save();
 
-        // return redirect()->route('users.index')->with('success', 'User created successfully.');
         notify()->success('User created successfully.');
+
         return redirect()->route('users.index');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::where('role', '!=', 1)->get();
+        $query = User::where('role', '!=', 1);
+
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->has('id') && $request->id != '') {
+            $query->where('id', $request->id);
+        }
+
+        $users = $query->paginate(5);
+
         return view('users.index', compact('users'));
     }
     public function edit($id)
@@ -60,7 +70,7 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        // dd($request->all());
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $id,
