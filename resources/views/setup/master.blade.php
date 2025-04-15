@@ -104,6 +104,10 @@
             margin-top: 50px;
 
         }
+        .invalid-feedback {
+                color: red;
+                font-size: 0.8rem;
+            }
     </style>
 
     @stack('css')

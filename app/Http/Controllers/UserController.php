@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -13,16 +14,18 @@ class UserController extends Controller
     }
     public function store(Request $request)
     {
-        // dd($request->all());
-
-        $request->validate([
+        $validation = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'role' => 'required|integer|in:1,2,3',
-            'phone_no' => 'required|string|max:15',
+            'phone_no' => 'required|regex:/^01[3-9]\d{8}$/|string|max:11',
             'status' => 'required|in:0,1',
             'password' => 'required|string|min:6|confirmed',
         ]);
+
+        if($validation->fails()){
+            return redirect()->back()->withErrors($validation)->withInput();
+        }
 
         $user = new User();
         $user->name = ucwords($request->name);
@@ -48,7 +51,7 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $query = User::where('role', '!=', 1);
+        $query = User::where('role', '!=', 1)->orderBy('created_at', 'desc');
 
         if ($request->has('status') && $request->status != '') {
             $query->where('status', $request->status);
@@ -71,14 +74,18 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
 
-        $request->validate([
+        $validation = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $id,
             'role' => 'required|integer|in:1,2,3',
-            'phone_no' => 'required|string|max:15',
+            'phone_no' => 'required|regex:/^01[3-9]\d{8}$/|string|max:11',
             'status' => 'required|in:0,1',
             'password' => 'nullable|string|min:6|confirmed',
         ]);
+
+        if($validation->fails()){
+            return redirect()->back()->withErrors($validation)->withInput();
+        }
 
         $user = User::findOrFail($id);
         $user->name = $request->name;
