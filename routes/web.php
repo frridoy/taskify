@@ -50,10 +50,7 @@ Route::middleware(['auth', 'isEmployee'])->group(function () {
 Route::middleware(['auth', 'isHR'])->group(function () {
 
     Route::get('hr/dashboard', [HRController::class, 'dashboard'])->name('hr.dashboard');
-
     Route::get('task-assign-index', [TaskController::class, 'index'])->name('tasks.index');
-    Route::get('task-assign', [TaskController::class, 'assign'])->name('tasks.assign');
-    Route::post('task-assign-store', [TaskController::class, 'store'])->name('tasks.store');
 
     Route::get('user-create', [UserController::class, 'create'])->name('users.create');
     Route::post('user-store', [UserController::class, 'store'])->name('users.store');
@@ -79,5 +76,7 @@ Route::post('/tasks/{id}/transfer', [TaskTransferController::class, 'store'])->n
 
 // Route::get('task-assign-index', [TaskController::class, 'index'])->name('tasks.index');
 
+Route::get('task-assign', [TaskController::class, 'assign'])->name('tasks.assign');
+Route::post('task-assign-store', [TaskController::class, 'store'])->name('tasks.store');
 
 require __DIR__ . '/auth.php';
