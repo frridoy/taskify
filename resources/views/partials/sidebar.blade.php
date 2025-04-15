@@ -138,8 +138,16 @@
         <ul class="d-flex flex-column gap-3">
             <p class="admin-title mt-3">Setting</p>
             <li>
+                    <div class="dashboard-sidebar-option">
+                        <a href="{{ route('office_info_setup.index') }}"
+                            class="d-flex align-items-center gap-3 p-3 rounded-lg hover:bg-primary-100 transition-all">
+                            <i class="fas fa-tasks text-primary text-2xl"></i>
+                            <span class="text-lg font-medium">List</span>
+                        </a>
+                        <div class="sidebar-vertical-line"></div>
+                    </div>
                 @php
-                    $officeInfoExists = \App\Models\Setting::first();
+                $officeInfoExists = \App\Models\Setting::first();
                 @endphp
                 @if (!$officeInfoExists)
                     <div class="dashboard-sidebar-option">
@@ -151,55 +159,8 @@
                         <div class="sidebar-vertical-line"></div>
                     </div>
                 @endif
-                    <div class="dashboard-sidebar-option">
-                        <a href="{{ route('office_info_setup.index') }}"
-                            class="d-flex align-items-center gap-3 p-3 rounded-lg hover:bg-primary-100 transition-all">
-                            <i class="fas fa-tasks text-primary text-2xl"></i>
-                            <span class="text-lg font-medium">List</span>
-                        </a>
-                        <div class="sidebar-vertical-line"></div>
-                    </div>
             </li>
         </ul>
     @endif
-        <ul class="d-flex flex-column gap-1">
-
-            <p class="admin-title mt-3">Account</p>
-            <li>
-                <div class="dashboard-sidebar-option position-relative">
-                    <a href="{{ route('profile.edit') }}"
-                        class="border-0 bg-transparent d-flex align-items-center gap-3">
-                        <div class="fs-5 text-white">
-                            <i class="bi bi-person-fill"></i>
-                        </div>
-                        <span>My Profile</span>
-                    </a>
-                    <div class="sidebar-vertical-line"></div>
-                </div>
-            </li>
-            <li>
-                <div class="dashboard-sidebar-option">
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="border-0 bg-transparent d-flex align-items-center gap-3">
-                            <img src="{{ asset('assets/icon/logout.svg') }}" alt="logout" />
-                            <span>Logout</span>
-                        </button>
-                    </form>
-                    <div class="sidebar-vertical-line"></div>
-                </div>
-                {{-- <div class="dashboard-sidebar-option">
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <x-dropdown-link :href="route('logout')"
-                            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-dropdown-link>
-                </form>
-                </div> --}}
-            </li>
-        </ul>
     </nav>
 </aside>
