@@ -42,9 +42,6 @@ Route::middleware(['auth', 'isEmployee'])->group(function () {
     Route::patch('/tasks/{task}/complete', [EmployeeController::class, 'complete'])->name('task.complete');
     Route::get('completed-task', [EmployeeController::class, 'completed_tasks'])->name('completed_tasks');
     Route::get('graph', [EmployeeController::class, 'graph'])->name('monthly.graph');
-
-    Route::get('/attendance', [AttendanceController::class, 'attendance'])->name('attendance.index');
-    Route::post('/attendance/store', [AttendanceController::class, 'store'])->name('attendance.store');
 });
 
 Route::middleware(['auth', 'isHR'])->group(function () {
@@ -70,13 +67,20 @@ Route::middleware(['auth', 'isHR'])->group(function () {
     Route::put('/office_info_setup/update', [SettingController::class, 'update'])->name('office_info_setup.update');
 });
 
-Route::get('/attendance/index', [AttendanceController::class, 'index'])->name('attendance.list')->middleware(['auth', 'isHR_isEmployee']);
+
+Route::middleware(['auth'])->group(function () {
+
+Route::get('/attendance/index', [AttendanceController::class, 'index'])->name('attendance.list');
+Route::get('/attendance', [AttendanceController::class, 'attendance'])->name('attendance.provide');
+Route::post('/attendance/store', [AttendanceController::class, 'store'])->name('attendance.store');
+
 Route::get('/tasks/{task}/details', [TaskController::class, 'show'])->name('tasks.show')->middleware(['auth', 'isHR_isEmployee']);
 Route::post('/tasks/{id}/transfer', [TaskTransferController::class, 'store'])->name('tasks.transfer.store')->middleware(['auth', 'isHR_isEmployee']);
 
-// Route::get('task-assign-index', [TaskController::class, 'index'])->name('tasks.index');
-
 Route::get('task-assign', [TaskController::class, 'assign'])->name('tasks.assign');
 Route::post('task-assign-store', [TaskController::class, 'store'])->name('tasks.store');
+
+});
+
 
 require __DIR__ . '/auth.php';

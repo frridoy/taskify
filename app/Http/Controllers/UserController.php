@@ -53,6 +53,8 @@ class UserController extends Controller
     {
         $query = User::where('role', '!=', 1)->orderBy('created_at', 'desc');
 
+        $all_users = $query->get();
+
         if ($request->has('status') && $request->status != '') {
             $query->where('status', $request->status);
         }

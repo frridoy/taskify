@@ -16,13 +16,13 @@ class TaskController extends Controller
     {
         $userId = Auth::id();
 
-        $teamLeader = Team::where('employee_id', $userId)
+        $teamLeader = Team::where('user_id', $userId)
             ->where('is_team_leader', 1)
             ->first();
 
         if ($teamLeader) {
             $teamMemberIds = Team::where('team_number', $teamLeader->team_number)
-                ->pluck('employee_id')
+                ->pluck('user_id')
                 ->toArray();
 
             $users = User::whereIn('id', $teamMemberIds)
@@ -135,10 +135,10 @@ class TaskController extends Controller
         if (in_array($authUser->role, [1, 2])) {
             $users = User::where('role', 3)->where('status', 1)->orderBy('id')->get(['id', 'name']);
         } elseif ($authUser->role == 3) {
-            $teamLeader = Team::where('employee_id', $created_by)->where('is_team_leader', 1)->first();
+            $teamLeader = Team::where('user_id', $created_by)->where('is_team_leader', 1)->first();
 
             if ($teamLeader) {
-                $memberIds = Team::where('team_number', $teamLeader->team_number)->pluck('employee_id');
+                $memberIds = Team::where('team_number', $teamLeader->team_number)->pluck('user_id');
                 $users = User::whereIn('id', $memberIds)->where('status', 1)->orderBy('id')->get(['id', 'name']);
             } else {
                 $users = collect([User::find($created_by)]);

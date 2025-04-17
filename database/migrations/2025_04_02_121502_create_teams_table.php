@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('team_name');
             $table->unsignedBigInteger('team_number');
-            $table->unsignedBigInteger('employee_id');
+            $table->unsignedBigInteger('user_id');
             $table->tinyInteger('is_team_leader')->default(0);
             $table->timestamps();
 
-            $table->foreign('employee_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

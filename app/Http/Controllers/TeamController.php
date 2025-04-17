@@ -12,7 +12,7 @@ class TeamController extends Controller
 {
     public function team_build()
     {
-        $already_under_a_team = Team::pluck('employee_id')->toArray();
+        $already_under_a_team = Team::pluck('user_id')->toArray();
 
         $employees = User::where('role', 3)
             ->where('status', 1)
@@ -26,8 +26,8 @@ class TeamController extends Controller
     {
 
         $validated = Validator::make($request->all(), [
-            'employee_id' => 'required|array',
-            'employee_id.*' => 'distinct|exists:users,id',
+            'user_id' => 'required|array',
+            'user_id.*' => 'distinct|exists:users,id',
             'team_leader' => 'required|exists:users,id',
             'team_name' => 'required|unique:teams,team_name|string|max:255',
         ]);
@@ -40,10 +40,10 @@ class TeamController extends Controller
         $lastTeamNumber = DB::table('teams')->max('team_number');
         $newTeamNumber = $lastTeamNumber ? $lastTeamNumber + 1 : 1;
 
-        foreach ($request->employee_id as $employeeId) {
+        foreach ($request->user_id as $employeeId) {
             Team::create([
                 'team_name' => ucwords($request->team_name),
-                'employee_id' => $employeeId,
+                'user_id' => $employeeId,
                 'is_team_leader' => ($request->team_leader == $employeeId) ? 1 : 0,
                 'team_number' => $newTeamNumber,
             ]);

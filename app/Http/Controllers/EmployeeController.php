@@ -16,13 +16,13 @@ class EmployeeController extends Controller
 
         $userId = Auth::id();
 
-        $teamLeader = Team::where('employee_id', $userId)
+        $teamLeader = Team::where('user_id', $userId)
             ->where('is_team_leader', 1)
             ->first();
 
         if ($teamLeader) {
             $teamMemberIds = Team::where('team_number', $teamLeader->team_number)
-                ->pluck('employee_id')
+                ->pluck('user_id')
                 ->toArray();
 
             $pending_tasks = Task::whereIn('user_id', $teamMemberIds)
@@ -40,7 +40,7 @@ class EmployeeController extends Controller
 
         if ($teamLeader) {
             $teamMemberIds = Team::where('team_number', $teamLeader->team_number)
-                ->pluck('employee_id')
+                ->pluck('user_id')
                 ->toArray();
 
             $processing_tasks = Task::whereIn('user_id', $teamMemberIds)
@@ -59,7 +59,7 @@ class EmployeeController extends Controller
 
         if ($teamLeader) {
             $teamMemberIds = Team::where('team_number', $teamLeader->team_number)
-                ->pluck('employee_id')
+                ->pluck('user_id')
                 ->toArray();
 
             $completed_tasks = Task::whereIn('user_id', $teamMemberIds)
@@ -95,13 +95,13 @@ class EmployeeController extends Controller
     {
         $userId = Auth::id();
 
-        $teamLeader = Team::where('employee_id', $userId)
+        $teamLeader = Team::where('user_id', $userId)
             ->where('is_team_leader', 1)
             ->first();
 
         if ($teamLeader) {
             $teamMemberIds = Team::where('team_number', $teamLeader->team_number)
-                ->pluck('employee_id')
+                ->pluck('user_id')
                 ->toArray();
 
             $query = Task::whereIn('user_id', $teamMemberIds)
@@ -132,7 +132,7 @@ class EmployeeController extends Controller
 
         if ($teamLeader) {
             $teamMemberIds = Team::where('team_number', $teamLeader->team_number)
-                ->pluck('employee_id')
+                ->pluck('user_id')
                 ->toArray();
 
             $users = User::whereIn('id', $teamMemberIds)
@@ -152,13 +152,13 @@ class EmployeeController extends Controller
     {
         $userId = Auth::id();
 
-        $teamLeader = Team::where('employee_id', $userId)
+        $teamLeader = Team::where('user_id', $userId)
             ->where('is_team_leader', 1)
             ->first();
 
         if ($teamLeader) {
             $teamMemberIds = Team::where('team_number', $teamLeader->team_number)
-                ->pluck('employee_id')
+                ->pluck('user_id')
                 ->toArray();
 
             $query = Task::whereIn('user_id', $teamMemberIds)
@@ -192,7 +192,7 @@ class EmployeeController extends Controller
 
         if ($teamLeader) {
             $teamMemberIds = Team::where('team_number', $teamLeader->team_number)
-                ->pluck('employee_id')
+                ->pluck('user_id')
                 ->toArray();
 
             $users = User::whereIn('id', $teamMemberIds)
@@ -230,13 +230,13 @@ class EmployeeController extends Controller
 
         $userId = Auth::id();
 
-        $teamLeader = Team::where('employee_id', $userId)
+        $teamLeader = Team::where('user_id', $userId)
             ->where('is_team_leader', 1)
             ->first();
 
         if ($teamLeader) {
             $teamMemberIds = Team::where('team_number', $teamLeader->team_number)
-                ->pluck('employee_id')
+                ->pluck('user_id')
                 ->toArray();
 
             $query = Task::whereIn('user_id', $teamMemberIds)
@@ -270,7 +270,7 @@ class EmployeeController extends Controller
 
         if ($teamLeader) {
             $teamMemberIds = Team::where('team_number', $teamLeader->team_number)
-                ->pluck('employee_id')
+                ->pluck('user_id')
                 ->toArray();
 
             $users = User::whereIn('id', $teamMemberIds)
@@ -301,13 +301,13 @@ class EmployeeController extends Controller
     {
         $userId = Auth::id();
 
-        $teamLeader = Team::where('employee_id', $userId)
+        $teamLeader = Team::where('user_id', $userId)
             ->where('is_team_leader', 1)
             ->first();
 
         if ($teamLeader) {
             $teamMemberIds = Team::where('team_number', $teamLeader->team_number)
-                ->pluck('employee_id')
+                ->pluck('user_id')
                 ->toArray();
 
             $query = Task::whereIn('user_id', $teamMemberIds)
@@ -341,7 +341,7 @@ class EmployeeController extends Controller
 
         if ($teamLeader) {
             $teamMemberIds = Team::where('team_number', $teamLeader->team_number)
-                ->pluck('employee_id')
+                ->pluck('user_id')
                 ->toArray();
 
             $users = User::whereIn('id', $teamMemberIds)

@@ -53,19 +53,32 @@ class AttendanceController extends Controller
         $user = Auth::user();
 
         if ($user->role == 3) {
-            $attendances = Attendance::with('user')
+            $query = Attendance::with('user')
                 ->where('user_id', $user->id)
-                ->orderBy('created_at', 'desc')
-                ->paginate(10);
+                ->orderBy('created_at', 'desc');
         } else {
-            $attendances = Attendance::with('user')
-                ->orderBy('created_at', 'desc')
-                ->paginate(10);
+            $query = Attendance::with('user')
+                ->orderBy('created_at', 'desc');
         }
 
-        $office_check_in_time = Setting::select('check_in_time')->first();
-        $office_check_out_time = Setting::select('check_out_time')->first();
+        $users = $query->get();
 
-        return view('attendance.list', compact('attendances', 'office_check_in_time', 'office_check_out_time'));
+        if ($request->has('user_id') && $request->user_id != '') {
+            $query->where('user_id', $request->user_id);
+        }
+
+          // Filter by from date
+    if ($request->has('from_date') && $request->from_date != '') {
+        $query->whereDate('created_at', '>=', $request->from_date);
+    }
+
+    // Filter by to date
+    if ($request->has('to_date') && $request->to_date != '') {
+        $query->whereDate('created_at', '<=', $request->to_date);
+    }
+
+        $attendances = $query->paginate(10);
+
+        return view('attendance.list', compact('attendances', 'users'));
     }
 }

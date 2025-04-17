@@ -28,7 +28,7 @@
                                 <tbody id="employee-container">
                                     <tr class="employee-row align-middle">
                                         <td>
-                                            <select name="employee_id[]" class="form-select employee-select">
+                                            <select name="user_id[]" class="form-select employee-select">
                                                 <option value="">Select Employee</option>
                                                 @foreach ($employees as $employee)
                                                     <option value="{{ $employee->id }}">{{ $employee->id }}-{{ $employee->name }}</option>

@@ -202,7 +202,7 @@
                                             @foreach ($users as $user)
                                                 @if ($user->role == 3)
                                                     <option value="{{ $user->id }}" {{ $task->user_id == $user->id ? 'disabled' : '' }}>
-                                                        {{ $user->name }} {{ $task->user_id == $user->id ? '(Current Assignee)' : '' }}
+                                                        {{ $user->name }} {{ $task->user_id == $user->id ? '(Current Assigneed)' : '' }}
                                                     </option>
                                                 @endif
                                             @endforeach

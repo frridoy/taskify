@@ -162,5 +162,28 @@
             </li>
         </ul>
     @endif
+
+    <ul class="d-flex flex-column gap-3">
+        <p class="admin-title mt-3">Attendance</p>
+        <li>
+                <div class="dashboard-sidebar-option">
+                    <a href="{{ route('office_info_setup.index') }}"
+                        class="d-flex align-items-center gap-3 p-3 rounded-lg hover:bg-primary-100 transition-all">
+                        <i class="fas fa-tasks text-primary text-2xl"></i>
+                        <span class="text-lg font-medium">List</span>
+                    </a>
+                    <div class="sidebar-vertical-line"></div>
+                </div>
+                <div class="dashboard-sidebar-option">
+                    <a href="{{ route('office_info_setup.form') }}"
+                        class="d-flex align-items-center gap-3 p-3 rounded-lg hover:bg-primary-100 transition-all">
+                        <i class="fas fa-tasks text-primary text-2xl"></i>
+                        <span class="text-lg font-medium">Form</span>
+                    </a>
+                    <div class="sidebar-vertical-line"></div>
+                </div>
+        </li>
+    </ul>
+
     </nav>
 </aside>
