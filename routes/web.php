@@ -29,7 +29,13 @@ Route::middleware('auth')->group(function () {
 
 
 Route::middleware(['auth', 'isSuperAdmin'])->group(function () {
+
     Route::get('super-admin/dashboard', [SuperAdminController::class, 'dashboard'])->name('superAdmin.dashboard');
+
+    Route::get('user-create', [UserController::class, 'create'])->name('users.create');
+    Route::post('user-store', [UserController::class, 'store'])->name('users.store');
+    Route::get('user-edit/{id}', [UserController::class, 'edit'])->name('users.edit');
+    Route::put('user-update/{id}', [UserController::class, 'update'])->name('users.update');
 });
 
 Route::middleware(['auth', 'isEmployee'])->group(function () {
@@ -47,13 +53,6 @@ Route::middleware(['auth', 'isEmployee'])->group(function () {
 Route::middleware(['auth', 'isHR'])->group(function () {
 
     Route::get('hr/dashboard', [HRController::class, 'dashboard'])->name('hr.dashboard');
-    Route::get('task-assign-index', [TaskController::class, 'index'])->name('tasks.index');
-
-    Route::get('user-create', [UserController::class, 'create'])->name('users.create');
-    Route::post('user-store', [UserController::class, 'store'])->name('users.store');
-    Route::get('user-index', [UserController::class, 'index'])->name('users.index');
-    Route::get('user-edit/{id}', [UserController::class, 'edit'])->name('users.edit');
-    Route::put('user-update/{id}', [UserController::class, 'update'])->name('users.update');
 
     Route::get('/team', [TeamController::class, 'team_build'])->name('team.build');
     Route::post('/team/store', [TeamController::class, 'store'])->name('team.store');
@@ -74,11 +73,19 @@ Route::get('/attendance/index', [AttendanceController::class, 'index'])->name('a
 Route::get('/attendance', [AttendanceController::class, 'attendance'])->name('attendance.provide');
 Route::post('/attendance/store', [AttendanceController::class, 'store'])->name('attendance.store');
 
-Route::get('/tasks/{task}/details', [TaskController::class, 'show'])->name('tasks.show')->middleware(['auth', 'isHR_isEmployee']);
-Route::post('/tasks/{id}/transfer', [TaskTransferController::class, 'store'])->name('tasks.transfer.store')->middleware(['auth', 'isHR_isEmployee']);
+Route::get('/tasks/{task}/details', [TaskController::class, 'show'])->name('tasks.show');
+Route::post('/tasks/{id}/transfer', [TaskTransferController::class, 'store'])->name('tasks.transfer.store');
 
 Route::get('task-assign', [TaskController::class, 'assign'])->name('tasks.assign');
 Route::post('task-assign-store', [TaskController::class, 'store'])->name('tasks.store');
+
+});
+
+Route::middleware(['auth', 'isAdmin_isManager'])->group(function () {
+
+    Route::get('task-assign-index', [TaskController::class, 'index'])->name('tasks.index');
+
+    Route::get('user-index', [UserController::class, 'index'])->name('users.index');
 
 });
 

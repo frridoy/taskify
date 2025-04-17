@@ -265,6 +265,11 @@
                         </a>
                     @endif
 
+                    <a href="{{ route('tasks.assign') }}" class="submenu-item">
+                        <div class="submenu-bullet"></div>
+                        <span>Tasks Assign</span>
+                    </a>
+
                     @if (auth()->user()->role == 3)
                         <a href="{{ route('my.tasks') }}" class="submenu-item">
                             <div class="submenu-bullet"></div>
@@ -307,10 +312,12 @@
                         <div class="submenu-bullet"></div>
                         <span>Records</span>
                     </a>
+                    @if(auth()->user()->role == 2 || auth()->user()->role == 3)
                     <a href="{{ route('attendance.provide') }}" class="submenu-item">
                         <div class="submenu-bullet"></div>
                         <span>Check In/Out</span>
                     </a>
+                    @endif
                 </div>
             </div>
 
@@ -346,25 +353,40 @@
 
             <!-- User Management -->
             @if (auth()->user()->role == 1 || auth()->user()->role == 2)
-                <div class="menu-category mt-4">
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="menu-category-line me-2"></div>
-                        <span class="text-cyan-200 text-uppercase"
-                            style="font-size: 12px; letter-spacing: 1px;">Users</span>
-                    </div>
 
-                    <a href="{{ route('users.index') }}" class="menu-item">
-                        <div class="menu-icon">
-                            <i class="bi bi-people-fill"></i>
-                        </div>
-                        <span>Directory</span>
+            <div class="menu-category mt-4">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="menu-category-line me-2"></div>
+                    <span class="text-cyan-200 text-uppercase" style="font-size: 12px; letter-spacing: 1px;">User</span>
+                </div>
+
+                <div class="menu-item dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#userMenu">
+                    <div class="menu-icon">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                    <span>User</span>
+                    <i class="bi bi-chevron-down ms-auto menu-arrow"></i>
+                </div>
+
+                <div id="userMenu" class="collapse mt-1">
+                    @if (auth()->user()->role == 1)
+                        <a href="{{ route('users.create') }}" class="submenu-item">
+                            <div class="submenu-bullet"></div>
+                            <span>User Create</span>
+                        </a>
+                        @endif
+                    <a href="{{ route('users.index') }}" class="submenu-item">
+                        <div class="submenu-bullet"></div>
+                        <span>User Directory</span>
                     </a>
                 </div>
+            </div>
+
             @endif
 
 
             <!-- System Settings -->
-            @if (auth()->user()->role == 2 || auth()->user()->role == 1)
+            @if (auth()->user()->role == 1)
                 <div class="menu-category mt-4">
                     <div class="d-flex align-items-center mb-3">
                         <div class="menu-category-line me-2"></div>

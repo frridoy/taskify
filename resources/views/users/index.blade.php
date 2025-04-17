@@ -5,9 +5,11 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-wrap justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">User Management</h6>
+                @if (auth()->user()->role == 1)
                 <a href="{{ route('users.create') }}" class="btn btn-primary mt-2 mt-md-0">
                     <i class="fas fa-user-plus"></i> Create User
                 </a>
+                @endif
             </div>
             <div class="card-body">
                 <!-- Filter Section -->
@@ -89,9 +91,13 @@
                                         @endif
                                     </td>
                                     <td class="text-center">
+                                        @if(auth()->user()->role == 1)
                                         <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-primary">
                                             <i class="bi bi-pencil"></i>
                                         </a>
+                                        @else
+                                        <i class="bi bi-x-circle text-muted"></i>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

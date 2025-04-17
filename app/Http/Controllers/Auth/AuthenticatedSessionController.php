@@ -29,8 +29,15 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
         $user = Auth::user();
 
+        if ($user->status == 0) {
+            Auth::logout();
+            return redirect()->route('login')->withErrors([
+                'email' => 'Your account is inactive. Please contact the administrator.',
+            ]);
+        }
+
         if ($user->role == 1) {
-            return redirect()->intended(route('superAdmin.dashboard'));
+            return redirect()->intended(route('hr.dashboard'));
         } elseif ($user->role == 2) {
             return redirect()->intended(route('hr.dashboard'));
         }
