@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Attendance;
 use App\Models\Setting;
+use App\Models\Team;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -50,34 +51,52 @@ class AttendanceController extends Controller
 
     public function index(Request $request)
     {
-        $user = Auth::user();
+        $userId = Auth::id();
+        $role = Auth::user()->role;
 
-        if ($user->role == 3) {
-            $query = Attendance::with('user')
-                ->where('user_id', $user->id)
-                ->orderBy('created_at', 'desc');
+        $teamLeader = Team::where('user_id', $userId)
+            ->where('is_team_leader', 1)
+            ->first();
+
+        if ($teamLeader) {
+            $teamMemberIds = Team::where('team_number', $teamLeader->team_number)
+                ->pluck('user_id')
+                ->toArray();
+
+            $userList = User::whereIn('id', $teamMemberIds)
+                ->where('role', 3)
+                ->where('status', 1)
+                ->select(['id', 'name']);
+        } elseif ($role == 1 || $role == 2) {
+            $userList = User::where('status', 1)
+                ->select(['id', 'name']);
         } else {
-            $query = Attendance::with('user')
-                ->orderBy('created_at', 'desc');
+            $userList = User::where('id', $userId)
+                ->select(['id', 'name']);
         }
 
-        $users = $query->get();
+        $users = $userList->get();
 
-        if ($request->has('user_id') && $request->user_id != '') {
-            $query->where('user_id', $request->user_id);
+
+        $attendanceQuery = Attendance::with('user')->orderBy('created_at', 'desc');
+
+        if ($role == 3 && !$teamLeader) {
+            $attendanceQuery->where('user_id', $userId);
         }
 
-          // Filter by from date
-    if ($request->has('from_date') && $request->from_date != '') {
-        $query->whereDate('created_at', '>=', $request->from_date);
-    }
+        if ($request->filled('user_id')) {
+            $attendanceQuery->where('user_id', $request->user_id);
+        }
 
-    // Filter by to date
-    if ($request->has('to_date') && $request->to_date != '') {
-        $query->whereDate('created_at', '<=', $request->to_date);
-    }
+        if ($request->filled('from_date')) {
+            $attendanceQuery->whereDate('created_at', '>=', $request->from_date);
+        }
 
-        $attendances = $query->paginate(10);
+        if ($request->filled('to_date')) {
+            $attendanceQuery->whereDate('created_at', '<=', $request->to_date);
+        }
+
+        $attendances = $attendanceQuery->paginate(10);
 
         return view('attendance.list', compact('attendances', 'users'));
     }

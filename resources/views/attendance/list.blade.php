@@ -20,7 +20,7 @@
                                     @foreach ($users as $active_user)
                                             <option value="{{ $active_user->user_id }}"
                                                 {{ isset($_GET['user_id']) && $_GET['user_id'] == $active_user->user_id ? 'selected' : '' }}>
-                                                {{ $active_user->user_name }}
+                                                {{ $active_user->name }}
                                             </option>
                                     @endforeach
                                 </select>
