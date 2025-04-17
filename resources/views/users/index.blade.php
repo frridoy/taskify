@@ -26,7 +26,7 @@
                         </div>
                             <div class="col-md-3 mb-2">
                                 <label for="user" class="form-label">Users</label>
-                                <select name="id" id="user" class="form-select">
+                                <select name="id" id="user" class="form-select select2">
                                     <option value="">All Users</option>
                                     @foreach ($users as $active_user)
                                             <option value="{{ $active_user->id }}"
