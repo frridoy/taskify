@@ -16,6 +16,7 @@ class UserController extends Controller
     {
         $validation = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
+            'designation' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'role' => 'required|integer|in:1,2,3',
             'phone_no' => 'required|regex:/^01[3-9]\d{8}$/|string|max:11',
@@ -30,6 +31,7 @@ class UserController extends Controller
         $user = new User();
         $user->name = ucwords($request->name);
         $user->email = $request->email;
+        $user->designation = $request->designation;
         $user->role = $request->role;
         $user->phone_no = $request->phone_no;
         $user->status = $request->status;
@@ -40,6 +42,13 @@ class UserController extends Controller
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('profile_photos'), $imageName);
             $user->profile_photo = $imageName;
+        }
+
+        if ($request->hasFile('employee_signature')) {
+            $image = $request->file('employee_signature');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('employee_signatures'), $imageName);
+            $user->signature = $imageName;
         }
 
         $user->save();
@@ -92,6 +101,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->designation = $request->designation;
         $user->role = $request->role;
         $user->phone_no = $request->phone_no;
         $user->status = $request->status;

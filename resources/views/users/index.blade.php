@@ -6,9 +6,9 @@
             <div class="card-header py-3 d-flex flex-wrap justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">User Management</h6>
                 @if (auth()->user()->role == 1)
-                <a href="{{ route('users.create') }}" class="btn btn-primary mt-2 mt-md-0">
-                    <i class="fas fa-user-plus"></i> Create User
-                </a>
+                    <a href="{{ route('users.create') }}" class="btn btn-primary mt-2 mt-md-0">
+                        <i class="fas fa-user-plus"></i> Create User
+                    </a>
                 @endif
             </div>
             <div class="card-body">
@@ -26,18 +26,18 @@
                                 </option>
                             </select>
                         </div>
-                            <div class="col-md-3 mb-2">
-                                <label for="user" class="form-label">Users</label>
-                                <select name="id" id="user" class="form-select select2">
-                                    <option value="">All Users</option>
-                                    @foreach ($users as $active_user)
-                                            <option value="{{ $active_user->id }}"
-                                                {{ isset($_GET['id']) && $_GET['id'] == $active_user->id ? 'selected' : '' }}>
-                                                {{ $active_user->name }}
-                                            </option>
-                                    @endforeach
-                                </select>
-                            </div>
+                        <div class="col-md-3 mb-2">
+                            <label for="user" class="form-label">Users</label>
+                            <select name="id" id="user" class="form-select select2">
+                                <option value="">All Users</option>
+                                @foreach ($users as $active_user)
+                                    <option value="{{ $active_user->id }}"
+                                        {{ isset($_GET['id']) && $_GET['id'] == $active_user->id ? 'selected' : '' }}>
+                                        {{ $active_user->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="col-md-3 mb-2 d-flex align-items-end">
                             <div class="d-flex gap-2">
                                 <button type="submit" class="btn btn-primary">
@@ -59,48 +59,59 @@
                                 <th>Employee Name</th>
                                 <th>Email</th>
                                 <th>Contact</th>
+                                <th>Designation</th>
                                 <th>Role</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($users as $user)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $user->name }}</td>
-                                    <td>{{ $user->email }}</td>
-                                    <td>{{ $user->phone_no }}</td>
-                                    <td class="text-center">
-                                        @if ($user->role == 1)
-                                            <i class="fas fa-user-shield text-danger" title="Admin"></i> Admin
-                                        @elseif($user->role == 2)
-                                            <i class="fas fa-user-tie text-primary" title="Manager"></i> Manager
-                                        @elseif($user->role == 3)
-                                            <i class="fas fa-user text-success" title="Employee"></i> Employee
-                                        @else
-                                            <i class="fas fa-question-circle text-muted" title="Unknown Role"></i> Unknown
-                                        @endif
-                                    </td>
+                            @if ($users->count() > 0)
+                                @foreach ($users as $user)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $user->name }}</td>
+                                        <td>{{ $user->email }}</td>
+                                        <td>{{ $user->phone_no }}</td>
+                                        <td>{{ $user->designation ?? '' }}</td>
+                                        <td class="text-center">
+                                            @if ($user->role == 1)
+                                                <i class="fas fa-user-shield text-danger" title="Admin"></i> Admin
+                                            @elseif($user->role == 2)
+                                                <i class="fas fa-user-tie text-primary" title="Manager"></i> Manager
+                                            @elseif($user->role == 3)
+                                                <i class="fas fa-user text-success" title="Employee"></i> Employee
+                                            @else
+                                                <i class="fas fa-question-circle text-muted" title="Unknown Role"></i>
+                                                Unknown
+                                            @endif
+                                        </td>
 
-                                    <td class="text-center">
-                                        @if ($user->status == 1)
-                                            <i class="text-success fas fa-check-circle" title="Active"></i>
-                                        @else
-                                            <i class="text-danger fas fa-times-circle" title="Inactive"></i>
-                                        @endif
-                                    </td>
-                                    <td class="text-center">
-                                        @if(auth()->user()->role == 1)
-                                        <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-primary">
-                                            <i class="bi bi-pencil"></i>
-                                        </a>
-                                        @else
-                                        <i class="bi bi-x-circle text-muted"></i>
-                                        @endif
-                                    </td>
+                                        <td class="text-center">
+                                            @if ($user->status == 1)
+                                                <i class="text-success fas fa-check-circle" title="Active"></i>
+                                            @else
+                                                <i class="text-danger fas fa-times-circle" title="Inactive"></i>
+                                            @endif
+                                        </td>
+                                        <td class="text-center">
+                                            @if (auth()->user()->role == 1)
+                                                <a href="{{ route('users.edit', $user->id) }}"
+                                                    class="btn btn-sm btn-primary">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                            @else
+                                                <i class="bi bi-x-circle text-muted"></i>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="8" class="text-center text-danger">No data found.</td>
                                 </tr>
-                            @endforeach
+                            @endif
+
                         </tbody>
                     </table>
                 </div>
@@ -112,8 +123,6 @@
                 </div>
             </div>
         </div>
-
-        {{-- Transfer Modal --}}
 
     </div>
 

@@ -156,6 +156,28 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
+                                        <label for="designation">Designation:</label> <span class="text-danger">*</span>
+                                        <input type="text" class="form-control @error('designation') is-invalid
+                                        @enderror" id="designation" name="designation"
+                                            value="{{old('designation', isset($user) ? $user->designation : '' )}}" placeholder="01614898789">
+                                            @error('designation')
+                                            <p class="invalid-feedback"> {{ $message }} </p>
+                                            @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="employee_signature">Signature:</label> <span class="text-danger">*</span>
+                                        <div class="file-input">
+                                            <input type="file" class="form-control" id="employee_signature"
+                                                name="employee_signature">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
                                         <label for="status">Status:</label> <span class="text-danger">*</span>
                                         <select class="custom-select" id="status" name="status">
                                             <option value="1"
@@ -168,7 +190,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="profile_photo">Profile Photo:</label>
+                                        <label for="profile_photo">Profile Photo:</label> <span class="text-danger">*</span>
                                         <div class="file-input">
                                             <input type="file" class="form-control" id="profile_photo"
                                                 name="profile_photo">
