@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <title>Scholar - Online School HTML5 Template</title>
+    <title>Taskify Management</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{{asset('frontend/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -44,42 +44,7 @@ https://templatemo.com/tm-586-scholar
   <!-- ***** Preloader End ***** -->
 
   <!-- ***** Header Area Start ***** -->
-  <header class="header-area header-sticky">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <nav class="main-nav">
-                    <!-- ***** Logo Start ***** -->
-                    <a href="index.html" class="logo">
-                        <h1>Scholar</h1>
-                    </a>
-                    <!-- ***** Logo End ***** -->
-                    <!-- ***** Serach Start ***** -->
-                    <div class="search-input">
-                      <form id="search" action="#">
-                        <input type="text" placeholder="Type Something" id='searchText' name="searchKeyword" onkeypress="handle" />
-                        <i class="fa fa-search"></i>
-                      </form>
-                    </div>
-                    <!-- ***** Serach Start ***** -->
-                    <!-- ***** Menu Start ***** -->
-                    <ul class="nav">
-                      <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
-                      <li class="scroll-to-section"><a href="#services">Services</a></li>
-                      <li class="scroll-to-section"><a href="#courses">Courses</a></li>
-                      <li class="scroll-to-section"><a href="#team">Team</a></li>
-                      <li class="scroll-to-section"><a href="#events">Events</a></li>
-                      <li class="scroll-to-section"><a href="#contact">Register Now!</a></li>
-                  </ul>
-                    <a class='menu-trigger'>
-                        <span>Menu</span>
-                    </a>
-                    <!-- ***** Menu End ***** -->
-                </nav>
-            </div>
-        </div>
-    </div>
-  </header>
+  @include('frontend.partials.header')
   <!-- ***** Header Area End ***** -->
 
   <div class="main-banner" id="top">
@@ -94,10 +59,10 @@ https://templatemo.com/tm-586-scholar
                 <p>Scholar is free CSS template designed by TemplateMo for online educational related websites. This layout is based on the famous Bootstrap v5.3.0 framework.</p>
                 <div class="buttons">
                   <div class="main-button">
-                    <a href="#">Request Demo</a>
+                    <a href="#">Taskify</a>
                   </div>
                   <div class="icon-button">
-                    <a href="#"><i class="fa fa-play"></i> What's Scholar?</a>
+                    <a href="#"><i class="fa fa-play"></i> What's Taskify?</a>
                   </div>
                 </div>
               </div>
@@ -662,13 +627,7 @@ https://templatemo.com/tm-586-scholar
     </div>
   </div>
 
-  <footer>
-    <div class="container">
-      <div class="col-lg-12">
-        <p>Copyright © 2036 Scholar Organization. All rights reserved. &nbsp;&nbsp;&nbsp; Design: <a href="https://templatemo.com" rel="nofollow" target="_blank">TemplateMo</a> Distribution: <a href="https://themewagon.com" rel="nofollow" target="_blank">ThemeWagon</a></p>
-      </div>
-    </div>
-  </footer>
+  @include('frontend.partials.footer')
 
   <!-- Scripts -->
   <!-- Bootstrap core JavaScript -->

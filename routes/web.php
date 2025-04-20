@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('frontend.master');
 });
 
 Route::get('/home', [HomeController::class, 'home'])->name('frontend.home');
