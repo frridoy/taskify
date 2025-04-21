@@ -14,7 +14,7 @@
                 <!-- Filter Section -->
                 <form action="{{ route('tasks.index') }}" method="GET" id="filterForm">
                     <div class="row mb-3">
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-2 mb-2">
                             <label for="status_filter" class="form-label">Status</label>
                             <select name="status" id="status_filter" class="form-select">
                                 <option value="">All Status</option>
@@ -26,19 +26,19 @@
                         @if(auth()->user()->role == 1 || auth()->user()->role == 2 ||  $teamLeader ==true)
                         <div class="col-md-3 mb-2">
                             <label for="assigned_to_filter" class="form-label">Assigned To</label>
-                            <select name="user_id" id="assigned_to_filter" class="form-select">
+                            <select name="user_id" id="assigned_to_filter" class="form-select select2">
                                 <option value="">All Users</option>
                                 @foreach ($users as $user)
                                     @if ($user->role == 3)
                                         <option value="{{ $user->id }}" {{ isset($_GET['user_id']) && $_GET['user_id'] == $user->id ? 'selected' : '' }}>
-                                            {{ $user->name }}
+                                            {{ $user->id }}- {{ $user->name }}
                                         </option>
                                     @endif
                                 @endforeach
                             </select>
                         </div>
                         @endif
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-2 mb-2">
                             <label for="urgency_filter" class="form-label">Task Urgency</label>
                             <select name="urgency" id="urgency_filter" class="form-select">
                                 <option value="">All Priorities</option>
@@ -47,6 +47,14 @@
                                 <option value="normal_priority" {{ isset($_GET['urgency']) && $_GET['urgency'] == 'normal_priority' ? 'selected' : '' }}>Normal Priority</option>
                                 <option value="low_priority" {{ isset($_GET['urgency']) && $_GET['urgency'] == 'low_priority' ? 'selected' : '' }}>Low Priority</option>
                             </select>
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <label for="task_name" class="form-label">Task Name</label>
+                            <div class="input-group">
+                                <input type="text" name="task_name" id="task_name" class="form-control"
+                                       placeholder="Search by task name"
+                                       value="{{ request('task_name') }}">
+                            </div>
                         </div>
                         <div class="col-md-3 mb-2 d-flex align-items-end">
                             <div class="d-flex gap-2">

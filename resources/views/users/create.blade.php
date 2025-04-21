@@ -159,7 +159,7 @@
                                         <label for="designation">Designation:</label> <span class="text-danger">*</span>
                                         <input type="text" class="form-control @error('designation') is-invalid
                                         @enderror" id="designation" name="designation"
-                                            value="{{old('designation', isset($user) ? $user->designation : '' )}}" placeholder="01614898789">
+                                            value="{{old('designation', isset($user) ? $user->designation : '' )}}" placeholder="Software Engineer">
                                             @error('designation')
                                             <p class="invalid-feedback"> {{ $message }} </p>
                                             @enderror
