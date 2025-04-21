@@ -349,7 +349,7 @@
             @endif
 
             <!-- Login Form -->
-            <form method="POST" action="{{ route('login') }}">
+            <form method="POST" action="{{ route('hradmin.login') }}">
                 @csrf
 
                 <!-- Email Address -->

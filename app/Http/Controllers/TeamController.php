@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class TeamController extends Controller
 {
@@ -53,22 +54,67 @@ class TeamController extends Controller
         return redirect()->back();
     }
 
-    public function team_index()
+    public function team_index(Request $request)
     {
+        $teamNames = Team::select('team_name')
+            ->distinct()
+            ->orderBy('team_name')
+            ->pluck('team_name')
+            ->toArray();
+
         $teams = Team::select('team_number', 'team_name')
-            ->orderBy('team_number')
-            ->get()
-            ->groupBy('team_number');
+            ->distinct('team_number')
+            ->orderBy('team_number');
 
-        $teamSummary = $teams->map(function ($teamGroup, $teamNumber) {
-            return [
-                'team_number' => $teamNumber,
-                'team_name' => $teamGroup->first()->team_name,
-                'total_members' => $teamGroup->count(),
-            ];
-        });
+        if ($request->filled('user_id')) {
+            $filteredTeamNumbers = Team::where('user_id', $request->user_id)
+                ->pluck('team_number')
+                ->toArray();
 
-        return view('team.index', compact('teamSummary'));
+            $teams = $teams->whereIn('team_number', $filteredTeamNumbers);
+        }
+
+        if ($request->filled('team_name')) {
+            $teams = $teams->where('team_name', $request->team_name);
+        }
+
+        $teams = $teams->get();
+
+        $memberCounts = Team::selectRaw('team_number, COUNT(*) as member_count')
+            ->groupBy('team_number')
+            ->pluck('member_count', 'team_number')
+            ->toArray();
+
+        $teamSummary = collect();
+
+        foreach ($teams as $team) {
+            $teamSummary->push([
+                'team_number' => $team->team_number,
+                'team_name' => $team->team_name,
+                'total_members' => $memberCounts[$team->team_number] ?? 0
+            ]);
+        }
+
+        $perPage = 10;
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+
+        $teamSummaryPaginated = new LengthAwarePaginator(
+            $teamSummary->forPage($currentPage, $perPage),
+            $teamSummary->count(),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+
+        $userId = Team::select('user_id')
+            ->distinct()
+            ->with('employee:id,name')
+            ->whereHas('employee', function ($query) {
+                $query->where('status', 1);
+            })
+            ->get();
+
+        return view('team.index', compact('teamSummaryPaginated', 'userId', 'teamNames'));
     }
 
     public function team_view($team_number)

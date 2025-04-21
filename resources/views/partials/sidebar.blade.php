@@ -322,6 +322,7 @@
             </div>
 
             <!-- Team Management -->
+            @if (auth()->user()->role == 1 || auth()->user()->role == 2)
             <div class="menu-category mt-4">
                 <div class="d-flex align-items-center mb-3">
                     <div class="menu-category-line me-2"></div>
@@ -337,18 +338,17 @@
                 </div>
 
                 <div id="teamMenu" class="collapse mt-1">
-                    @if (auth()->user()->role == 1 || auth()->user()->role == 2)
                         <a href="{{ route('team.build') }}" class="submenu-item">
                             <div class="submenu-bullet"></div>
                             <span>Team Builder</span>
                         </a>
-                    @endif
-                    <a href="{{ route('team.index') }}" class="submenu-item">
-                        <div class="submenu-bullet"></div>
-                        <span>Team Directory</span>
-                    </a>
+                        <a href="{{ route('team.index') }}" class="submenu-item">
+                            <div class="submenu-bullet"></div>
+                            <span>Team Directory</span>
+                        </a>
+                    </div>
                 </div>
-            </div>
+            @endif
 
 
             <!-- User Management -->
