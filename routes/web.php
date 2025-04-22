@@ -3,10 +3,12 @@
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\LeaveRequestController;
 use App\Http\Controllers\HomeContoller;
 use App\Http\Controllers\HRController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\SickLeaveRequestController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskTransferController;
@@ -44,7 +46,7 @@ Route::middleware(['auth', 'isSuperAdmin'])->group(function () {
 Route::middleware(['auth', 'isEmployee'])->group(function () {
 
     Route::get('employee/dashboard', [EmployeeController::class, 'dashboard'])->name('employee.dashboard');
-    
+
     Route::get('all_tasks', [EmployeeController::class, 'index'])->name('my.tasks');
     Route::get('pending/tasks', [EmployeeController::class, 'pending_tasks'])->name('pending_tasks');
     Route::get('processing/tasks', [EmployeeController::class, 'processing_tasks'])->name('processing_tasks');
@@ -71,6 +73,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('task-assign', [TaskController::class, 'assign'])->name('tasks.assign');
     Route::post('task-assign-store', [TaskController::class, 'store'])->name('tasks.store');
+
+    Route::get('leave-request', [LeaveRequestController::class, 'leave_request'])->name('leave_request');
+    Route::post('leave-request/store', [LeaveRequestController::class, 'store'])->name('leave_request_store');
 });
 
 
