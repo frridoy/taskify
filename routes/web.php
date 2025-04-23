@@ -77,6 +77,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('leave-request', [LeaveRequestController::class, 'leave_request'])->name('leave_request');
     Route::post('leave-request-store', [LeaveRequestController::class, 'store'])->name('leave_request_store');
     Route::get('leave-request-index', [LeaveRequestController::class, 'leave_request_index'])->name('leave_request_index');
+
+    Route::put('/leave-request/{id}/action', [LeaveRequestController::class, 'action'])->name('leave_request_action');
+
 });
 
 

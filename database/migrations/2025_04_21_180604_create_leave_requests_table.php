@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use phpDocumentor\Reflection\Types\Nullable;
 
 return new class extends Migration
 {
@@ -21,7 +22,8 @@ return new class extends Migration
             $table->text('leave_request_type');
             $table->text('reason_description')->nullable();
             $table->string('medical_document')->nullable();
-            $table->tinyInteger('status')->comment('0: Pending, 1: Approved, 2: Rejected');
+            $table->tinyInteger('status')->comment('0-pending, 1-accepted, 2-rejected');
+            $table->string('comment')->nullable();
             $table->unsignedBigInteger('reviewed_by')->nullable();
             $table->timestamp('reviewed_at')->nullable();
             $table->timestamps();

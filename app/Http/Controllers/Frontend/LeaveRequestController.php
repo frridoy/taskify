@@ -69,24 +69,43 @@ class LeaveRequestController extends Controller
 
         if ($isAdministrator) {
             $leave_requests = LeaveRequest::with('user:id,name')
-            ->latest()
-            ->paginate(2);
+                ->latest()
+                ->paginate(10);
             $users = User::where('status', 1)
-            ->select('id', 'name')
-            ->orderBy('name')
-            ->get();
-
+                ->select('id', 'name')
+                ->orderBy('name')
+                ->get();
         } else {
 
             $leave_requests = LeaveRequest::with('user:id,name')
                 ->where('user_id', $userId)
                 ->latest()
-                ->paginate(2);
+                ->paginate(10);
 
             $users = User::where('id', $userId)->select('id', 'name')->get();
         }
 
         return view('frontend.leave.leave_request_index', compact('leave_requests', 'users'));
+    }
+
+    public function action(Request $request, $id)
+    {
+        $leaveRequest = LeaveRequest::findOrFail($id);
+
+        if ($request->input('action') == 2) {
+            $leaveRequest->status = 2;
+            $leaveRequest->number_of_days_leave_requested_accepted = 0;
+        } else {
+            $leaveRequest->status = 1;
+            $leaveRequest->number_of_days_leave_requested_accepted = $request->input('accepted_days') ?? $leaveRequest->number_of_days_leave_requested;
+        }
+
+        $leaveRequest->comment = $request->comment;
+        $leaveRequest->reviewed_by = Auth::id();
+        $leaveRequest->save();
+
+        notify()->success('Leave request updated successfully.');
+        return redirect()->back();
     }
 
 }
