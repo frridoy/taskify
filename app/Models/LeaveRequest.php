@@ -7,4 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class LeaveRequest extends Model
 {
     protected $table = 'leave_requests';
+
+    public function user(){
+
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

@@ -321,6 +321,40 @@
                 </div>
             </div>
 
+
+             <!-- Leave request -->
+             <div class="menu-category mt-4">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="menu-category-line me-2"></div>
+                    <span class="text-cyan-200 text-uppercase"
+                        style="font-size: 12px; letter-spacing: 1px;">Leave</span>
+                </div>
+                <div class="menu-item dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#leaveMenu">
+                    <div class="menu-icon">
+                        <i class="bi bi-calendar-check-fill"></i>
+                    </div>
+                    <span>Leave Request</span>
+                    <i class="bi bi-chevron-down ms-auto menu-arrow"></i>
+                </div>
+
+                <div id="leaveMenu" class="collapse mt-1">
+
+                    @if(auth()->user()->role == 2 || auth()->user()->role == 3)
+
+                    <a href="{{ route('leave_request') }}" class="submenu-item">
+                        <div class="submenu-bullet"></div>
+                        <span>Apply</span>
+                    </a>
+                    @endif
+
+                    <a href="{{ route('leave_request_index') }}" class="submenu-item">
+                        <div class="submenu-bullet"></div>
+                        <span>Records</span>
+                    </a>
+
+                </div>
+            </div>
+
             <!-- Team Management -->
             @if (auth()->user()->role == 1 || auth()->user()->role == 2)
             <div class="menu-category mt-4">
