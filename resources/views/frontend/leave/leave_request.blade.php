@@ -94,7 +94,19 @@
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="form-container">
-                        <h2>Leave Request</h2>
+                        <h2 class="mb-4">Leave Request</h2>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="alert alert-info mb-0">
+                                    <strong>Total Leave Taken ({{ date('Y') }}):</strong> {{ $leave_spent_days }} day{{ $leave_spent_days > 1 ? 's' : '' }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="alert alert-success mb-0">
+                                    <strong>Remaining Leave ({{ date('Y') }}):</strong> {{ $leave_days_left }} day{{ $leave_days_left > 1 ? 's' : '' }}
+                                </div>
+                            </div>
+                        </div>
                         <form action="{{ route('leave_request_store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
@@ -102,7 +114,8 @@
                                     <div class="form-group">
                                         <label for="start_date">Start Date:</label> <span class="text-danger">*</span>
                                         <input type="date" class="form-control @error('start_date') is-invalid @enderror"
-                                            id="start_date" name="start_date" value="" placeholder="">
+                                            id="start_date" name="start_date" value="{{ old('start_date') }}"
+                                            min="{{ \Carbon\Carbon::now()->toDateString() }}" placeholder="">
                                         @error('start_date')
                                             <p class="invalid-feedback">{{ $message }}</p>
                                         @enderror
@@ -112,7 +125,9 @@
                                     <div class="form-group">
                                         <label for="end_date">End Date:</label> <span class="text-danger">*</span>
                                         <input type="date" class="form-control @error('end_date') is-invalid @enderror"
-                                            name="end_date" value="" placeholder="">
+                                            name="end_date" placeholder=""
+                                            min="{{ \Carbon\Carbon::now()->toDateString() }}"
+                                            value="{{ old('end_date') }}">
 
                                         @error('end_date')
                                             <p class="invalid-feedback">{{ $message }}</p>
@@ -130,7 +145,10 @@
                                             class="form-control @error('leave_request_type') is-invalid @enderror">
                                             <option value="">-- Select Leave Type --</option>
                                             @foreach ($leave_request_type as $key => $value)
-                                                <option value="{{ $key }}">{{ $value }}</option>
+                                                {{-- <option value="{{ $key }}">{{ $value }}</option> --}}
+                                                <option value="{{ $key }}"
+                                                    {{ old('leave_request_type') == $key ? 'selected' : '' }}>
+                                                    {{ $value }}</option>
                                             @endforeach
                                         </select>
 
@@ -146,7 +164,8 @@
                                             class="text-danger">*</span>
                                         <input type="text"
                                             class="form-control @error('reason_description') is-invalid @enderror"
-                                            id="reason_description" name="reason_description" value="" placeholder="Describe your reason">
+                                            id="reason_description" name="reason_description"
+                                            value="{{ old('reason_description') }}" placeholder="Describe your reason">
                                         @error('reason_description')
                                             <p class="invalid-feedback">{{ $message }}</p>
                                         @enderror
@@ -165,11 +184,10 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="leave_left">Leave Left {{date('Y')}}:</label> <span
+                                        <label for="leave_left">Leave Left {{ date('Y') }}:</label> <span
                                             class="text-danger">*</span>
-                                        <input type="text"
-                                            class="form-control"
-                                            id="leave_left" name="leave_left" value="18 days" readonly>
+                                        <input type="text" class="form-control" id="leave_left" name="leave_left"
+                                            value="{{ $leave_days_left }}" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -177,9 +195,17 @@
                                 <a href="" class="btn btn-outline-secondary btn-lg px-4" style="border-radius: 8px;">
                                     <i class="fas fa-arrow-left mr-2"></i> Back
                                 </a>
-                                <button type="submit" class="btn btn-primary btn-lg px-4" style="border-radius: 8px;">
-                                    Request
-                                </button>
+
+                                @if ($pending_request->isEmpty())
+                                    <button type="submit" class="btn btn-primary btn-lg px-4" style="border-radius: 8px;">
+                                        Request
+                                    </button>
+                                @else
+                                    <div class="alert alert-warning mb-0 px-3 py-2" role="alert"
+                                        style="border-radius: 8px;">
+                                        You already have a pending leave request.
+                                    </div>
+                                @endif
                             </div>
                         </form>
                     </div>

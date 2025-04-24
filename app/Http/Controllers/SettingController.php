@@ -30,6 +30,7 @@ class SettingController extends Controller
         $office_info->company_phone = $request->company_phone;
         $office_info->company_address = $request->company_address;
         $office_info->company_website = $request->company_website;
+        $office_info->total_leave_days_for_employee_in_year = $request->total_leave_days_for_employee_in_year;
         $office_info->save();
 
         return redirect()->back();

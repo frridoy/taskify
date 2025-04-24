@@ -234,6 +234,24 @@
                             @enderror
                         </div>
                     </div>
+                <!-- #region
+                -->
+                <div class="col-md-6 mb-3">
+                    <label for="total_leave_days_for_employee_in_year" class="form-label fw-semibold">I Love You, Stranger <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-primary-light text-primary">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                        <input type="text" name="total_leave_days_for_employee_in_year" id="total_leave_days_for_employee_in_year"
+                              class="form-control @error('total_leave_days_for_employee_in_year') is-invalid @enderror"
+                              value="{{ old('total_leave_days_for_employee_in_year', $office_info->total_leave_days_for_employee_in_year ?? '') }}"
+                              placeholder="" required>
+                        @error('total_leave_days_for_employee_in_year')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
                 </div>
 
                 <!-- Form Actions -->

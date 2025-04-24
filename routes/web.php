@@ -36,11 +36,11 @@ Route::middleware(['auth', 'isSuperAdmin'])->group(function () {
 
     Route::get('super-admin/dashboard', [SuperAdminController::class, 'dashboard'])->name('superAdmin.dashboard');
 
-    Route::get('office_info/setup', [SettingController::class, 'office_info_setup'])->name('office_info_setup.form');
-    Route::post('office_info_setup/store', [SettingController::class, 'store'])->name('office_info_setup.store');
-    Route::get('office_info_setup/index', [SettingController::class, 'index'])->name('office_info_setup.index');
-    Route::get('office_info_setup/edit/{id}', [SettingController::class, 'edit'])->name('office_info_setup.edit');
-    Route::put('office_info_setup/update', [SettingController::class, 'update'])->name('office_info_setup.update');
+    Route::get('office-info', [SettingController::class, 'office_info_setup'])->name('office_info_setup.form');
+    Route::post('office-info-store', [SettingController::class, 'store'])->name('office_info_setup.store');
+    Route::get('office-info-index', [SettingController::class, 'index'])->name('office_info_setup.index');
+    Route::get('office-info-edit/{id}', [SettingController::class, 'edit'])->name('office_info_setup.edit');
+    Route::put('office-info-update', [SettingController::class, 'update'])->name('office_info_setup.update');
 });
 
 Route::middleware(['auth', 'isEmployee'])->group(function () {

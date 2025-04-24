@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\LeaveRequest;
+use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,13 +18,30 @@ class LeaveRequestController extends Controller
     {
         $leave_request_type = config('static_array.leave_request_type');
 
-        return view('frontend.leave.leave_request', compact('leave_request_type'));
+        $total_leave_days = Setting::value('total_leave_days_for_employee_in_year');
+
+        $userId = Auth::user()->id;
+        $currentYear = now()->year;
+
+        $leave_spent_days = LeaveRequest::where('user_id', $userId)
+            ->where('status', 1)
+            ->whereYear('created_at', $currentYear)
+            ->sum('number_of_days_leave_requested_accepted');
+
+        $leave_days_left = $total_leave_days - $leave_spent_days;
+
+
+        $pending_request = LeaveRequest::where('user_id', $userId)
+            ->where('status', 0)
+            ->get();
+
+        return view('frontend.leave.leave_request', compact('leave_request_type', 'leave_days_left', 'leave_spent_days', 'pending_request'));
     }
     public function store(Request $request)
     {
         $validate = Validator::make($request->all(), [
             'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
+            'end_date' => 'required|date|after_or_equal:start_date',
             'leave_request_type' => 'required',
             'reason_description' => 'required',
         ]);
@@ -42,6 +60,23 @@ class LeaveRequestController extends Controller
             return !in_array($date->dayOfWeek, [Carbon::FRIDAY, Carbon::SATURDAY]);
         }, $end);
 
+
+        $total_leave_days = Setting::value('total_leave_days_for_employee_in_year');
+        $currentYear = now()->year;
+
+        $leave_spent_days = LeaveRequest::where('user_id', $userId)
+            ->where('status', 1)
+            ->whereYear('created_at', $currentYear)
+            ->sum('number_of_days_leave_requested_accepted');
+
+        $leave_days_left = $total_leave_days - $leave_spent_days;
+
+        if ($totalDays > $leave_days_left) {
+
+            notify()->error("{$totalDays} days vacation cannot be applied. You have {$leave_days_left} days left.");
+            return redirect()->back()->withInput();
+        }
+
         $leave_request = new LeaveRequest();
         $leave_request->user_id = $userId;
         $leave_request->start_date = $request->start_date;
@@ -53,7 +88,7 @@ class LeaveRequestController extends Controller
         $leave_request->save();
 
         notify()->success("Leave request sent to the administrator with {$totalDays} days vacation.");
-        return redirect()->back();
+        return redirect()->route('leave_request');
     }
 
     public function leave_request_index()
@@ -107,5 +142,4 @@ class LeaveRequestController extends Controller
         notify()->success('Leave request updated successfully.');
         return redirect()->back();
     }
-
 }
