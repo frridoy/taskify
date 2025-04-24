@@ -17,11 +17,14 @@ return new class extends Migration
             $table->string('company_location');
             $table->string('check_in_time');
             $table->string('check_out_time');
-            $table->string('company_logo')->nullable();
             $table->string('company_email')->nullable();
             $table->string('company_phone')->nullable();
-            $table->string('company_address')->nullable();
-            $table->string('company_website')->nullable();
+            $table->string('company_description')->nullable();
+            $table->string('company_logo')->nullable();
+            $table->string('total_leave_days_for_employee_in_year')->nullable();
+            $table->string('company_facebook')->nullable();
+            $table->string('company_twitter')->nullable();
+            $table->string('company_linkedin')->nullable();
             $table->timestamps();
         });
     }

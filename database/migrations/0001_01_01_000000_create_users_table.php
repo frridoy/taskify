@@ -21,6 +21,8 @@ return new class extends Migration
             $table->tinyInteger('status')->default(1)->comment('1: Active | 0: Inactive');
             $table->string('password');
             $table->string('profile_photo')->nullable();
+            $table->string('designation')->nullable();
+            $table->string('signature')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

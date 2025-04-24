@@ -137,6 +137,7 @@ class LeaveRequestController extends Controller
 
         $leaveRequest->comment = $request->comment;
         $leaveRequest->reviewed_by = Auth::id();
+        $leaveRequest->reviewed_at = now();
         $leaveRequest->save();
 
         notify()->success('Leave request updated successfully.');
