@@ -420,21 +420,20 @@
 
 
             <!-- System Settings -->
-            @if (auth()->user()->role == 1)
                 <div class="menu-category mt-4">
                     <div class="d-flex align-items-center mb-3">
                         <div class="menu-category-line me-2"></div>
                         <span class="text-cyan-200 text-uppercase"
-                            style="font-size: 12px; letter-spacing: 1px;">System</span>
+                            style="font-size: 12px; letter-spacing: 1px;">Setting</span>
                     </div>
 
                     <a href="{{ route('office_info_setup.index') }}" class="menu-item">
                         <div class="menu-icon">
                             <i class="bi bi-gear-fill"></i>
                         </div>
-                        <span>Configuration</span>
+                        <span>Organization Info.</span>
                     </a>
-
+                    @if (auth()->user()->role == 1)
                     @php
                         $officeInfoExists = \App\Models\Setting::first();
                     @endphp
@@ -443,11 +442,11 @@
                             <div class="menu-icon">
                                 <i class="bi bi-building-fill"></i>
                             </div>
-                            <span>Office Setup</span>
+                            <span>Organization Setup</span>
                         </a>
                     @endif
+                    @endif
                 </div>
-            @endif
         </div>
     </nav>
 </aside>

@@ -2,229 +2,208 @@
 @section('content')
 <div class="container py-4">
     <div class="office-info-wrapper card border-0 shadow-sm">
-        <!-- Header Section -->
-        <div class="card-header bg-white border-0 py-3">
+        <!-- Simple Header Section -->
+        <div class="card-header bg-primary text-white border-0 py-3">
             <div class="d-flex justify-content-between align-items-center">
-                <h1 class="h5 mb-0 fw-semibold text-primary">
-                    <i class="fas fa-building me-2"></i> Office Information
-                </h1>
-                <a href="{{ route('office_info_setup.edit', $office_info->id ?? '') }}" class="btn btn-outline-primary btn-sm">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-building me-2"></i>
+                    <h1 class="h5 mb-0 fw-semibold">Office Information</h1>
+                </div>
+                @if(auth()->user()->role == 1)
+                <a href="{{ route('office_info_setup.edit', $office_info->id ?? '') }}" class="btn btn-light btn-sm">
                     <i class="fas fa-edit me-1"></i> Edit
                 </a>
+                @endif
             </div>
         </div>
 
-        <div class="card-body">
+        <div class="card-body p-3">
             <!-- Company Profile Section -->
-            <div class="company-profile mb-4">
-                <div class="d-flex align-items-center">
-                    <div class="company-logo-container me-4">
-                        @if($office_info->company_logo)
-                            <img src="{{ asset('office/'.$office_info->company_logo) }}" alt="Company Logo" class="img-fluid rounded border" style="max-width: 100px; max-height: 100px;">
-                        @else
-                            <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width: 100px; height: 100px;">
-                                <i class="fas fa-building text-secondary" style="font-size: 2rem;"></i>
+            <div class="row mb-4 align-items-center">
+                <div class="col-md-2 col-sm-3 mb-3 mb-sm-0">
+                    @if($office_info->company_logo)
+                        <img src="{{ asset('office/'.$office_info->company_logo) }}" alt="Company Logo" class="img-fluid rounded" style="max-width: 100%; max-height: 100px;">
+                    @else
+                        <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width: 100px; height: 100px;">
+                            <i class="fas fa-building text-secondary" style="font-size: 2rem;"></i>
+                        </div>
+                    @endif
+                </div>
+                <div class="col-md-10 col-sm-9">
+                    <h2 class="h4 mb-1 fw-semibold text-primary">{{ $office_info->company_name ?? 'Company Name' }}</h2>
+                    <p class="text-muted small mb-1">
+                        <i class="fas fa-map-marker-alt me-1"></i> {{ $office_info->company_location ?? 'Not Available' }}
+                    </p>
+                    <p class="text-muted small">
+                        <i class="fas fa-clock me-1"></i> Last updated: {{ $office_info->updated_at ? $office_info->updated_at->format('M d, Y \a\t h:i A') : 'N/A' }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Description Section -->
+            @if($office_info->company_description)
+                <div class="mb-4">
+                    <div class="card border-0 bg-light">
+                        <div class="card-body">
+                            <h3 class="h6 fw-semibold mb-2">About Company</h3>
+                            <p class="mb-0">{{ $office_info->company_description }}</p>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            <!-- Contact Information -->
+            <div class="mb-4">
+                <h3 class="h6 fw-semibold mb-3 border-bottom pb-2">Contact Information</h3>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center">
+                            <div class="bg-primary bg-opacity-10 rounded-circle p-2 me-3 text-center" style="width: 40px; height: 40px;">
+                                <i class="fas fa-envelope text-primary"></i>
                             </div>
+                            <div>
+                                <div class="text-muted small">Email</div>
+                                <div class="fw-semibold">{{ $office_info->company_email ?? 'Not Available' }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center">
+                            <div class="bg-primary bg-opacity-10 rounded-circle p-2 me-3 text-center" style="width: 40px; height: 40px;">
+                                <i class="fas fa-phone text-primary"></i>
+                            </div>
+                            <div>
+                                <div class="text-muted small">Phone</div>
+                                <div class="fw-semibold">{{ $office_info->company_phone ?? 'Not Available' }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Links -->
+            @if($office_info->company_facebook || $office_info->company_twitter || $office_info->company_linkedin)
+                <div class="mb-4">
+                    <h3 class="h6 fw-semibold mb-3 border-bottom pb-2">Social Media</h3>
+                    <div class="d-flex gap-3">
+                        @if($office_info->company_facebook)
+                            <a href="{{ $office_info->company_facebook }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                                <i class="fab fa-facebook me-1"></i> Facebook
+                            </a>
                         @endif
-                    </div>
-                    <div class="company-details">
-                        <h2 class="h4 mb-1 fw-semibold">{{ $office_info->company_name ?? 'Company Name' }}</h2>
-                        <span class="text-muted small">
-                            <i class="fas fa-clock me-1"></i>
-                            Last updated: {{ $office_info->updated_at ? $office_info->updated_at->format('M d, Y \a\t h:i A') : 'N/A' }}
-                        </span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Key Information Grid -->
-            <div class="info-grid row g-3 mb-4">
-                <div class="col-md-6">
-                    <div class="info-item card h-100 border-0 shadow-sm">
-                        <div class="card-body">
-                            <div class="d-flex align-items-start">
-                                <div class="info-icon bg-primary bg-opacity-10 text-primary rounded-circle p-3 me-3">
-                                    <i class="fas fa-envelope fs-5"></i>
-                                </div>
-                                <div class="info-content">
-                                    <div class="info-label text-muted small">Email</div>
-                                    <div class="info-value fw-semibold">
-                                        {{ $office_info->company_email ?? 'Not Available' }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="info-item card h-100 border-0 shadow-sm">
-                        <div class="card-body">
-                            <div class="d-flex align-items-start">
-                                <div class="info-icon bg-primary bg-opacity-10 text-primary rounded-circle p-3 me-3">
-                                    <i class="fas fa-phone fs-5"></i>
-                                </div>
-                                <div class="info-content">
-                                    <div class="info-label text-muted small">Phone</div>
-                                    <div class="info-value fw-semibold">
-                                        {{ $office_info->company_phone ?? 'Not Available' }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="info-item card h-100 border-0 shadow-sm">
-                        <div class="card-body">
-                            <div class="d-flex align-items-start">
-                                <div class="info-icon bg-primary bg-opacity-10 text-primary rounded-circle p-3 me-3">
-                                    <i class="fas fa-globe fs-5"></i>
-                                </div>
-                                <div class="info-content">
-                                    <div class="info-label text-muted small">Website</div>
-                                    <div class="info-value fw-semibold">
-                                        @if($office_info->company_website)
-                                            <a href="{{ $office_info->company_website }}" target="_blank" class="text-decoration-none">
-                                                {{ $office_info->company_website }}
-                                                <i class="fas fa-external-link-alt ms-1 small"></i>
-                                            </a>
-                                        @else
-                                            <span class="text-muted">Not Available</span>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="info-item card h-100 border-0 shadow-sm">
-                        <div class="card-body">
-                            <div class="d-flex align-items-start">
-                                <div class="info-icon bg-primary bg-opacity-10 text-primary rounded-circle p-3 me-3">
-                                    <i class="fas fa-map-marker-alt fs-5"></i>
-                                </div>
-                                <div class="info-content">
-                                    <div class="info-label text-muted small">Location</div>
-                                    <div class="info-value fw-semibold">
-                                        {{ $office_info->company_location ?? 'Not Available' }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Address Section -->
-            <div class="info-section card border-0 shadow-sm mb-4">
-                <div class="card-header bg-white border-0">
-                    <div class="d-flex align-items-center">
-                        <div class="section-icon bg-primary bg-opacity-10 text-primary rounded-circle p-2 me-3">
-                            <i class="fas fa-address-card"></i>
-                        </div>
-                        <h3 class="section-title h6 mb-0 fw-semibold">Address</h3>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="info-value">
-                        @if($office_info->company_address)
-                            {{ $office_info->company_address }}
-                        @else
-                            <span class="text-muted">Not Available</span>
+                        @if($office_info->company_twitter)
+                            <a href="{{ $office_info->company_twitter }}" target="_blank" class="btn btn-outline-info btn-sm">
+                                <i class="fab fa-twitter me-1"></i> Twitter
+                            </a>
+                        @endif
+                        @if($office_info->company_linkedin)
+                            <a href="{{ $office_info->company_linkedin }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                                <i class="fab fa-linkedin me-1"></i> LinkedIn
+                            </a>
                         @endif
                     </div>
                 </div>
-            </div>
+            @endif
 
-            <!-- Office Hours Section -->
-            <div class="info-section card border-0 shadow-sm">
-                <div class="card-header bg-white border-0">
-                    <div class="d-flex align-items-center">
-                        <div class="section-icon bg-primary bg-opacity-10 text-primary rounded-circle p-2 me-3">
-                            <i class="fas fa-business-time"></i>
+            <!-- Office Schedule -->
+            <div class="mb-4">
+                <h3 class="h6 fw-semibold mb-3 border-bottom pb-2">Office Schedule</h3>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="card border-0 bg-light h-100">
+                            <div class="card-body">
+                                <div class="text-center mb-2">
+                                    <i class="fas fa-sign-in-alt text-primary fs-4"></i>
+                                </div>
+                                <div class="text-muted small text-center">Check-in Time</div>
+                                <div class="text-center fw-bold fs-5 mt-1">{{ $office_info->check_in_time ?? 'Not Set' }}</div>
+                            </div>
                         </div>
-                        <h3 class="section-title h6 mb-0 fw-semibold">Office Hours</h3>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-0 bg-light h-100">
+                            <div class="card-body">
+                                <div class="text-center mb-2">
+                                    <i class="fas fa-sign-out-alt text-primary fs-4"></i>
+                                </div>
+                                <div class="text-muted small text-center">Check-out Time</div>
+                                <div class="text-center fw-bold fs-5 mt-1">{{ $office_info->check_out_time ?? 'Not Set' }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-0 bg-light h-100">
+                            <div class="card-body">
+                                <div class="text-center mb-2">
+                                    <i class="fas fa-umbrella-beach text-primary fs-4"></i>
+                                </div>
+                                <div class="text-muted small text-center">Annual Leave Days</div>
+                                <div class="text-center fw-bold fs-5 mt-1">{{ $office_info->total_leave_days_for_employee_in_year ?? 'Not Set' }}</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="card-body">
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <div class="schedule-card card h-100 border-0 bg-light">
-                                <div class="card-body text-center py-4">
-                                    <div class="schedule-icon bg-primary bg-opacity-10 text-primary rounded-circle p-3 mb-3 mx-auto" style="width: 60px; height: 60px;">
-                                        <i class="fas fa-sign-in-alt fs-4"></i>
-                                    </div>
-                                    <div class="info-label text-muted small mb-1">Check-in Time</div>
-                                    <div class="schedule-time h5 fw-bold text-primary">
-                                        {{ $office_info->check_in_time ?? 'Not Set' }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="schedule-card card h-100 border-0 bg-light">
-                                <div class="card-body text-center py-4">
-                                    <div class="schedule-icon bg-primary bg-opacity-10 text-primary rounded-circle p-3 mb-3 mx-auto" style="width: 60px; height: 60px;">
-                                        <i class="fas fa-sign-out-alt fs-4"></i>
-                                    </div>
-                                    <div class="info-label text-muted small mb-1">Check-out Time</div>
-                                    <div class="schedule-time h5 fw-bold text-primary">
-                                        {{ $office_info->check_out_time ?? 'Not Set' }}
+            </div>
+
+            <!-- Working Days -->
+            <div class="mb-4">
+                <h3 class="h6 fw-semibold mb-3 border-bottom pb-2">Working Days</h3>
+                <div class="card border-0 bg-light">
+                    <div class="card-body">
+                        <div class="row g-2">
+                            @php
+                                $days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                                $workingDays = explode(',', $office_info->working_days ?? '1,2,3,4,5');
+                            @endphp
+
+                            @foreach($days as $index => $day)
+                                <div class="col-md-3 col-sm-4 col-6">
+                                    <div class="d-flex align-items-center p-2 {{ in_array($index + 1, $workingDays) ? 'text-primary' : 'text-muted' }}">
+                                        <i class="fas {{ in_array($index + 1, $workingDays) ? 'fa-check-circle me-2' : 'fa-times-circle me-2' }}"></i>
+                                        {{ $day }}
                                     </div>
                                 </div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Footer Actions -->
+        <!-- Simple Footer -->
+        {{-- <div class="card-footer bg-white py-3">
+            <div class="d-flex justify-content-end">
+                <a href="{{ route('superAdmin.dashboard') }}" class="btn btn-outline-secondary btn-sm">
+                    <i class="fas fa-arrow-left me-1"></i> Back to Dashboard
+                </a>
+            </div>
+        </div> --}}
     </div>
 </div>
 
 <style>
-    .company-logo-container img {
-        object-fit: contain;
-        width: 100%;
-        height: 100%;
+    /* Simple, minimal styles */
+    .card {
+        transition: all 0.2s ease;
     }
 
-    .info-icon {
-        width: 48px;
-        height: 48px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .bg-primary.bg-opacity-10 {
+        background-color: rgba(var(--bs-primary-rgb), 0.1);
     }
 
-    .section-icon {
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    /* Clean, simple layout */
+    .container {
+        max-width: 1140px;
     }
 
-    .info-section {
-        transition: all 0.3s ease;
+    /* Simple, flat design for cards */
+    .card {
+        border-radius: 6px;
     }
 
-    .info-section:hover {
-        transform: translateY(-2px);
-    }
-
-    .schedule-card {
-        transition: all 0.3s ease;
-    }
-
-    .schedule-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1) !important;
+    .card-header {
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
     }
 </style>
 @endsection

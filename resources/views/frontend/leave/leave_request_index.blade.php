@@ -133,16 +133,18 @@
                                                                 <div class="leave-detail mb-3">
                                                                     <label class="text-muted small text-uppercase">Start
                                                                         Date</label>
-                                                                    <p class="fw-bold mb-0">
-                                                                        {{ $leave_request->start_date }}</p>
+                                                                        <p class="fw-bold mb-0">
+                                                                            {{ \Carbon\Carbon::parse($leave_request->start_date)->format('d M Y') }} ({{ \Carbon\Carbon::parse($leave_request->start_date)->format('l') }})
+                                                                       </p>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="leave-detail mb-3">
                                                                     <label class="text-muted small text-uppercase">End
                                                                         Date</label>
-                                                                    <p class="fw-bold mb-0">{{ $leave_request->end_date }}
-                                                                    </p>
+                                                                        <p class="fw-bold mb-0">
+                                                                            {{ \Carbon\Carbon::parse($leave_request->end_date)->format('d M Y') }} ({{ \Carbon\Carbon::parse($leave_request->end_date)->format('l') }})
+                                                                        </p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -261,16 +263,18 @@
                                                                 <div class="leave-detail mb-3">
                                                                     <label class="text-muted small text-uppercase">Start
                                                                         Date</label>
-                                                                    <p class="fw-bold mb-0">
-                                                                        {{ $leave_request->start_date }}</p>
+                                                                        <p class="fw-bold mb-0">
+                                                                            {{ \Carbon\Carbon::parse($leave_request->start_date)->format('d M Y') }} ({{ \Carbon\Carbon::parse($leave_request->start_date)->format('l') }})
+                                                                      </p>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="leave-detail mb-3">
                                                                     <label class="text-muted small text-uppercase">End
                                                                         Date</label>
-                                                                    <p class="fw-bold mb-0">{{ $leave_request->end_date }}
-                                                                    </p>
+                                                                        <p class="fw-bold mb-0">
+                                                                            {{ \Carbon\Carbon::parse($leave_request->end_date)->format('d M Y') }} ({{ \Carbon\Carbon::parse($leave_request->end_date)->format('l') }})
+                                                                        </p>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">

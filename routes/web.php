@@ -38,7 +38,6 @@ Route::middleware(['auth', 'isSuperAdmin'])->group(function () {
 
     Route::get('organization-info', [SettingController::class, 'office_info_setup'])->name('office_info_setup.form');
     Route::post('organization-info-store', [SettingController::class, 'store'])->name('office_info_setup.store');
-    Route::get('organization-info-index', [SettingController::class, 'index'])->name('office_info_setup.index');
     Route::get('organization-info-edit/{id}', [SettingController::class, 'edit'])->name('office_info_setup.edit');
     Route::put('organization-info-update/{id}', [SettingController::class, 'update'])->name('office_info_setup.update');
 });
@@ -77,8 +76,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('leave-request', [LeaveRequestController::class, 'leave_request'])->name('leave_request');
     Route::post('leave-request-store', [LeaveRequestController::class, 'store'])->name('leave_request_store');
     Route::get('leave-request-index', [LeaveRequestController::class, 'leave_request_index'])->name('leave_request_index');
-
     Route::put('leave-request/{id}/action', [LeaveRequestController::class, 'action'])->name('leave_request_action');
+
+    Route::get('organization-info-index', [SettingController::class, 'index'])->name('office_info_setup.index');
 
 });
 
