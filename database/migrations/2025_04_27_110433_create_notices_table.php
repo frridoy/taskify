@@ -19,8 +19,8 @@ return new class extends Migration
             $table->json('notice_for');
             $table->string('reference_no')->unique()->nullable();
             $table->dateTime('meeting_date_time')->nullable();
-            $table->date('publish_date')->nullable();
-            $table->date('expire_date')->nullable();
+            $table->dateTime('publish_date')->nullable();
+            $table->dateTime('expire_date')->nullable();
             $table->tinyInteger('is_active');
             $table->timestamps();
         });

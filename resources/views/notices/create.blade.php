@@ -486,7 +486,7 @@
                                         <div class="form-group">
                                             <label for="publish_date">Publish Date <span class="required-field">*</span></label>
                                             <div class="date-input-group">
-                                                <input type="date"
+                                                <input type="datetime-local"
                                                     class="form-control @error('publish_date') is-invalid @enderror"
                                                     id="publish_date" name="publish_date" value="{{ old('publish_date') }}">
                                                 <i class="far fa-calendar-alt"></i>
@@ -500,7 +500,7 @@
                                         <div class="form-group">
                                             <label for="expire_date">Expiry Date <span class="required-field">*</span></label>
                                             <div class="date-input-group">
-                                                <input type="date"
+                                                <input type="datetime-local"
                                                     class="form-control @error('expire_date') is-invalid @enderror"
                                                     id="expire_date" name="expire_date" value="{{ old('expire_date') }}">
                                                 <i class="far fa-calendar-alt"></i>

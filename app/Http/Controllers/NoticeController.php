@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notice;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class NoticeController extends Controller
 {
@@ -47,8 +49,8 @@ class NoticeController extends Controller
 
 
         Notice::create([
-            'title' => $request->title,
-            'notice_type' => $request->notice_type,
+            'title' => ucwords($request->title),
+            'notice_type' => ucwords($request->notice_type),
             'notice_for' => $notice_for,
             'reference_no' => $request->reference_no,
             'meeting_date_time' => $request->meeting_date_time,
@@ -60,5 +62,14 @@ class NoticeController extends Controller
 
         notify()->success('Notice created successfully.');
         return redirect()->back();
+    }
+
+    public function index()
+    {
+
+        $notices = Notice::orderBy('id', 'desc')->paginate(5);
+        $user_types = config('static_array.user_type');
+
+        return view('notices.index', compact('notices', 'user_types'));
     }
 }

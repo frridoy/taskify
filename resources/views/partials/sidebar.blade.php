@@ -384,6 +384,33 @@
                 </div>
             @endif
 
+            <div class="menu-category mt-4">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="menu-category-line me-2"></div>
+                    <span class="text-cyan-200 text-uppercase" style="font-size: 12px; letter-spacing: 1px;">Notice</span>
+                </div>
+
+                <div class="menu-item dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#noticeMenu">
+                    <div class="menu-icon">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                    <span>Notice</span>
+                    <i class="bi bi-chevron-down ms-auto menu-arrow"></i>
+                </div>
+
+                <div id="noticeMenu" class="collapse mt-1">
+                        <a href="{{ route('notice.create') }}" class="submenu-item">
+                            <div class="submenu-bullet"></div>
+                            <span>Notice Create</span>
+                        </a>
+                        <a href="{{ route('notice.index') }}" class="submenu-item">
+                            <div class="submenu-bullet"></div>
+                            <span>Notice Records</span>
+                        </a>
+                    </div>
+                </div>
+
+
 
             <!-- User Management -->
             @if (auth()->user()->role == 1 || auth()->user()->role == 2)
