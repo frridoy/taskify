@@ -7,6 +7,7 @@ use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\HomeContoller;
 use App\Http\Controllers\HRController;
 use App\Http\Controllers\LeaveRequestController as ControllersLeaveRequestController;
+use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SuperAdminController;
@@ -18,11 +19,8 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    return view('frontend.master');
+    return view ('frontend.master');
 });
-
-// Route::get('/home', [HomeController::class, 'home'])->name('frontend.home');
-
 
 
 Route::middleware('auth')->group(function () {
@@ -79,9 +77,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('leave-request/{id}/action', [LeaveRequestController::class, 'action'])->name('leave_request_action');
 
     Route::get('organization-info-index', [SettingController::class, 'index'])->name('office_info_setup.index');
-
 });
-
 
 
 Route::middleware(['auth', 'isAdmin_isManager'])->group(function () {
@@ -98,6 +94,10 @@ Route::middleware(['auth', 'isAdmin_isManager'])->group(function () {
     Route::get('team-build', [TeamController::class, 'team_build'])->name('team.build');
     Route::post('team-store', [TeamController::class, 'store'])->name('team.store');
     Route::get('team-view/{team_number}', [TeamController::class, 'team_view'])->name('team.view');
+
+    Route::get('notice', [NoticeController::class, 'notice'])->name('notice.create');
+    Route::post('notice', [NoticeController::class, 'store'])->name('notice.store');
+    Route::get('notice-index', [NoticeController::class, 'index'])->name('notice.index');
 });
 
 
