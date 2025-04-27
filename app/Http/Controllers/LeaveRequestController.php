@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Frontend;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\LeaveRequest;
@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
-use Symfony\Component\HttpKernel\EventListener\ValidateRequestListener;
 
 class LeaveRequestController extends Controller
 {
@@ -35,7 +34,7 @@ class LeaveRequestController extends Controller
             ->where('status', 0)
             ->get();
 
-        return view('frontend.leave.leave_request', compact('leave_request_type', 'leave_days_left', 'leave_spent_days', 'pending_request'));
+        return view('leave.leave_request', compact('leave_request_type', 'leave_days_left', 'leave_spent_days', 'pending_request'));
     }
     public function store(Request $request)
     {
@@ -120,7 +119,7 @@ class LeaveRequestController extends Controller
             $users = User::where('id', $userId)->select('id', 'name')->get();
         }
 
-        return view('frontend.leave.leave_request_index', compact('leave_requests', 'users'));
+        return view('leave.leave_request_index', compact('leave_requests', 'users'));
     }
 
     public function action(Request $request, $id)

@@ -3,12 +3,12 @@
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\Frontend\HomeController;
-use App\Http\Controllers\Frontend\LeaveRequestController;
+use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\HomeContoller;
 use App\Http\Controllers\HRController;
+use App\Http\Controllers\LeaveRequestController as ControllersLeaveRequestController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
-use App\Http\Controllers\SickLeaveRequestController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskTransferController;
