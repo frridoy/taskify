@@ -2,6 +2,8 @@
 @section('content')
 <div class="container py-4">
     <!-- Page Header with Back Button -->
+
+    @if(auth()->user()->role == 1 ||auth()->user()->role == 2 )
     <div class="d-flex justify-content-between align-items-center mb-4">
         <a href="{{ route('tasks.index') }}" class="btn btn-outline-primary">
             <i class="fas fa-arrow-left me-1"></i> Back to Task List
@@ -9,6 +11,16 @@
         <h4 class="mb-0 text-secondary fw-bold">Task Details</h4>
         <div style="width: 135px"></div> <!-- Spacer for alignment -->
     </div>
+    @else
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <a href="{{ route('my.tasks') }}" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left me-1"></i> Back to Task List
+        </a>
+        <h4 class="mb-0 text-secondary fw-bold">Task Details</h4>
+        <div style="width: 135px"></div> <!-- Spacer for alignment -->
+    </div>
+
+    @endif
 
     <div class="card shadow border-0 mb-4">
         <div class="card-header bg-gradient-primary text-white py-3">

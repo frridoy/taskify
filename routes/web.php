@@ -6,7 +6,6 @@ use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\HomeContoller;
 use App\Http\Controllers\HRController;
-use App\Http\Controllers\LeaveRequestController as ControllersLeaveRequestController;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
