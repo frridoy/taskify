@@ -21,10 +21,10 @@ return [
     ],
 
     'user_type' => [
-        1 => 'Employee',
-        2 => 'Team Leader',
-        3 => 'HR',
-        4 => 'Canidate',
+        2 => 'HR',
+        3 => 'Employee',
+        4 => 'Team Leader',
+        5 => 'Canidate',
     ]
 
 ];

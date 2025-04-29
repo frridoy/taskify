@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notice;
+use App\Models\Team;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -66,10 +67,34 @@ class NoticeController extends Controller
 
     public function index()
     {
-
-        $notices = Notice::orderBy('id', 'desc')->paginate(5);
         $user_types = config('static_array.user_type');
+        $currentDate = Carbon::now();
 
+        $authUser = Auth::user();
+        $authId = $authUser->id;
+
+        $team_leader = Team::where('user_id', $authId)
+            ->where('is_team_leader', 1)
+            ->first();
+
+        if ($authUser->role == 1 || $authUser->role == 2) {
+            $notices = Notice::orderBy('id', 'desc')->paginate(5);
+        }
+        else {
+            if ($authUser->role == 3 && $team_leader) {
+                $user_type_for_notice_get = "4";  //this $user_type_for_notice_get one form db where 4 is for team leader
+            } elseif ($authUser->role == 3) {
+                $user_type = "3";  //this one form db where 3 is for team leader
+            } else {
+                $user_type_for_notice_get = $authUser->role;
+            }
+            $notices = Notice::orderBy('id', 'desc')
+                ->whereJsonContains('notice_for', $user_type_for_notice_get)
+                ->where('publish_date', '<=', $currentDate)
+                ->where('expire_date', '>=', $currentDate)
+                ->where('is_active', 1)
+                ->paginate(5);
+        }
         return view('notices.index', compact('notices', 'user_types'));
     }
 }

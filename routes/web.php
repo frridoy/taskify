@@ -76,6 +76,8 @@ Route::middleware(['auth'])->group(function () {
     Route::put('leave-request/{id}/action', [LeaveRequestController::class, 'action'])->name('leave_request_action');
 
     Route::get('organization-info-index', [SettingController::class, 'index'])->name('office_info_setup.index');
+
+    Route::get('notice-index', [NoticeController::class, 'index'])->name('notice.index');
 });
 
 
@@ -96,7 +98,7 @@ Route::middleware(['auth', 'isAdmin_isManager'])->group(function () {
 
     Route::get('notice', [NoticeController::class, 'notice'])->name('notice.create');
     Route::post('notice', [NoticeController::class, 'store'])->name('notice.store');
-    Route::get('notice-index', [NoticeController::class, 'index'])->name('notice.index');
+    // Route::get('notice-index', [NoticeController::class, 'index'])->name('notice.index');
 });
 
 
