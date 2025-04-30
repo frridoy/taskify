@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notice;
+use App\Models\Setting;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -96,5 +97,31 @@ class NoticeController extends Controller
                 ->paginate(5);
         }
         return view('notices.index', compact('notices', 'user_types'));
+    }
+
+    public function edit($id)
+    {
+        $notice = Notice::findOrFail($id);
+
+        $notice_types = config('static_array.notice_type');
+        $user_types = config('static_array.user_type');
+
+        $lastReference = Notice::orderBy('id', 'desc')
+            ->select('reference_no')
+            ->first();
+
+        $last_reference_number = $lastReference ? $lastReference->reference_no : '';
+
+        return view('notices.create', compact('notice_types', 'user_types', 'last_reference_number', 'notice'));
+
+    }
+
+    public function view($id){
+
+        $notice = Notice::findOrFail($id);
+        $notice_types = config('static_array.notice_type');
+        $user_types = config('static_array.user_type');
+        $organization_info = Setting::select(['company_name', 'company_location', 'company_phone', 'company_email'])->first();
+        return view('notices.view', compact('notice', 'notice_types', 'user_types', 'organization_info'));
     }
 }

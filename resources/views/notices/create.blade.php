@@ -419,7 +419,7 @@
                                         <div class="form-group">
                                             <label for="title">Title <span class="required-field">*</span></label>
                                             <input type="text" class="form-control @error('title') is-invalid @enderror"
-                                                id="title" name="title" value="{{ old('title') }}" placeholder="Enter notice title">
+                                                id="title" name="title" value="{{old('title', isset($notice) ? $notice->title : '') }}" placeholder="Enter notice title">
                                             @error('title')
                                                 <p class="invalid-feedback">{{ $message }}</p>
                                             @enderror
@@ -451,7 +451,7 @@
                                             <input type="datetime-local"
                                                 class="form-control @error('meeting_date_time') is-invalid @enderror"
                                                 id="meeting_date_time" name="meeting_date_time"
-                                                value="{{ old('meeting_date_time') }}"
+                                               value="{{old('meeting_date_time', isset($notice) ? $notice->meeting_date_time : '') }}"
                                                 placeholder="Enter meeting date and time">
                                             @error('meeting_date_time')
                                                 <p class="invalid-feedback">{{ $message }}</p>
@@ -488,7 +488,8 @@
                                             <div class="date-input-group">
                                                 <input type="datetime-local"
                                                     class="form-control @error('publish_date') is-invalid @enderror"
-                                                    id="publish_date" name="publish_date" value="{{ old('publish_date') }}">
+                                                    id="publish_date" name="publish_date"
+                                                    value="{{old('publish_date', isset($notice) ? $notice->publish_date : '') }}">
                                                 <i class="far fa-calendar-alt"></i>
                                             </div>
                                             @error('publish_date')
@@ -502,7 +503,8 @@
                                             <div class="date-input-group">
                                                 <input type="datetime-local"
                                                     class="form-control @error('expire_date') is-invalid @enderror"
-                                                    id="expire_date" name="expire_date" value="{{ old('expire_date') }}">
+                                                    id="expire_date" name="expire_date"
+                                                    value="{{old('expire_date', isset($notice) ? $notice->expire_date : '') }}">
                                                 <i class="far fa-calendar-alt"></i>
                                             </div>
                                             @error('expire_date')
@@ -519,7 +521,7 @@
                                             <label for="description">Description <span class="required-field">*</span></label>
                                             <textarea class="form-control @error('description') is-invalid @enderror"
                                                 id="description" name="description" rows="6"
-                                                placeholder="Enter detailed notice description">{{ old('description') }}</textarea>
+                                                placeholder="Enter detailed notice description">{{old('description', isset($notice) ? $notice->description : '') }}</textarea>
                                             @error('description')
                                                 <p class="invalid-feedback">{{ $message }}</p>
                                             @enderror
@@ -551,7 +553,8 @@
                                     <i class="fas fa-arrow-left icon-in-btn"></i> Back to Notices
                                 </a>
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-paper-plane icon-in-btn"></i> Publish Notice
+                                    <i class="fas fa-paper-plane icon-in-btn"></i>
+                                    {{isset($notice) ? 'Update Notice' : 'Publish Notice'}}
                                 </button>
                             </div>
                         </form>

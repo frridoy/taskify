@@ -98,7 +98,8 @@ Route::middleware(['auth', 'isAdmin_isManager'])->group(function () {
 
     Route::get('notice', [NoticeController::class, 'notice'])->name('notice.create');
     Route::post('notice', [NoticeController::class, 'store'])->name('notice.store');
-    // Route::get('notice-index', [NoticeController::class, 'index'])->name('notice.index');
+    Route::get('notice-edit/{id}', [NoticeController::class, 'edit'])->name('notice.edit');
+    Route::get('notice-view/{id}', [NoticeController::class, 'view'])->name('notice.view');
 });
 
 

@@ -58,12 +58,13 @@
                                         </td>
                                         <td class="text-center">
                                             @if (auth()->user()->role == 1)
-                                                <a href="" class="btn btn-sm btn-primary">
+                                                <a href="{{route('notice.edit', $notice->id)}}" class="btn btn-sm btn-primary">
                                                     <i class="bi bi-pencil"></i>
                                                 </a>
-                                            @else
-                                                <i class="bi bi-x-circle text-muted"></i>
-                                            @endif
+                                                @endif
+                                                <a href="{{route('notice.view', $notice->id)}}" class="btn btn-sm btn-info">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
                                         </td>
                                     </tr>
                                 @endforeach
