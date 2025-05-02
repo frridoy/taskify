@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Models\TaskNotification;
 use App\Models\TaskTransfer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,7 +30,14 @@ class TaskTransferController extends Controller
             'task_remark' => $request->task_remark,
         ]);
 
+
         $task->update(['user_id' => $newUserId]);
+
+        TaskNotification::create([
+            'task_id' => $task->id,
+            'user_id' => $newUserId,
+            'task_name' => 'Transferred Task',
+        ]);
 
         notify()->success('Task transferred successfully');
         return redirect()->back();
