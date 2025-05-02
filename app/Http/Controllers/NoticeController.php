@@ -49,7 +49,6 @@ class NoticeController extends Controller
 
         $publish_date = $request->publish_date ?? Carbon::today()->toDateString();
 
-
         Notice::create([
             'title' => ucwords($request->title),
             'notice_type' => ucwords($request->notice_type),
@@ -59,7 +58,8 @@ class NoticeController extends Controller
             'publish_date' => $publish_date,
             'expire_date' => $request->expire_date,
             'description' => $request->description,
-            'is_active' => $is_active
+            'is_active' => $is_active,
+            'authorized_by' => Auth::user()->id,
         ]);
 
         notify()->success('Notice created successfully.');
@@ -118,10 +118,11 @@ class NoticeController extends Controller
 
     public function view($id){
 
-        $notice = Notice::findOrFail($id);
+        $notice = Notice::with(['user:id,name,designation,signature'])->findOrFail($id);
         $notice_types = config('static_array.notice_type');
         $user_types = config('static_array.user_type');
-        $organization_info = Setting::select(['company_name', 'company_location', 'company_phone', 'company_email'])->first();
+        $organization_info = Setting::select(['company_name', 'company_location', 'company_phone', 'company_email', 'company_logo'])->first();
+        // dd($organization_info);
         return view('notices.view', compact('notice', 'notice_types', 'user_types', 'organization_info'));
     }
 }

@@ -57,7 +57,7 @@
                                             @endif
                                         </td>
                                         <td class="text-center">
-                                            @if (auth()->user()->role == 1)
+                                            @if (auth()->user()->role == 2)
                                                 <a href="{{route('notice.edit', $notice->id)}}" class="btn btn-sm btn-primary">
                                                     <i class="bi bi-pencil"></i>
                                                 </a>

@@ -29,7 +29,7 @@ class UserTableSeeder extends Seeder
 
 
         User::create([
-            'name' => 'HR Manager',
+            'name' => 'Foyzur Rahman Ridoy',
             'email' => 'manager@app.com',
             'role' => 2,
             'designation' => 'HR Manager',

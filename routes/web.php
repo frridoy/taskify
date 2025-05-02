@@ -55,6 +55,8 @@ Route::middleware(['auth', 'isEmployee'])->group(function () {
 Route::middleware(['auth', 'isHR'])->group(function () {
 
     Route::get('hr/dashboard', [HRController::class, 'dashboard'])->name('hr.dashboard');
+    Route::get('notice', [NoticeController::class, 'notice'])->name('notice.create');
+
 });
 
 
@@ -78,6 +80,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('organization-info-index', [SettingController::class, 'index'])->name('office_info_setup.index');
 
     Route::get('notice-index', [NoticeController::class, 'index'])->name('notice.index');
+    Route::get('notice-view/{id}', [NoticeController::class, 'view'])->name('notice.view');
 });
 
 
@@ -96,10 +99,8 @@ Route::middleware(['auth', 'isAdmin_isManager'])->group(function () {
     Route::post('team-store', [TeamController::class, 'store'])->name('team.store');
     Route::get('team-view/{team_number}', [TeamController::class, 'team_view'])->name('team.view');
 
-    Route::get('notice', [NoticeController::class, 'notice'])->name('notice.create');
     Route::post('notice', [NoticeController::class, 'store'])->name('notice.store');
     Route::get('notice-edit/{id}', [NoticeController::class, 'edit'])->name('notice.edit');
-    Route::get('notice-view/{id}', [NoticeController::class, 'view'])->name('notice.view');
 });
 
 
