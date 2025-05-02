@@ -11,7 +11,7 @@ class TaskNotificationController extends Controller
      public function task_notification(){
 
         $authid = Auth::id();
-        $taskNotification = TaskNotification::where('user_id', $authid)->get();
+        $taskNotification = TaskNotification::where('user_id', $authid)->paginate(1);
         return view('taskNotification.index', compact('taskNotification'));
      }
 }
