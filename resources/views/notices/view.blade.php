@@ -172,6 +172,7 @@
                     </div>
                     <div class="col-md-2">
                         <!-- Space for additional header content if needed -->
+                        <img src="{{ asset('office/'.$organization_info->company_logo) }}" alt="Company Logo" class="img-fluid rounded" style="max-width: 100%; max-height: 100px;">
                     </div>
                 </div>
             </div>
@@ -180,7 +181,7 @@
             <div class="notice-meta d-flex justify-content-between mb-4">
                 <div class="ref-no">
                     <span class="meta-label">Reference No:</span>
-                    <span class="meta-value">{{ $notice->reference_no ?? 'N/A' }}</span>
+                    <span class="meta-value">{{ $notice->reference_no ?? '' }}</span>
                 </div>
                 <div class="notice-date">
                     <span class="meta-label">Date:</span>
@@ -256,23 +257,15 @@
             <div class="notice-footer mt-5">
                 <div class="row">
                     <div class="col-md-7">
-                    <!-- Additional footer information or disclaimers can go here -->
-                    {{-- <div class="footer-info">
-                        <p class="small text-muted mb-0">This is an official notice from {{$organization_info->company_name}}.</p>
-                    </div> --}}
-                </div>
-
-                    {{-- <div class="col-md-5">
-                    <div class="signature-area text-end">
-                        <div class="signature-line"></div>
-                        <div class="signatory">
-                            <p class="signatory-title mb-0">Authorized Signature</p>
-                            <p class="signatory-name mb-0"><strong>{{$notice->user->name}}</strong></p>
-                            <p class="signatory-designation mb-0"><em>{{$notice->user->designation}}</em></p>
-                            <p class="signatory-org mb-0">{{$organization_info->company_name}}</p>
-                        </div>
+                    <div class="footer-info">
+                        <ol class="small text-muted mt-2 mb-0">
+                            <li>1. This notice is an official communication issued by {{ $organization_info->company_name }}</li>
+                            <li>2. The purpose of this notice is to provide important information relevant to the recipients</li>
+                            <li>3. This communication reflects the official stance or announcement of the organization</li>
+                            <li>4. For any questions or further details, please contact the authorized personnel of {{ $organization_info->company_name }}</li>
+                        </ol>
                     </div>
-                </div> --}}
+                </div>
                     <div class="col-md-5">
                         <div class="signature-area text-end">
                             @if ($notice->user->signature)
