@@ -83,9 +83,11 @@ class NoticeController extends Controller
         }
         else {
             if ($authUser->role == 3 && $team_leader) {
+                // dd($team_leader);
                 $user_type_for_notice_get = "4";  //this $user_type_for_notice_get one form db where 4 is for team leader
             } elseif ($authUser->role == 3) {
-                $user_type = "3";  //this one form db where 3 is for team leader
+                // dd($authUser->role);
+                $user_type_for_notice_get = "3";  //this one form db where 3 is for employee
             } else {
                 $user_type_for_notice_get = $authUser->role;
             }
