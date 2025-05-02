@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\HelperFlag;
 use App\Models\Task;
+use App\Models\TaskNotification;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -156,7 +157,7 @@ class TaskController extends Controller
         $flag = HelperFlag::firstOrCreate(['id' => 1], ['assign_flag' => 0]);
         $selectedUser = $users[$flag->assign_flag] ?? $users->first();
 
-        Task::create([
+        $task = Task::create([
             'task_name' => ucwords($request->task_name),
             'user_id' => $selectedUser->id,
             'status' => 0,
@@ -171,8 +172,14 @@ class TaskController extends Controller
             $flag->update(['assign_flag' => $next >= $users->count() ? 0 : $next]);
         }
 
+        TaskNotification::create([
+            'task_id' => $task->id,
+            'user_id' => $selectedUser->id,
+            'task_name' => $request->task_name,
+        ]);
+
         notify()->success('Task assigned to ' . $selectedUser->name);
-        return back();
+        return redirect()->back();
     }
 
     public function show($taskId)
