@@ -14,17 +14,22 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if ($taskNotification->count() > 0)
-                                @foreach ($taskNotification as $task)
+                            @if ($taskNotifications->count() > 0)
+                                @foreach ($taskNotifications as $taskNotification)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $task->task_name }}</td>
-                                        <td></td>
+                                        <td>{{ $taskNotification->task_name }}</td>
+                                        <td class="text-center">
+                                            <a href="{{ route('tasks.show.delete', ['task' => $taskNotification->task_id, 'notification_id' => $taskNotification->id]) }}"
+                                                class="btn btn-sm btn-primary">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                        </td>
                                     </tr>
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="3" class="text-center text-danger">No data found.</td>
+                                    <td colspan="3" class="text-center text-danger">No task found.</td>
                                 </tr>
                             @endif
 
@@ -32,7 +37,7 @@
                     </table>
                 </div>
 
-              {{ $taskNotification->links() }}
+                {{ $taskNotifications->links() }}
             </div>
         </div>
 

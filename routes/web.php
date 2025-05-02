@@ -53,6 +53,8 @@ Route::middleware(['auth', 'isEmployee'])->group(function () {
     Route::get('graph', [EmployeeController::class, 'graph'])->name('monthly.graph');
 
     Route::get('task-notification', [TaskNotificationController::class, 'task_notification'])->name('task.notification');
+    Route::get('tasks/{task}/details/{notification_id}', [TaskNotificationController::class, 'show'])->name('tasks.show.delete');
+
 });
 
 Route::middleware(['auth', 'isHR'])->group(function () {
