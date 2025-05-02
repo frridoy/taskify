@@ -409,9 +409,9 @@
                             <p class="form-subtitle">Create and publish a new notice in the system</p>
                         </div>
 
-                        <form action="{{ route('notice.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ isset($notice) ? route('notice.update', $notice->id) : route('notice.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
-
+                            @method(isset($notice) ? 'PUT' : 'POST')
                             <div class="form-section">
                                 <h3 class="section-title">Basic Information</h3>
                                 <div class="row">

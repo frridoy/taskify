@@ -80,8 +80,7 @@ class NoticeController extends Controller
 
         if ($authUser->role == 1 || $authUser->role == 2) {
             $notices = Notice::orderBy('id', 'desc')->paginate(5);
-        }
-        else {
+        } else {
             if ($authUser->role == 3 && $team_leader) {
                 // dd($team_leader);
                 $user_type_for_notice_get = "4";  //this $user_type_for_notice_get one form db where 4 is for team leader
@@ -115,10 +114,46 @@ class NoticeController extends Controller
         $last_reference_number = $lastReference ? $lastReference->reference_no : '';
 
         return view('notices.create', compact('notice_types', 'user_types', 'last_reference_number', 'notice'));
-
     }
 
-    public function view($id){
+    public function update(Request $request, $id)
+    {
+        $validation = Validator::make($request->all(), [
+            'title' => 'required',
+            'notice_type' => 'required',
+            'notice_for' => 'required',
+            'expire_date' => 'required|after:publish_date',
+            'description' => 'required',
+        ]);
+
+        if ($validation->fails()) {
+            return redirect()->back()->withErrors($validation)->withInput();
+        }
+
+        $notice = Notice::findOrFail($id);
+
+        $is_active = $request->has('is_active') ? 1 : 0;
+        $notice_for = json_encode($request->notice_for);
+        $publish_date = $request->publish_date ?? Carbon::today()->toDateString();
+
+        $notice->update([
+            'title' => ucwords($request->title),
+            'notice_type' => ucwords($request->notice_type),
+            'notice_for' => $notice_for,
+            'reference_no' => $request->reference_no,
+            'meeting_date_time' => $request->meeting_date_time,
+            'publish_date' => $publish_date,
+            'expire_date' => $request->expire_date,
+            'description' => $request->description,
+            'is_active' => $is_active,
+        ]);
+
+        notify()->success('Notice updated successfully.');
+        return redirect()->route('notice.edit', $notice->id);
+    }
+
+    public function view($id)
+    {
 
         $notice = Notice::with(['user:id,name,designation,signature'])->findOrFail($id);
         $notice_types = config('static_array.notice_type');
