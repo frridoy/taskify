@@ -11,6 +11,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TaskNotificationController;
 use App\Http\Controllers\TaskTransferController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\UserController;
@@ -50,6 +51,8 @@ Route::middleware(['auth', 'isEmployee'])->group(function () {
     Route::patch('tasks/{task}/complete', [EmployeeController::class, 'complete'])->name('task.complete');
     Route::get('completed-task', [EmployeeController::class, 'completed_tasks'])->name('completed_tasks');
     Route::get('graph', [EmployeeController::class, 'graph'])->name('monthly.graph');
+
+    Route::get('task-notification', [TaskNotificationController::class, 'task_notification'])->name('task.notification');
 });
 
 Route::middleware(['auth', 'isHR'])->group(function () {

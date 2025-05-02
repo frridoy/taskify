@@ -11,7 +11,7 @@
         </li>
 
 
-        <li class="mx-3">
+        {{-- <li class="mx-3">
             <div class="position-relative">
                 <a href="#" class="text-dark position-relative">
                     <i class="bi bi-bell fs-5"></i>
@@ -20,8 +20,31 @@
                     </span>
                 </a>
             </div>
-        </li>
+        </li> --}}
 
+        @php
+            $taskNotificationCount = 0;
+            if (isset($taskNotificationCount)) {
+                $taskNotificationCount = \App\Models\TaskNotification::where('user_id', Auth::id())->count();
+            }
+        @endphp
+        @if (auth()->user()->role == 3)
+            <li class="mx-3">
+                <div class="position-relative">
+                    <a href="{{route('task.notification')}}" class="text-dark position-relative">
+                        <i class="bi bi-bell fs-5"></i>
+                        @if (isset($taskNotificationCount))
+                            <span
+                                class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle
+                            {{ $taskNotificationCount > 0 ? 'bg-danger' : 'bg-success' }}">
+                                {{ $taskNotificationCount }}
+                            </span>
+                        @endif
+
+                    </a>
+                </div>
+            </li>
+        @endif
 
         <li class="mx-3">
             <div class="text-center small-text-12">
@@ -31,9 +54,10 @@
 
         <li class="dropdown ms-auto">
             <div class="dropdown">
-                <a href="#" class="d-flex align-items-center gap-2 text-decoration-none dropdown-toggle" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <a href="#" class="d-flex align-items-center gap-2 text-decoration-none dropdown-toggle"
+                    id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="{{ Auth::user()->profile_photo ? Storage::url(Auth::user()->profile_photo) : asset('assets/icon/user-avatar.svg') }}"
-                         alt="avatar" class="main-nav-avatar rounded-circle" style="width: 40px; height: 40px;" />
+                        alt="avatar" class="main-nav-avatar rounded-circle" style="width: 40px; height: 40px;" />
                     <span class="small-text-12">
                         Hello! <span class="fw-semibold navbar-user-name">{{ Auth::user()->name }}</span>
                     </span>
@@ -58,5 +82,3 @@
         </li>
     </ul>
 </nav>
-
-
