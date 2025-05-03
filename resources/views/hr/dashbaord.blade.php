@@ -242,6 +242,20 @@
                 <span>3% vs last week</span>
             </div>
         </div>
+        <div class="stat-card missed">
+            <div class="stat-header">
+                <div class="stat-icon">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+            </div>
+            <div class="stat-label">Missed Total Tasks</div>
+            <div class="stat-value">{{$total_missed_tasks}}</div>
+            <div class="stat-description">Tasks due this week</div>
+            <div class="stat-trend">
+                <i class="fas fa-arrow-down me-1 trend-down"></i>
+                <span>3% vs last week</span>
+            </div>
+        </div>
     </div>
 
 </div>

@@ -26,8 +26,9 @@ class SuperAdminController extends Controller
             ->whereDate('dateLimit', '<', Carbon::now()->format('Y-m-d'))
             ->count();
 
+        $total_missed_tasks = $missed_pending_tasks + $missed_processing_tasks;
         $total_tasks = $pending_tasks + $processing_tasks + $completed_tasks;
 
-        return view('hr.dashbaord', compact('total_tasks', 'pending_tasks', 'processing_tasks', 'completed_tasks', 'missed_pending_tasks', 'missed_processing_tasks'));
+        return view('hr.dashbaord', compact('total_tasks', 'pending_tasks', 'processing_tasks', 'completed_tasks', 'missed_pending_tasks', 'missed_processing_tasks', 'total_missed_tasks'));
     }
 }
