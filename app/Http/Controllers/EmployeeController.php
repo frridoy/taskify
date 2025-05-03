@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Reward;
 use App\Models\Task;
 use App\Models\Team;
 use App\Models\User;
@@ -28,7 +29,6 @@ class EmployeeController extends Controller
             $pending_tasks = Task::whereIn('user_id', $teamMemberIds)
                 ->where('status', 0)
                 ->get();
-
         } else {
 
             $pending_tasks = Task::where('user_id', $userId)
@@ -46,7 +46,6 @@ class EmployeeController extends Controller
             $processing_tasks = Task::whereIn('user_id', $teamMemberIds)
                 ->where('status', 1)
                 ->get();
-
         } else {
 
             $processing_tasks = Task::where('user_id', $userId)
@@ -65,7 +64,6 @@ class EmployeeController extends Controller
             $completed_tasks = Task::whereIn('user_id', $teamMemberIds)
                 ->where('status', 2)
                 ->get();
-
         } else {
 
             $completed_tasks = Task::where('user_id', $userId)
@@ -291,6 +289,17 @@ class EmployeeController extends Controller
         if (Auth::user()->role == 3 && $task->status == 1) {
             $task->status = 2;
             $task->save();
+
+            $today = date('Y-m-d');
+            $dateLimit = $task->dateLimit;
+
+            if ($dateLimit >= $today) {
+                Reward::create([
+                    'user_id' => Auth::id(),
+                    'task_id' => $task->id,
+                    'points' => 10,
+                ]);
+            }
 
             return redirect()->back()->with('success', 'Task completed successfully.');
         }
