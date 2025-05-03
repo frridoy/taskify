@@ -17,7 +17,7 @@
                 <!-- Filter Section -->
                 <form action="{{ route('tasks.index') }}" method="GET" id="filterForm">
                     <div class="row mb-3">
-                        <div class="col-md-2 mb-2">
+                        <div class="col-md-1 mb-2">
                             <label for="status_filter" class="form-label">Status</label>
                             <select name="status" id="status_filter" class="form-select">
                                 <option value="">All Status</option>
@@ -27,13 +27,26 @@
                             </select>
                         </div>
                         @if(auth()->user()->role == 1 || auth()->user()->role == 2 ||  $teamLeader ==true)
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-2 mb-2">
                             <label for="assigned_to_filter" class="form-label">Assigned To</label>
                             <select name="user_id" id="assigned_to_filter" class="form-select select2">
                                 <option value="">All Users</option>
                                 @foreach ($users as $user)
                                     @if ($user->role == 3)
                                         <option value="{{ $user->id }}" {{ isset($_GET['user_id']) && $_GET['user_id'] == $user->id ? 'selected' : '' }}>
+                                            {{ $user->id }}- {{ $user->name }}
+                                        </option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <label for="created_by_filter" class="form-label">Created By</label>
+                            <select name="created_by_filter" id="created_by_filter" class="form-select select2">
+                                <option value="">All Users</option>
+                                @foreach ($users as $user)
+                                    @if ($user->role == 3)
+                                        <option value="{{ $user->id }}" {{ isset($_GET['created_by']) && $_GET['created_by'] == $user->id ? 'selected' : '' }}>
                                             {{ $user->id }}- {{ $user->name }}
                                         </option>
                                     @endif
@@ -184,7 +197,11 @@
                         </tbody>
                     </table>
                 </div>
-                {{$tasks->links()}}
+                <div class="d-flex justify-content-end mt-3">
+                    @if (isset($tasks) && $tasks->hasPages())
+                        {{ $tasks->appends(request()->all())->links() }}
+                    @endif
+                </div>
             </div>
         </div>
 

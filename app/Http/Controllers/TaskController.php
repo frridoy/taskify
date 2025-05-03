@@ -50,6 +50,10 @@ class TaskController extends Controller
             $query->where('user_id', $request->user_id);
         }
 
+        if ($request->has('created_by_filter') && $request->created_by_filter != '') {
+            $query->where('created_by', $request->created_by_filter);
+        }
+
         if ($request->has('urgency') && $request->urgency != '') {
             $query->where('task_urgency', $request->urgency);
         }
