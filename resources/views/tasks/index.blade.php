@@ -1,14 +1,17 @@
 @extends('setup.master')
 @section('content')
     <div class="container-fluid py-3">
-        {{-- <h2 class="text-center mb-3">{{ $list_title }}</h2> --}}
-
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-wrap justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Task Management</h6>
-                    <a href="{{ route('tasks.assign') }}" class="btn btn-primary mt-2 mt-md-0">
+                <div class="d-flex flex-wrap gap-2 mt-2 mt-md-0">
+                    <a href="{{ route('tasks.assign') }}" class="btn btn-primary">
                         <i class="fas fa-tasks"></i> Create Task
                     </a>
+                    <a href="{{ route('tasks.export.csv', request()->query()) }}" class="btn btn-success">
+                        <i class="fas fa-file-csv"></i> Export CSV
+                    </a>
+                </div>
             </div>
             <div class="card-body">
                 <!-- Filter Section -->
@@ -121,13 +124,13 @@
                                     </td>
                                     <td>
                                         @if ($task->task_urgency == 'emergency')
-                                            <span class="fw-bold text-danger">🔴 Emergency</span>
+                                            <span class="fw-bold text-danger">Emergency</span>
                                         @elseif($task->task_urgency == 'high_priority')
-                                            <span class="fw-bold text-warning">🟡 High Priority</span>
+                                            <span class="fw-bold text-warning">High Priority</span>
                                         @elseif($task->task_urgency == 'normal_priority')
-                                            <span class="fw-bold text-success">🟢 Normal Priority</span>
+                                            <span class="fw-bold text-success">Normal Priority</span>
                                         @else
-                                            <span class="fw-bold text-secondary">⚪ Low Priority</span>
+                                            <span class="fw-bold text-secondary">Low Priority</span>
                                         @endif
                                     </td>
                                     <td>{{ \Carbon\Carbon::parse($task->created_at)->format('d M, Y') }}</td>
@@ -181,12 +184,7 @@
                         </tbody>
                     </table>
                 </div>
-
-                <div class="d-flex justify-content-end mt-3">
-                    @if (isset($tasks) && $tasks->hasPages())
-                        {{ $tasks->appends(request()->all())->links() }}
-                    @endif
-                </div>
+                {{$tasks->links()}}
             </div>
         </div>
 

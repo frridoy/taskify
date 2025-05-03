@@ -92,6 +92,7 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'isAdmin_isManager'])->group(function () {
 
     Route::get('task-assign-index', [TaskController::class, 'index'])->name('tasks.index');
+    Route::get('/tasks/export/csv', [TaskController::class, 'exportCsv'])->name('tasks.export.csv');
 
     Route::get('user-index', [UserController::class, 'index'])->name('users.index');
     Route::get('user-create', [UserController::class, 'create'])->name('users.create');

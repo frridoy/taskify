@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Response;
 
 class TaskController extends Controller
 {
@@ -57,11 +58,65 @@ class TaskController extends Controller
             $query->where('task_name', 'like', '%' . $request->task_name . '%');
         }
 
-        $tasks = $query->paginate(10);
+        $tasks = $query->paginate(5);
 
         $users = User::where('role', 3)->where('status', 1)->get();
 
         return view('tasks.index', compact('tasks', 'list_title', 'users', 'teamLeader', 'userId'));
+    }
+
+    public function exportCsv(Request $request)
+    {
+        $query = Task::with(['user', 'creator']);
+        if ($request->has('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->has('user_id')) {
+            $query->where('user_id', $request->user_id);
+        }
+
+        if ($request->has('urgency')) {
+            $query->where('task_urgency', $request->urgency);
+        }
+
+        if ($request->has('task_name')) {
+            $query->where('task_name', 'like', '%' . $request->task_name . '%');
+        }
+
+        $tasks = $query->get();
+
+        $headers = [
+            "Content-type" => "text/csv",
+            "Content-Disposition" => "attachment; filename=tasks.csv",
+            "Pragma" => "no-cache",
+            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+            "Expires" => "0"
+        ];
+
+        $columns = ['Task Name', 'Description', 'Assigned To', 'Created By', 'Date Limit', 'Status', 'Urgency', 'Created At'];
+
+        $callback = function () use ($tasks, $columns) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columns);
+
+            foreach ($tasks as $task) {
+                fputcsv($file, [
+                    $task->task_name,
+                    $task->task_description,
+                    $task->user->name ?? 'Unassigned',
+                    $task->creator->name ?? 'Unknown',
+                    $task->dateLimit ? \Carbon\Carbon::parse($task->dateLimit)->format('d M, Y') : 'N/A',
+                    $task->status == 0 ? 'Pending' : ($task->status == 1 ? 'Processing' : 'Completed'),
+                    ucfirst(str_replace('_', ' ', $task->task_urgency)),
+                    $task->created_at->format('d M, Y'),
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return Response::stream($callback, 200, $headers);
     }
 
     public function assign()
