@@ -10,5 +10,7 @@ class Reward extends Model
         'user_id',
         'task_id',
         'points',
+        'amount_for_per_point_completed_task',
+        'total_amount_for_completed_task',
     ];
 }

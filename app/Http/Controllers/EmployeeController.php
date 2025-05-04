@@ -293,11 +293,16 @@ class EmployeeController extends Controller
             $today = date('Y-m-d');
             $dateLimit = $task->dateLimit;
 
+            $points = 100;
+            $pointsForPerCompletedTask = 10;
+
             if ($dateLimit >= $today) {
                 Reward::create([
                     'user_id' => Auth::id(),
                     'task_id' => $task->id,
-                    'points' => 10,
+                    'points' => $points,
+                    'amount_for_per_point_completed_task' => $pointsForPerCompletedTask,
+                    'total_amount_for_completed_task' => $points * $pointsForPerCompletedTask,
                 ]);
             }
 
