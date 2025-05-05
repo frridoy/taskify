@@ -12,6 +12,26 @@
                 @endif
             </div>
             <div class="card-body">
+
+                <form action="{{ route('notice.index') }}" method="GET" id="filterForm">
+                    <div class="row mb-3">
+                        <div class="col-md-3 mb-2">
+                            <label for="title" class="form-label">Search by Title</label>
+                            <input type="text" name="title" id="title" class="form-control" value="{{ $title ?? '' }}" placeholder="Enter notice title...">
+                        </div>
+                        <div class="col-md-3 mb-2 d-flex align-items-end">
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-filter"></i> Filter
+                                </button>
+                                <a href="{{ route('notice.index') }}" class="btn btn-secondary">
+                                    <i class="fas fa-sync"></i> Reset
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover" id="usersTable">
                         <thead class="table-dark">

@@ -66,7 +66,50 @@ class NoticeController extends Controller
         return redirect()->back();
     }
 
-    public function index()
+    // public function index(Request $request)
+    // {
+    //     $user_types = config('static_array.user_type');
+    //     $currentDate = Carbon::now();
+
+    //     $authUser = Auth::user();
+    //     $authId = $authUser->id;
+
+    //     $team_leader = Team::where('user_id', $authId)
+    //         ->where('is_team_leader', 1)
+    //         ->first();
+
+    //         $query = Notice::orderBy('id', 'desc');
+
+    //         // if ($request->has('title') && $request->title != '') {
+    //         //     $query->where('title', $request->title);
+    //         // }
+    //         if ($request->has('title') && $request->title != '') {
+    //             $query->where('title', 'like', '%' . $request->title . '%');
+    //         }
+
+    //     if ($authUser->role == 1 || $authUser->role == 2) {
+    //         $notices = Notice::orderBy('id', 'desc')->paginate(5);
+    //     } else {
+    //         if ($authUser->role == 3 && $team_leader) {
+    //             // dd($team_leader);
+    //             $user_type_for_notice_get = "4";  //this $user_type_for_notice_get one form db where 4 is for team leader
+    //         } elseif ($authUser->role == 3) {
+    //             // dd($authUser->role);
+    //             $user_type_for_notice_get = "3";  //this one form db where 3 is for employee
+    //         } else {
+    //             $user_type_for_notice_get = $authUser->role;
+    //         }
+    //         $notices = Notice::orderBy('id', 'desc')
+    //             ->whereJsonContains('notice_for', $user_type_for_notice_get)
+    //             ->where('publish_date', '<=', $currentDate)
+    //             ->where('expire_date', '>=', $currentDate)
+    //             ->where('is_active', 1)
+    //             ->paginate(5);
+    //     }
+    //     return view('notices.index', compact('notices', 'user_types'));
+    // }
+
+    public function index(Request $request)
     {
         $user_types = config('static_array.user_type');
         $currentDate = Carbon::now();
@@ -78,25 +121,35 @@ class NoticeController extends Controller
             ->where('is_team_leader', 1)
             ->first();
 
+        $query = Notice::orderBy('id', 'desc');
+
+
+        if ($request->has('title') && $request->title != '') {
+            $query->where('title', 'like', '%' . $request->title . '%');
+        }
+
         if ($authUser->role == 1 || $authUser->role == 2) {
-            $notices = Notice::orderBy('id', 'desc')->paginate(5);
+            $notices = $query->paginate(5);
         } else {
+
             if ($authUser->role == 3 && $team_leader) {
-                // dd($team_leader);
-                $user_type_for_notice_get = "4";  //this $user_type_for_notice_get one form db where 4 is for team leader
+
+                $user_type_for_notice_get = "4";  // This value comes from the database, where 4 represents team leader
             } elseif ($authUser->role == 3) {
-                // dd($authUser->role);
-                $user_type_for_notice_get = "3";  //this one form db where 3 is for employee
+
+                $user_type_for_notice_get = "3";  // This value comes from the database, where 3 represents employee
             } else {
+
                 $user_type_for_notice_get = $authUser->role;
             }
-            $notices = Notice::orderBy('id', 'desc')
-                ->whereJsonContains('notice_for', $user_type_for_notice_get)
+
+            $notices = $query->whereJsonContains('notice_for', $user_type_for_notice_get)
                 ->where('publish_date', '<=', $currentDate)
                 ->where('expire_date', '>=', $currentDate)
                 ->where('is_active', 1)
                 ->paginate(5);
         }
+
         return view('notices.index', compact('notices', 'user_types'));
     }
 
