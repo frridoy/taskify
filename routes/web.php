@@ -70,6 +70,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('attendance-index', [AttendanceController::class, 'index'])->name('attendance.list');
     Route::get('attendance', [AttendanceController::class, 'attendance'])->name('attendance.provide');
     Route::post('attendance-store', [AttendanceController::class, 'store'])->name('attendance.store');
+    Route::get('attendance-check-out/{id}', [AttendanceController::class, 'check_out'])->name('check_out');
+    Route::post('attendance-check-out/{id}', [AttendanceController::class, 'check_out_update'])->name('check_out_update');
 
     Route::get('tasks/{task}/details', [TaskController::class, 'show'])->name('tasks.show');
     Route::post('tasks/{id}/transfer', [TaskTransferController::class, 'store'])->name('tasks.transfer.store');

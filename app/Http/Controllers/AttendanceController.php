@@ -18,8 +18,7 @@ class AttendanceController extends Controller
         $checkedInToday = Attendance::where('user_id', $userId)
             ->whereDate('created_at', Carbon::today())
             ->exists();
-        $now = Carbon::now();
-        return view('attendance.index', compact('checkedInToday'));
+        return view('attendance.checkin', compact('checkedInToday'));
     }
 
     public function store(Request $request)
@@ -99,5 +98,24 @@ class AttendanceController extends Controller
         $attendances = $attendanceQuery->paginate(10);
 
         return view('attendance.list', compact('attendances', 'users'));
+    }
+
+    public function check_out($id)
+    {
+        $checkout = Attendance::findOrFail($id);
+        return view('attendance.checkout', compact('checkout'));
+    }
+    public function check_out_update($id)
+    {
+        $attendance = Attendance::findOrFail($id);
+
+        if ($attendance->check_out) {
+            return redirect()->back()->with('error', 'You have already checked out.');
+        }
+
+        $attendance->check_out = Carbon::now()->format('H:i');
+        $attendance->save();
+
+        return redirect()->back()->with('success', 'You have checked out successfully.');
     }
 }

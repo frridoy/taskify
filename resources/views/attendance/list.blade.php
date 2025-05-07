@@ -13,27 +13,29 @@
                 <!-- Filter Section -->
                 <form action="{{ route('attendance.list') }}" method="GET" id="filterForm">
                     <div class="row mb-3">
-                            <div class="col-md-3 mb-2">
-                                <label for="user" class="form-label">Users</label>
-                                <select name="user_id" id="user_id" class="form-select select2">
-                                    <option value="">All Users</option>
-                                    @foreach ($users as $active_user)
-                                            <option value="{{ $active_user->user_id }}"
-                                                {{ isset($_GET['user_id']) && $_GET['user_id'] == $active_user->user_id ? 'selected' : '' }}>
-                                                {{ $active_user->name }}
-                                            </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-3 mb-2">
-                                <label for="from_date" class="form-label">From Date</label>
-                                <input type="date" name="from_date" id="from_date" class="form-control" value="{{ request('from_date') }}">
-                            </div>
+                        <div class="col-md-3 mb-2">
+                            <label for="user" class="form-label">Users</label>
+                            <select name="user_id" id="user_id" class="form-select select2">
+                                <option value="">All Users</option>
+                                @foreach ($users as $active_user)
+                                    <option value="{{ $active_user->user_id }}"
+                                        {{ isset($_GET['user_id']) && $_GET['user_id'] == $active_user->user_id ? 'selected' : '' }}>
+                                        {{ $active_user->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label for="from_date" class="form-label">From Date</label>
+                            <input type="date" name="from_date" id="from_date" class="form-control"
+                                value="{{ request('from_date') }}">
+                        </div>
 
-                            <div class="col-md-3 mb-2">
-                                <label for="to_date" class="form-label">To Date</label>
-                                <input type="date" name="to_date" id="to_date" class="form-control" value="{{ request('to_date') }}">
-                            </div>
+                        <div class="col-md-3 mb-2">
+                            <label for="to_date" class="form-label">To Date</label>
+                            <input type="date" name="to_date" id="to_date" class="form-control"
+                                value="{{ request('to_date') }}">
+                        </div>
 
                         <div class="col-md-3 mb-2 d-flex align-items-end">
                             <div class="d-flex gap-2">
@@ -54,19 +56,34 @@
                             <tr>
                                 <th>#</th>
                                 <th>Name</th>
-                                <th>Created At</th>
-                                <th>Location</th>
+                                <th>Check In</th>
+                                <th>Check In Date</th>
+                                <th>Check Out</th>
+                                <th>Check Out Date</th>
+                                @if (auth()->user()->role == 3)
+                                    <th>Action</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($attendances as $attendance)
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $attendance->user_name}}</td>
-                    <td>{{ $attendance->created_at}}</td>
-                    <td>{{ $attendance->location == '23.7783664,90.4031032' ? 'Present' : 'Absent' }}</td>
-                </tr>
-            @endforeach
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $attendance->user_name }}</td>
+                                    <td>{{ $attendance->check_in }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($attendance->created_at)->format('d M, y') }}</td>
+                                    <td>{{ $attendance->check_out ? $attendance->check_out : '' }}</td>
+                                    <td></td>
+                                    @if (auth()->user()->role == 3)
+                                        <td class="text-center">
+                                            <a href="{{ route('check_out', $attendance->id) }}">
+                                                <i class="fas fa-sign-out-alt"></i>
+                                            </a>
+                                        </td>
+                                    @endif
+
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -78,8 +95,6 @@
                 </div>
             </div>
         </div>
-
-        {{-- Transfer Modal --}}
 
     </div>
 
