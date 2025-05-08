@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EmployeePolicy;
 use App\Models\Reward;
 use App\Models\Task;
 use App\Models\Team;
@@ -293,8 +294,11 @@ class EmployeeController extends Controller
             $today = date('Y-m-d');
             $dateLimit = $task->dateLimit;
 
-            $points = 100;
-            $pointsForPerCompletedTask = 10;
+            $employeePolicy = EmployeePolicy::where('id', 1)->first();
+
+            $points = $employeePolicy->points_for_completed_tasks;
+            $pointsForPerCompletedTask = $employeePolicy->amount_for_point;
+            $totalAmountForCompletedTask = $points * $pointsForPerCompletedTask;
 
             if ($dateLimit >= $today) {
                 Reward::create([
@@ -302,7 +306,7 @@ class EmployeeController extends Controller
                     'task_id' => $task->id,
                     'points' => $points,
                     'amount_for_per_point_completed_task' => $pointsForPerCompletedTask,
-                    'total_amount_for_completed_task' => $points * $pointsForPerCompletedTask,
+                    'total_amount_for_completed_task' => $totalAmountForCompletedTask,
                 ]);
             }
 
