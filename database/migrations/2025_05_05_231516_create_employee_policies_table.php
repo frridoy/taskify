@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('employee_policies', function (Blueprint $table) {
             $table->id();
-            $table->integer('points_for_completed_tasks');
-            $table->integer('amount_for_point');
+            $table->decimal('points_for_completed_tasks', 10, 2);
+            $table->decimal('amount_for_point', 10, 2);
             $table->timestamps();
         });
     }

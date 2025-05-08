@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\EmployeePolicyController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\HomeContoller;
@@ -110,6 +111,12 @@ Route::middleware(['auth', 'isAdmin_isManager'])->group(function () {
     Route::post('notice', [NoticeController::class, 'store'])->name('notice.store');
     Route::get('notice-edit/{id}', [NoticeController::class, 'edit'])->name('notice.edit');
     Route::put('notice-update/{id}', [NoticeController::class, 'update'])->name('notice.update');
+
+    Route::get('employee-policy', [EmployeePolicyController::class, 'employee_policy'])->name('employee_policy');
+    Route::post('employee-policy-store', [EmployeePolicyController::class, 'store'])->name('employee_policy.store');
+    Route::get('employee-policy-edit/{id}', [EmployeePolicyController::class, 'edit'])->name('employee_policy.edit');
+    Route::put('employee-policy-update/{id}', [EmployeePolicyController::class, 'update'])->name('employee_policy.update');
+    Route::get('employee-policy-index', [EmployeePolicyController::class, 'index'])->name('employee_policy.index');
 
 });
 

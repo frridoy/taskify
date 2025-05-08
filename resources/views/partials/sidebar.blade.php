@@ -413,6 +413,39 @@
                 </div>
             </div>
 
+            <!-- Leave request -->
+            <div class="menu-category mt-4">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="menu-category-line me-2"></div>
+                    <span class="text-cyan-200 text-uppercase"
+                        style="font-size: 12px; letter-spacing: 1px;">Policy</span>
+                </div>
+                <div class="menu-item dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#ploicyMenu">
+                    <div class="menu-icon">
+                        <i class="bi bi-calendar-check-fill"></i>
+                    </div>
+                    <span>Employee Policy</span>
+                    <i class="bi bi-chevron-down ms-auto menu-arrow"></i>
+                </div>
+
+                <div id="ploicyMenu" class="collapse mt-1">
+
+                    @if(auth()->user()->role == 1 || auth()->user()->role == 2)
+                    @if(\App\Models\EmployeePolicy::count() == 0)
+                    <a href="{{ route('employee_policy') }}" class="submenu-item">
+                        <div class="submenu-bullet"></div>
+                        <span>Policy</span>
+                    </a>
+                    @endif
+
+                    <a href="{{ route('employee_policy.index') }}" class="submenu-item">
+                        <div class="submenu-bullet"></div>
+                        <span>Records</span>
+                    </a>
+                    @endif
+
+                </div>
+            </div>
 
             <!-- User Management -->
             @if (auth()->user()->role == 1 || auth()->user()->role == 2)
