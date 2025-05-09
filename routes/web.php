@@ -9,6 +9,7 @@ use App\Http\Controllers\HomeContoller;
 use App\Http\Controllers\HRController;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RewardController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\TaskController;
@@ -116,6 +117,8 @@ Route::middleware(['auth', 'isAdmin_isManager'])->group(function () {
     Route::get('employee-policy-edit/{id}', [EmployeePolicyController::class, 'edit'])->name('employee_policy.edit');
     Route::put('employee-policy-update/{id}', [EmployeePolicyController::class, 'update'])->name('employee_policy.update');
     Route::get('employee-policy-index', [EmployeePolicyController::class, 'index'])->name('employee_policy.index');
+
+    Route::get('reward', [RewardController::class, 'index'])->name('reward.index');
 
 });
 
