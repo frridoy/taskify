@@ -1,117 +1,170 @@
 @extends('setup.master')
 @section('content')
-<div class="container">
-    <h1 class="mb-4">Employee Policies</h1>
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Name</th>
-                    <th>Total Point</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($rewards as $reward)
-                    <tr>
-                        <td>{{ $reward->name }}</td>
-                        <td>{{ $reward->{'sum(r.total_amount_for_completed_task)'} }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+    <div class="container-fluid py-3">
+
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-wrap justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">Reward Management</h6>
+                @if ($employeePolicy)
+                    <a href="{{ route('employee_policy.edit', $employeePolicy->id) }}" class="btn btn-primary mt-2 mt-md-0">
+                        <i class="fas fa-pen"></i> Edit Policy                    </a>
+                @else
+                    <a href="{{ route('employee_policy') }}" class="btn btn-primary mt-2 mt-md-0">
+                        <i class="fas fa-file-alt"></i> Create Policy
+                    </a>
+                @endif
+            </div>
+            <div class="card-body">
+                <!-- Filter Section -->
+                <form action="{{ route('reward.index') }}" method="GET" id="filterForm">
+                    <div class="row mb-3">
+                        <div class="col-md-3 mb-2">
+                            <label for="user" class="form-label">Users</label>
+                            <select name="id" id="user" class="form-select select2">
+                                <option value="">All Users</option>
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-2 d-flex align-items-end">
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-filter"></i> Filter
+                                </button>
+                                <a href="{{ route('reward.index') }}" class="btn btn-secondary">
+                                    <i class="fas fa-sync"></i> Reset
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" id="usersTable">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Total Point</th>
+                                <th>Current Month</th>
+                                <th>Last Year</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if ($rewards->count() > 0)
+                                @foreach ($rewards as $reward)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $reward->name }}</td>
+                                    <td>{{ $reward->{'sum(r.total_amount_for_completed_task)'} }}</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="3" class="text-center text-danger">No data found.</td>
+                                </tr>
+                            @endif
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="d-flex justify-content-end mt-3">
+                    @if (isset($rewards) && $rewards->hasPages())
+                        {{ $rewards->appends(request()->all())->links() }}
+                    @endif
+                </div>
+            </div>
+        </div>
+
     </div>
-</div>
-<style>
-    /* Employee Policies Page Custom CSS */
 
-/* Page Container */
-.container {
-  max-width: 1140px;
-  padding: 2rem 1.5rem;
-}
+    <style>
+        /* Base Styles */
+        .table th,
+        .table td {
+            vertical-align: middle;
+            font-size: 0.875rem;
+            padding: 0.5rem;
+        }
 
-/* Page Title */
-h1.mb-4 {
-  color: #2c3e50;
-  font-weight: 600;
-  margin-bottom: 1.5rem !important;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid #3498db;
-}
+        /* Table Styling */
+        .table-hover tbody tr:hover {
+            background-color: rgba(0, 123, 255, 0.05);
+        }
 
-/* Table Styling */
-.table-responsive {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: 2rem;
-}
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
 
-.table {
-  margin-bottom: 0;
-  border-collapse: collapse;
-}
+        /* Cards and UI Components */
+        .card {
+            border-radius: 0.5rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
 
-.table-striped tbody tr:nth-of-type(odd) {
-  background-color: rgba(52, 152, 219, 0.05);
-}
+        .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+        }
 
-.table-bordered {
-  border: none;
-}
+        /* Button and Badge Styling */
+        .badge {
+            font-size: 0.75rem;
+            padding: 0.35em 0.65em;
+            font-weight: 600;
+        }
 
-.table-bordered th,
-.table-bordered td {
-  border: 1px solid #e9ecef;
-}
+        .btn-sm {
+            padding: 0.25rem 0.4rem;
+            font-size: 0.75rem;
+        }
 
-/* Table Header */
-.thead-dark th {
-  background-color: #3498db;
-  color: white;
-  border-color: #2980b9;
-  padding: 1rem 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  font-size: 0.9rem;
-}
+        /* Form Controls */
+        .form-select,
+        .form-control {
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+            min-height: calc(1.5em + 0.5rem + 2px);
+        }
 
-/* Table Body */
-.table tbody td {
-  padding: 0.75rem;
-  vertical-align: middle;
-  font-size: 0.95rem;
-  color: #444;
-}
+        /* Text handling */
+        .text-truncate {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
-/* Action Button */
-.btn-primary {
-  background-color: #3498db;
-  border-color: #3498db;
-  transition: all 0.3s ease;
-}
+        .text-break {
+            word-break: break-word !important;
+            word-wrap: break-word !important;
+        }
 
-.btn-primary:hover {
-  background-color: #2980b9;
-  border-color: #2980b9;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+        /* Pagination styling */
+        .pagination {
+            margin-bottom: 0;
+            flex-wrap: wrap;
+        }
 
-.btn-sm {
-  padding: 0.375rem 0.75rem;
-  font-size: 0.875rem;
-  border-radius: 4px;
-}
+        /* Responsive Adjustments */
+        @media (max-width: 767.98px) {
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .table thead th,
-  .table tbody td {
-    padding: 0.5rem;
-    font-size: 0.85rem;
-  }
-}
-</style>
+            .table th,
+            .table td {
+                font-size: 0.75rem;
+                padding: 0.3rem;
+            }
+        }
+
+        /* Utility classes */
+        .gap-1 {
+            gap: 0.25rem !important;
+        }
+
+        .gap-2 {
+            gap: 0.5rem !important;
+        }
+    </style>
 @endsection

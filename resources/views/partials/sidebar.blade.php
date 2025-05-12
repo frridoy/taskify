@@ -315,7 +315,7 @@
                     @if(auth()->user()->role == 2 || auth()->user()->role == 3)
                     <a href="{{ route('attendance.provide') }}" class="submenu-item">
                         <div class="submenu-bullet"></div>
-                        <span>Check In/Out</span>
+                        <span>Check In</span>
                     </a>
                     @endif
                 </div>
@@ -456,7 +456,7 @@
                     <span class="text-cyan-200 text-uppercase" style="font-size: 12px; letter-spacing: 1px;">User</span>
                 </div>
 
-                <div class="menu-item dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#userMenu">
+                <div class="menu-item dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#rewardMenu">
                     <div class="menu-icon">
                         <i class="bi bi-people-fill"></i>
                     </div>
@@ -464,7 +464,7 @@
                     <i class="bi bi-chevron-down ms-auto menu-arrow"></i>
                 </div>
 
-                <div id="userMenu" class="collapse mt-1">
+                <div id="rewardMenu" class="collapse mt-1">
                     @if (auth()->user()->role == 1)
                         <a href="{{ route('users.create') }}" class="submenu-item">
                             <div class="submenu-bullet"></div>
@@ -479,6 +479,30 @@
             </div>
 
             @endif
+
+            <!-- Reward Management -->
+
+            <div class="menu-category mt-4">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="menu-category-line me-2"></div>
+                    <span class="text-cyan-200 text-uppercase" style="font-size: 12px; letter-spacing: 1px;">Reward</span>
+                </div>
+
+                <div class="menu-item dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#userMenu">
+                    <div class="menu-icon">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                    <span>Reward</span>
+                    <i class="bi bi-chevron-down ms-auto menu-arrow"></i>
+                </div>
+
+                <div id="userMenu" class="collapse mt-1">
+                        <a href="{{ route('reward.index') }}" class="submenu-item">
+                            <div class="submenu-bullet"></div>
+                            <span>Records</span>
+                        </a>
+                </div>
+            </div>
 
 
             <!-- System Settings -->

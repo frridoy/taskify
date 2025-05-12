@@ -15,8 +15,11 @@ class RewardController extends Controller
             ->join('users as s', 'r.user_id', '=', 's.id')
             ->select('r.user_id', 's.name', DB::raw('sum(r.total_amount_for_completed_task)'))
             ->groupBy('r.user_id', 's.name')
-            ->get();
+            ->paginate(5);
 
-        return view('reward.index', compact('rewards'));
+        $employeePolicy = DB::table('employee_policies')
+            ->orderBy('id', 'desc')->first();
+
+        return view('reward.index', compact('rewards', 'employeePolicy'));
     }
 }
