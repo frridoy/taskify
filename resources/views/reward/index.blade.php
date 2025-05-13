@@ -3,30 +3,50 @@
     <div class="container-fluid py-3">
 
         <div class="card shadow mb-4">
-            @if(auth()->user()->role == 1 || auth()->user()->role == 2)
-            <div class="card-header py-3 d-flex flex-wrap justify-content-between align-items-center">
-                <h6 class="m-0 font-weight-bold text-primary">Reward Management</h6>
-                @if ($employeePolicy)
-                    <a href="{{ route('employee_policy.edit', $employeePolicy->id) }}" class="btn btn-primary mt-2 mt-md-0">
-                        <i class="fas fa-pen"></i> Edit Policy                    </a>
-                @else
-                    <a href="{{ route('employee_policy') }}" class="btn btn-primary mt-2 mt-md-0">
-                        <i class="fas fa-file-alt"></i> Create Policy
-                    </a>
-                @endif
-            </div>
+            @if (auth()->user()->role == 1 || auth()->user()->role == 2)
+                <div class="card-header py-3 d-flex flex-wrap justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">Reward Management</h6>
+                    @if ($employeePolicy)
+                        <a href="{{ route('employee_policy.edit', $employeePolicy->id) }}"
+                            class="btn btn-primary mt-2 mt-md-0">
+                            <i class="fas fa-pen"></i> Edit Policy </a>
+                    @else
+                        <a href="{{ route('employee_policy') }}" class="btn btn-primary mt-2 mt-md-0">
+                            <i class="fas fa-file-alt"></i> Create Policy
+                        </a>
+                    @endif
+                </div>
             @endif
             <div class="card-body">
-                <!-- Filter Section -->
                 <form action="{{ route('reward.index') }}" method="GET" id="filterForm">
                     <div class="row mb-3">
+                        @if(auth()->user()->role == 1 || auth()->user()->role == 2)
                         <div class="col-md-3 mb-2">
                             <label for="user" class="form-label">Users</label>
                             <select name="id" id="user" class="form-select select2">
-                                <option value="">All Users</option>
-                                <option value=""></option>
+                                @if ($users->count() > 0)
+                                    <option value="">All Users</option>
+                                    @foreach ($users as $user)
+                                        <option value="{{ $user->id }}"
+                                            {{ request('id') == $user->id ? 'selected' : '' }}>
+                                            {{ $user->name }}
+                                        </option>
+                                    @endforeach
+                                @endif
                             </select>
                         </div>
+                        @endif
+                        <div class="col-md-3 mb-2">
+                            <label for="from_date" class="form-label">From Date</label>
+                            <input type="date" name="from_date" id="from_date" class="form-control"
+                                value="{{ request('from_date') }}">
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label for="to_date" class="form-label">To Date</label>
+                            <input type="date" name="to_date" id="to_date" class="form-control"
+                                value="{{ request('to_date') }}">
+                        </div>
+
                         <div class="col-md-3 mb-2 d-flex align-items-end">
                             <div class="d-flex gap-2">
                                 <button type="submit" class="btn btn-primary">
@@ -41,26 +61,22 @@
                 </form>
 
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover" id="usersTable">
+                    <table class="table table-bordered table-hover" id="rewardsTable">
                         <thead class="table-dark">
                             <tr>
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Total Point</th>
-                                <th>Current Month</th>
-                                <th>Last Year</th>
                             </tr>
                         </thead>
                         <tbody>
                             @if ($rewards->count() > 0)
                                 @foreach ($rewards as $reward)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $reward->name }}</td>
-                                    <td>{{ $reward->{'sum(r.total_amount_for_completed_task)'} }}</td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $reward->name }}</td>
+                                        <td>{{ $reward->total_points }}</td>
+                                    </tr>
                                 @endforeach
                             @else
                                 <tr>
@@ -77,13 +93,12 @@
                         {{ $rewards->appends(request()->all())->links() }}
                     @endif
                 </div>
+
             </div>
         </div>
-
     </div>
 
     <style>
-        /* Base Styles */
         .table th,
         .table td {
             vertical-align: middle;
@@ -91,7 +106,6 @@
             padding: 0.5rem;
         }
 
-        /* Table Styling */
         .table-hover tbody tr:hover {
             background-color: rgba(0, 123, 255, 0.05);
         }
@@ -101,7 +115,6 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        /* Cards and UI Components */
         .card {
             border-radius: 0.5rem;
             box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
@@ -112,7 +125,6 @@
             border-bottom: 1px solid rgba(0, 0, 0, 0.125);
         }
 
-        /* Button and Badge Styling */
         .badge {
             font-size: 0.75rem;
             padding: 0.35em 0.65em;
@@ -124,7 +136,6 @@
             font-size: 0.75rem;
         }
 
-        /* Form Controls */
         .form-select,
         .form-control {
             border-radius: 0.25rem;
@@ -132,7 +143,6 @@
             min-height: calc(1.5em + 0.5rem + 2px);
         }
 
-        /* Text handling */
         .text-truncate {
             white-space: nowrap;
             overflow: hidden;
@@ -144,13 +154,11 @@
             word-wrap: break-word !important;
         }
 
-        /* Pagination styling */
         .pagination {
             margin-bottom: 0;
             flex-wrap: wrap;
         }
 
-        /* Responsive Adjustments */
         @media (max-width: 767.98px) {
 
             .table th,
@@ -160,7 +168,6 @@
             }
         }
 
-        /* Utility classes */
         .gap-1 {
             gap: 0.25rem !important;
         }
@@ -169,4 +176,5 @@
             gap: 0.5rem !important;
         }
     </style>
+
 @endsection
