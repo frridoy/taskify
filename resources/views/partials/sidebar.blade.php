@@ -216,7 +216,9 @@
                     @if (auth()->user()->role == 1)
                         Super Admin
                     @elseif(auth()->user()->role == 2)
-                        Admin
+                        HR Manager
+                        @elseif(App\Models\Team::where('user_id', auth()->user()->id)->where('is_team_leader', 1)->exists())
+                        Team Lead
                     @else
                         Employee
                     @endif

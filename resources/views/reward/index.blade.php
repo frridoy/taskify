@@ -3,6 +3,7 @@
     <div class="container-fluid py-3">
 
         <div class="card shadow mb-4">
+            @if(auth()->user()->role == 1 || auth()->user()->role == 2)
             <div class="card-header py-3 d-flex flex-wrap justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Reward Management</h6>
                 @if ($employeePolicy)
@@ -14,6 +15,7 @@
                     </a>
                 @endif
             </div>
+            @endif
             <div class="card-body">
                 <!-- Filter Section -->
                 <form action="{{ route('reward.index') }}" method="GET" id="filterForm">

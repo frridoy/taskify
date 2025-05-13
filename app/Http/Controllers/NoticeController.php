@@ -193,7 +193,7 @@ class NoticeController extends Controller
             'title' => ucwords($request->title),
             'notice_type' => ucwords($request->notice_type),
             'notice_for' => $notice_for,
-            'reference_no' => $request->reference_no,
+            // 'reference_no' => $request->reference_no,
             'meeting_date_time' => $request->meeting_date_time,
             'publish_date' => $publish_date,
             'expire_date' => $request->expire_date,
@@ -207,12 +207,11 @@ class NoticeController extends Controller
 
     public function view($id)
     {
-
         $notice = Notice::with(['user:id,name,designation,signature'])->findOrFail($id);
         $notice_types = config('static_array.notice_type');
         $user_types = config('static_array.user_type');
         $organization_info = Setting::select(['company_name', 'company_location', 'company_phone', 'company_email', 'company_logo'])->first();
-        // dd($organization_info);
+
         return view('notices.view', compact('notice', 'notice_types', 'user_types', 'organization_info'));
     }
 }

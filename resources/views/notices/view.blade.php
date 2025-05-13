@@ -204,24 +204,11 @@
                 <div class="notice-content">
                     {!! nl2br(e($notice->description)) !!}
                 </div>
-
                 @if ($notice->meeting_date_time)
-                    <div class="meeting-details mt-4">
-                        <div class="meeting-header">
-                            Meeting Details
-                        </div>
-                        <div class="meeting-content">
-                            <div class="meeting-item">
-                                <span class="meeting-label">Date & Time:</span>
-                                <span
-                                    class="meeting-value">{{ \Carbon\Carbon::parse($notice->meeting_date_time)->format('l, F j, Y \a\t h:i A') }}</span>
-                            </div>
-                            <div class="meeting-item">
-                                <span class="meeting-label">Venue:</span>
-                                <span class="meeting-value">{{ $notice->venue ?? '[Specify meeting venue]' }}</span>
-                            </div>
-                        </div>
-                    </div>
+                <div>
+                    <br>
+                    You are requested to attend an meeting on <strong>{{ \Carbon\Carbon::parse($notice->meeting_date_time)->format('l, F j, Y \a\t h:i A') }}</strong> at <strong>{{ $notice->venue ?? 'Needs Innovation Center' }}</strong>.
+                </div>
                 @endif
             </div>
             <!-- Notice Details -->

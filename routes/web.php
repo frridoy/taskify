@@ -90,6 +90,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('notice-index', [NoticeController::class, 'index'])->name('notice.index');
     Route::get('notice-view/{id}', [NoticeController::class, 'view'])->name('notice.view');
+
+    Route::get('reward', [RewardController::class, 'index'])->name('reward.index');
+
 });
 
 
@@ -117,8 +120,6 @@ Route::middleware(['auth', 'isAdmin_isManager'])->group(function () {
     Route::get('employee-policy-edit/{id}', [EmployeePolicyController::class, 'edit'])->name('employee_policy.edit');
     Route::put('employee-policy-update/{id}', [EmployeePolicyController::class, 'update'])->name('employee_policy.update');
     Route::get('employee-policy-index', [EmployeePolicyController::class, 'index'])->name('employee_policy.index');
-
-    Route::get('reward', [RewardController::class, 'index'])->name('reward.index');
 
 });
 
