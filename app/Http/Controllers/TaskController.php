@@ -62,7 +62,7 @@ class TaskController extends Controller
             $query->where('task_name', 'like', '%' . $request->task_name . '%');
         }
 
-        $tasks = $query->paginate(5);
+        $tasks = $query->paginate(10);
 
         $users = User::where('role', 3)->where('status', 1)->get();
 

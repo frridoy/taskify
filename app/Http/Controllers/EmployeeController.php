@@ -88,7 +88,26 @@ class EmployeeController extends Controller
 
         $total_tasks = $pending_tasks_count + $processing_tasks_count + $completed_tasks_count;
 
-        return view('employee.dashboard', compact('pending_tasks_count', 'processing_tasks_count', 'completed_tasks_count', 'total_tasks', 'missed_pending_tasks', 'missed_processing_tasks'));
+        //for pie chart
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
+        $pendingTasks = Task::where('user_id', $userId)
+            ->where('status', 0)
+            ->whereMonth('created_at', $currentMonth)
+            ->whereYear('created_at', $currentYear)
+            ->count();
+        $processingTasks = Task::where('user_id', $userId)
+            ->where('status', 1)
+            ->wheremonth('created_at', $currentMonth)
+            ->whereYear('created_at', $currentYear)
+            ->count();
+        $completedTasks = Task::where('user_id', $userId)
+            ->where('status', 2)
+            ->wheremonth('created_at', $currentMonth)
+            ->whereYear('created_at', $currentYear)
+            ->count();
+
+        return view('employee.dashboard', compact('pending_tasks_count', 'processing_tasks_count', 'completed_tasks_count', 'total_tasks', 'missed_pending_tasks', 'missed_processing_tasks', 'pendingTasks', 'processingTasks', 'completedTasks'));
     }
     public function index(Request $request)
     {
@@ -217,11 +236,6 @@ class EmployeeController extends Controller
         }
 
         return redirect()->back()->with('error', 'You are not authorized to receive this task.');
-    }
-
-    public function graph()
-    {
-        return view('graph.view');
     }
 
     public function processing_tasks(Request $request)

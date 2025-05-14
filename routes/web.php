@@ -52,7 +52,6 @@ Route::middleware(['auth', 'isEmployee'])->group(function () {
     Route::patch('tasks/{task}/receive', [EmployeeController::class, 'receive'])->name('task.receive');
     Route::patch('tasks/{task}/complete', [EmployeeController::class, 'complete'])->name('task.complete');
     Route::get('completed-task', [EmployeeController::class, 'completed_tasks'])->name('completed_tasks');
-    Route::get('graph', [EmployeeController::class, 'graph'])->name('monthly.graph');
 
     Route::get('task-notification', [TaskNotificationController::class, 'task_notification'])->name('task.notification');
     Route::get('tasks/{task}/details/{notification_id}', [TaskNotificationController::class, 'show'])->name('tasks.show.delete');

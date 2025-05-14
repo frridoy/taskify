@@ -140,10 +140,10 @@
         <h1 class="dashboard-title">Task Dashboard</h1>
         <p class="dashboard-subtitle">Overview of your task management</p>
     </div> --}}
-    <div class="dashboard-header">
+    {{-- <div class="dashboard-header">
         <h1 class="dashboard-title">Task Dashboard</h1>
         <a href="{{route('monthly.graph')}}" class="dashboard-subtitle">Overview of your task management in graph</a>
-    </div>
+    </div> --}}
 
 
     <div class="stats-grid">

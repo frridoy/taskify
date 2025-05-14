@@ -16,7 +16,7 @@
                 <form action="{{ route('team.index') }}" method="GET" id="filterForm">
                     <div class="row mb-3">
                         <div class="col-md-3 mb-2">
-                            <label for="team_name" class="form-label">Status</label>
+                            <label for="team_name" class="form-label">Team Name</label>
                             <select name="team_name" id="team_name" class="form-select select2">
                                 <option value="">All Teams</option>
                                 @foreach ($teamNames as $name)
