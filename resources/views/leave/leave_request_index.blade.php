@@ -361,11 +361,7 @@
 
     <style>
         tr[style*="background-color: #ffebee"] {
-            background-color: #ef9a9a !important;
-        }
-
-        .table-hover tbody tr[style*="background-color: #ffebee"]:hover {
-            background-color: #ae7474 !important;
+            background-color: #a215215d !important;
         }
         tr[style*="background-color: #ffebee"] td {
             color: #333;
