@@ -121,7 +121,7 @@
         <main class="dashboard-main">
             @include('partials.header')
             @yield('content')
-            {{-- @include('dashboard.partials.footer') --}}
+            @include('partials.footer')
         </main>
     </div>
 
