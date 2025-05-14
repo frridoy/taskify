@@ -24,7 +24,7 @@ class UserController extends Controller
             'password' => 'required|string|min:6|confirmed',
         ]);
 
-        if($validation->fails()){
+        if ($validation->fails()) {
             return redirect()->back()->withErrors($validation)->withInput();
         }
 
@@ -94,7 +94,7 @@ class UserController extends Controller
             'password' => 'nullable|string|min:6|confirmed',
         ]);
 
-        if($validation->fails()){
+        if ($validation->fails()) {
             return redirect()->back()->withErrors($validation)->withInput();
         }
 
@@ -108,8 +108,38 @@ class UserController extends Controller
         if ($request->filled('password')) {
             $user->password = bcrypt($request->password);
         }
+
+        if ($request->hasFile('profile_photo')) {
+            if ($user->profile_photo && file_exists(public_path('profile_photos/' . $user->profile_photo))) {
+                unlink(public_path('profile_photos/' . $user->profile_photo));
+            }
+
+            $image = $request->file('profile_photo');
+            $imageName = time() . '_profile.' . $image->getClientOriginalExtension();
+            $image->move(public_path('profile_photos'), $imageName);
+            $user->profile_photo = $imageName;
+        }
+
+        if ($request->hasFile('employee_signature')) {
+            if ($user->signature && file_exists(public_path('employee_signatures/' . $user->signature))) {
+                unlink(public_path('employee_signatures/' . $user->signature));
+            }
+
+            $image = $request->file('employee_signature');
+            $imageName = time() . '_signature.' . $image->getClientOriginalExtension();
+            $image->move(public_path('employee_signatures'), $imageName);
+            $user->signature = $imageName;
+        }
         $user->save();
 
-        return redirect()->route('users.index')->with('success', 'User updated successfully.');
+        notify()->success('User updated successfully.');
+        return redirect()->route('users.index');
+    }
+
+    public function view($userId)
+    {
+
+        $user = User::findOrFail($userId);
+        return view('users.view', compact('user'));
     }
 }

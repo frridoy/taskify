@@ -99,13 +99,14 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'isAdmin_isManager'])->group(function () {
 
     Route::get('task-assign-index', [TaskController::class, 'index'])->name('tasks.index');
-    Route::get('/tasks/export/csv', [TaskController::class, 'exportCsv'])->name('tasks.export.csv');
+    Route::get('tasks-export-csv', [TaskController::class, 'exportCsv'])->name('tasks.export.csv');
 
     Route::get('user-index', [UserController::class, 'index'])->name('users.index');
     Route::get('user-create', [UserController::class, 'create'])->name('users.create');
     Route::post('user-store', [UserController::class, 'store'])->name('users.store');
     Route::get('user-edit/{id}', [UserController::class, 'edit'])->name('users.edit');
     Route::put('user-update/{id}', [UserController::class, 'update'])->name('users.update');
+    Route::get('user-view/{id}', [UserController::class, 'view'])->name('users.view');
 
     Route::get('team-index', [TeamController::class, 'team_index'])->name('team.index');
     Route::get('team-build', [TeamController::class, 'team_build'])->name('team.build');
