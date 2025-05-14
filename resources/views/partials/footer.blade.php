@@ -1,4 +1,4 @@
-<footer class="bg-white text-dark mt-5">
+{{-- <footer class="bg-white text-dark mt-5">
     <div class="container">
         @php
             $setting = App\Models\Setting::select('company_name')->first();
@@ -10,4 +10,4 @@
             </div>
         </div>
     </div>
-</footer>
+</footer> --}}

@@ -34,7 +34,8 @@
                         <tbody>
                             @if ($leave_requests->count() > 0)
                                 @foreach ($leave_requests as $leave_request)
-                                    <tr>
+                                    {{-- <tr class="@if ($leave_request->status == 0) bg-pending @endif"> --}}
+                                    <tr style="@if ($leave_request->status == 0) background-color: #ffebee; @endif">
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $leave_request->user->name }}</td>
                                         <td>{{ config('static_array.leave_request_type')[$leave_request->leave_request_type] }}
@@ -133,18 +134,20 @@
                                                                 <div class="leave-detail mb-3">
                                                                     <label class="text-muted small text-uppercase">Start
                                                                         Date</label>
-                                                                        <p class="fw-bold mb-0">
-                                                                            {{ \Carbon\Carbon::parse($leave_request->start_date)->format('d M Y') }} ({{ \Carbon\Carbon::parse($leave_request->start_date)->format('l') }})
-                                                                       </p>
+                                                                    <p class="fw-bold mb-0">
+                                                                        {{ \Carbon\Carbon::parse($leave_request->start_date)->format('d M Y') }}
+                                                                        ({{ \Carbon\Carbon::parse($leave_request->start_date)->format('l') }})
+                                                                    </p>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="leave-detail mb-3">
                                                                     <label class="text-muted small text-uppercase">End
                                                                         Date</label>
-                                                                        <p class="fw-bold mb-0">
-                                                                            {{ \Carbon\Carbon::parse($leave_request->end_date)->format('d M Y') }} ({{ \Carbon\Carbon::parse($leave_request->end_date)->format('l') }})
-                                                                        </p>
+                                                                    <p class="fw-bold mb-0">
+                                                                        {{ \Carbon\Carbon::parse($leave_request->end_date)->format('d M Y') }}
+                                                                        ({{ \Carbon\Carbon::parse($leave_request->end_date)->format('l') }})
+                                                                    </p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -263,18 +266,20 @@
                                                                 <div class="leave-detail mb-3">
                                                                     <label class="text-muted small text-uppercase">Start
                                                                         Date</label>
-                                                                        <p class="fw-bold mb-0">
-                                                                            {{ \Carbon\Carbon::parse($leave_request->start_date)->format('d M Y') }} ({{ \Carbon\Carbon::parse($leave_request->start_date)->format('l') }})
-                                                                      </p>
+                                                                    <p class="fw-bold mb-0">
+                                                                        {{ \Carbon\Carbon::parse($leave_request->start_date)->format('d M Y') }}
+                                                                        ({{ \Carbon\Carbon::parse($leave_request->start_date)->format('l') }})
+                                                                    </p>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="leave-detail mb-3">
                                                                     <label class="text-muted small text-uppercase">End
                                                                         Date</label>
-                                                                        <p class="fw-bold mb-0">
-                                                                            {{ \Carbon\Carbon::parse($leave_request->end_date)->format('d M Y') }} ({{ \Carbon\Carbon::parse($leave_request->end_date)->format('l') }})
-                                                                        </p>
+                                                                    <p class="fw-bold mb-0">
+                                                                        {{ \Carbon\Carbon::parse($leave_request->end_date)->format('d M Y') }}
+                                                                        ({{ \Carbon\Carbon::parse($leave_request->end_date)->format('l') }})
+                                                                    </p>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
@@ -355,6 +360,17 @@
     </div>
 
     <style>
+        tr[style*="background-color: #ffebee"] {
+            background-color: #ef9a9a !important;
+        }
+
+        .table-hover tbody tr[style*="background-color: #ffebee"]:hover {
+            background-color: #ae7474 !important;
+        }
+        tr[style*="background-color: #ffebee"] td {
+            color: #333;
+        }
+
         /* Base Styles */
         .table th,
         .table td {
