@@ -12,4 +12,9 @@ class LeaveRequest extends Model
 
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+     public function reviewedBy(){
+
+        return $this->belongsTo(User::class, 'reviewed_by', 'id');
+    }
 }

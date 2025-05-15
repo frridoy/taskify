@@ -21,10 +21,11 @@
                                 <th>#</th>
                                 <th>Employee</th>
                                 <th>Leave Type</th>
-                                {{-- <th>Reason</th> --}}
                                 <th>Start Date</th>
                                 <th>End Date</th>
                                 <th>Request Days</th>
+                                <th>Accepted Start Date</th>
+                                <th>Accepted To Date</th>
                                 <th>Accpted Days</th>
                                 <th>Status</th>
                                 <th>Reviewed By</th>
@@ -34,16 +35,16 @@
                         <tbody>
                             @if ($leave_requests->count() > 0)
                                 @foreach ($leave_requests as $leave_request)
-                                    {{-- <tr class="@if ($leave_request->status == 0) bg-pending @endif"> --}}
                                     <tr style="@if ($leave_request->status == 0) background-color: #ffebee; @endif">
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $leave_request->user->name }}</td>
                                         <td>{{ config('static_array.leave_request_type')[$leave_request->leave_request_type] }}
                                         </td>
-                                        {{-- <td>{{ $leave_request->reason_description }}</td> --}}
-                                        <td>{{ $leave_request->start_date }}</td>
-                                        <td>{{ $leave_request->end_date }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($leave_request->start_date)->format('d M, Y') }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($leave_request->end_date)->format('d M, Y') }}</td>
                                         <td class="text-center">{{ $leave_request->number_of_days_leave_requested }}</td>
+                                        <td>{{ $leave_request->accepted_from_date ? \Carbon\Carbon::parse($leave_request->accepted_from_date)->format('d M, Y') : '' }}</td>
+                                        <td>{{ $leave_request->accepted_to_date ? \Carbon\Carbon::parse($leave_request->accepted_to_date)->format('d M, Y') : '' }}</td>
                                         <td class="text-center">
                                             @if ($leave_request->number_of_days_leave_requested_accepted)
                                                 {{ $leave_request->number_of_days_leave_requested_accepted }}
@@ -62,12 +63,11 @@
                                                 <span class="badge bg-danger">Rejected</span>
                                             @endif
                                         </td>
-                                        <td>{{ $leave_request->reviewed_by ? \App\Models\User::find($leave_request->reviewed_by)->name : '-' }}
-                                        </td>
+                                        <td>{{ $leave_request->reviewedBy->name ?? ''}}</td>
 
                                         <td>
                                             @if ((auth()->user()->role == 1 || auth()->user()->role == 2) && $leave_request->status == 0)
-                                                <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal"
+                                                <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal"
                                                     data-bs-target="#leaveModal{{ $leave_request->id }}">
                                                     </i> Review
                                                 </button>
@@ -162,21 +162,30 @@
                                                         </div>
 
                                                         <div class="mb-4">
-                                                            <label for="accepted_days"
-                                                                class="form-label text-muted small text-uppercase">Accepted
-                                                                Days</label>
+                                                            <label for="comment"
+                                                                class="form-label text-muted small text-uppercase">Accepted From Date</label>
                                                             <div class="input-group">
                                                                 <span class="input-group-text bg-light">
                                                                     <i class="fas fa-check-circle text-primary"></i>
                                                                 </span>
-                                                                <input type="number" name="accepted_days"
+                                                                <input type="date" name="accepted_from_date"
                                                                     class="form-control form-control-lg"
-                                                                    placeholder="Leave empty to use requested days"
-                                                                    max="{{ $leave_request->number_of_days_leave_requested }}">
+                                                                   value="{{ old('accepted_from_date', $leave_request->start_date)}}"
+>
                                                             </div>
-                                                            <small class="text-muted">Maximum:
-                                                                {{ $leave_request->number_of_days_leave_requested }}
-                                                                days</small>
+                                                        </div>
+                                                        <div class="mb-4">
+                                                            <label for="comment"
+                                                                class="form-label text-muted small text-uppercase">Accepted To Date</label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text bg-light">
+                                                                    <i class="fas fa-check-circle text-primary"></i>
+                                                                </span>
+                                                                <input type="date" name="accepted_to_date"
+                                                                    class="form-control form-control-lg"
+                                                                   value="{{ old('accepted_to_date', $leave_request->end_date)}}"
+>
+                                                            </div>
                                                         </div>
                                                         <div class="mb-4">
                                                             <label for="comment"
@@ -282,6 +291,26 @@
                                                                     </p>
                                                                 </div>
                                                             </div>
+                                                             <div class="col-md-6">
+                                                                <div class="leave-detail mb-3">
+                                                                    <label class="text-muted small text-uppercase">Accepted From
+                                                                        Date</label>
+                                                                    <p class="fw-bold mb-0">
+                                                                        {{ \Carbon\Carbon::parse($leave_request->accepted_from_date)->format('d M Y') }}
+                                                                        ({{ \Carbon\Carbon::parse($leave_request->accepted_from_date)->format('l') }})
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="leave-detail mb-3">
+                                                                    <label class="text-muted small text-uppercase">Accepted To
+                                                                        Date</label>
+                                                                    <p class="fw-bold mb-0">
+                                                                        {{ \Carbon\Carbon::parse($leave_request->accepted_to_date)->format('d M Y') }}
+                                                                        ({{ \Carbon\Carbon::parse($leave_request->accepted_to_date)->format('l') }})
+                                                                    </p>
+                                                                </div>
+                                                            </div>
                                                             <div class="col-md-6">
                                                                 <div class="leave-detail mb-3">
                                                                     <label
@@ -301,6 +330,17 @@
                                                                                 class="btn btn-secondary btn-sm">Unknown</span>
                                                                         @endif
                                                                     </p>
+                                                                </div>
+                                                            </div>
+
+                                                             <div class="col-md-6">
+                                                                <div class="leave-detail mb-3">
+                                                                    <label
+                                                                        class="text-muted small text-uppercase">Reviewed By
+                                                                        </label>
+                                                                    <p class="fw-bold mb-0">
+                                                                        {{ $leave_request->reviewedBy->name ?? ''}}
+                                                                        </p>
                                                                 </div>
                                                             </div>
 

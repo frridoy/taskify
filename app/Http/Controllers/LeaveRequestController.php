@@ -55,9 +55,11 @@ class LeaveRequestController extends Controller
         $start = Carbon::parse($request->start_date)->startOfDay();
         $end = Carbon::parse($request->end_date)->endOfDay();
 
-        $totalDays = $start->diffInDaysFiltered(function (Carbon $date) {
-            return !in_array($date->dayOfWeek, [Carbon::FRIDAY, Carbon::SATURDAY]);
-        }, $end);
+        // $totalDays = $start->diffInDaysFiltered(function (Carbon $date) {
+        //     return !in_array($date->dayOfWeek, [Carbon::FRIDAY, Carbon::SATURDAY]);
+        // }, $end);
+
+        $totalDays = $start->diffInDays($end);
 
 
         $total_leave_days = Setting::value('total_leave_days_for_employee_in_year');
@@ -102,7 +104,7 @@ class LeaveRequestController extends Controller
         $isAdministrator = in_array($userId, $user_type);
 
         if ($isAdministrator) {
-            $leave_requests = LeaveRequest::with('user:id,name')
+            $leave_requests = LeaveRequest::with(['user:id,name','reviewedBy:id,name'])
                 ->latest()
                 ->paginate(10);
             $users = User::where('status', 1)
@@ -111,7 +113,7 @@ class LeaveRequestController extends Controller
                 ->get();
         } else {
 
-            $leave_requests = LeaveRequest::with('user:id,name')
+            $leave_requests = LeaveRequest::with(['user:id,name','reviewedBy:id,name'])
                 ->where('user_id', $userId)
                 ->latest()
                 ->paginate(10);
@@ -128,10 +130,19 @@ class LeaveRequestController extends Controller
 
         if ($request->input('action') == 2) {
             $leaveRequest->status = 2;
-            $leaveRequest->number_of_days_leave_requested_accepted = 0;
+            $leaveRequest->number_of_days_leave_requested_accepted = null;
         } else {
             $leaveRequest->status = 1;
-            $leaveRequest->number_of_days_leave_requested_accepted = $request->input('accepted_days') ?? $leaveRequest->number_of_days_leave_requested;
+            $leaveRequest->accepted_from_date = $request->accepted_from_date;
+            $leaveRequest->accepted_to_date = $request->accepted_to_date;
+
+            if ($request->accepted_from_date && $request->accepted_to_date) {
+                $accepted_from_date = Carbon::parse($request->accepted_from_date);
+                $accepted_to_date = Carbon::parse($request->accepted_to_date);
+                $leaveRequest->number_of_days_leave_requested_accepted = $accepted_from_date->diffInDays($accepted_to_date) + 1;
+            } else {
+                $leaveRequest->number_of_days_leave_requested_accepted = null;
+            }
         }
 
         $leaveRequest->comment = $request->comment;
