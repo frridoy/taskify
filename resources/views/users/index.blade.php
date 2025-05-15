@@ -18,10 +18,9 @@
                             <label for="status_filter" class="form-label">Status</label>
                             <select name="status" id="status_filter" class="form-select">
                                 <option value="">All Status</option>
-                                <option value="1"
-                                    {{ isset($_GET['status']) && $_GET['status'] == '1' ? 'selected' : '' }}>Active</option>
-                                <option value="0"
-                                    {{ isset($_GET['status']) && $_GET['status'] == '0' ? 'selected' : '' }}>Inactive
+                                <option value="1" {{ isset($status) && $status == '1' ? 'selected' : '' }}>Active
+                                </option>
+                                <option value="0" {{ isset($status) && $status == '0' ? 'selected' : '' }}>Inactive
                                 </option>
                             </select>
                         </div>
@@ -31,10 +30,11 @@
                                 <option value="">All Users</option>
                                 @foreach ($allUsers as $active_user)
                                     <option value="{{ $active_user->id }}"
-                                        {{ isset($_GET['id']) && $_GET['id'] == $active_user->id ? 'selected' : '' }}>
+                                        {{ request()->input('id') == $active_user->id ? 'selected' : '' }}>
                                         {{ $active_user->name }}
                                     </option>
                                 @endforeach
+
                             </select>
                         </div>
                         <div class="col-md-3 mb-2 d-flex align-items-end">
@@ -99,8 +99,7 @@
                                                     class="btn btn-sm btn-primary">
                                                     <i class="bi bi-pencil"></i>
                                                 </a>
-                                                <a href="{{ route('users.view', $user->id) }}"
-                                                    class="btn btn-sm btn-info">
+                                                <a href="{{ route('users.view', $user->id) }}" class="btn btn-sm btn-info">
                                                     <i class="bi bi-eye"></i>
                                                 </a>
                                             @else
