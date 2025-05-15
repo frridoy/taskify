@@ -62,7 +62,7 @@ class UserController extends Controller
     {
         $query = User::where('role', '!=', 1)->orderBy('created_at', 'desc');
 
-        $all_users = $query->get();
+        $allUsers = $query->get();
 
         if ($request->has('status') && $request->status != '') {
             $query->where('status', $request->status);
@@ -74,7 +74,7 @@ class UserController extends Controller
 
         $users = $query->paginate(5);
 
-        return view('users.index', compact('users'));
+        return view('users.index', compact('users', 'allUsers'));
     }
     public function edit($id)
     {

@@ -29,7 +29,7 @@
                             <label for="user" class="form-label">Users</label>
                             <select name="id" id="user" class="form-select select2">
                                 <option value="">All Users</option>
-                                @foreach ($users as $active_user)
+                                @foreach ($allUsers as $active_user)
                                     <option value="{{ $active_user->id }}"
                                         {{ isset($_GET['id']) && $_GET['id'] == $active_user->id ? 'selected' : '' }}>
                                         {{ $active_user->name }}
