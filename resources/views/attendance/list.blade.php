@@ -70,11 +70,24 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $attendance->user_name }}</td>
-                                    <td>{{ $attendance->check_in }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($attendance->created_at)->format('d M, y') }}</td>
+                                    <td>
+                                        @if ($attendance->is_on_leave == 1)
+                                            <span class="badge bg-danger">On Leave</span>
+                                        @else
+                                            {{ $attendance->check_in }}
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($attendance->is_on_leave == 1)
+                                            <span
+                                                class="badge bg-danger">{{ \Carbon\Carbon::parse($attendance->leave_date)->format('d M, y') }}</span>
+                                        @else
+                                            {{ \Carbon\Carbon::parse($attendance->created_at)->format('d M, y') }}
+                                        @endif
+                                    </td>
                                     <td>{{ $attendance->check_out ? $attendance->check_out : '' }}</td>
                                     <td></td>
-                                    @if (auth()->user()->role == 3)
+                                    @if (auth()->user()->role == 3 && $attendance->is_on_leave == 0)
                                         <td class="text-center">
                                             <a href="{{ route('check_out', $attendance->id) }}">
                                                 <i class="fas fa-sign-out-alt"></i>

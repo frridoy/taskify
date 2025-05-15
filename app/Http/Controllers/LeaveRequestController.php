@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Attendance;
 use App\Models\LeaveRequest;
 use App\Models\Setting;
 use App\Models\User;
@@ -104,7 +105,7 @@ class LeaveRequestController extends Controller
         $isAdministrator = in_array($userId, $user_type);
 
         if ($isAdministrator) {
-            $leave_requests = LeaveRequest::with(['user:id,name','reviewedBy:id,name'])
+            $leave_requests = LeaveRequest::with(['user:id,name', 'reviewedBy:id,name'])
                 ->latest()
                 ->paginate(10);
             $users = User::where('status', 1)
@@ -113,7 +114,7 @@ class LeaveRequestController extends Controller
                 ->get();
         } else {
 
-            $leave_requests = LeaveRequest::with(['user:id,name','reviewedBy:id,name'])
+            $leave_requests = LeaveRequest::with(['user:id,name', 'reviewedBy:id,name'])
                 ->where('user_id', $userId)
                 ->latest()
                 ->paginate(10);
@@ -149,6 +150,41 @@ class LeaveRequestController extends Controller
         $leaveRequest->reviewed_by = Auth::id();
         $leaveRequest->reviewed_at = now();
         $leaveRequest->save();
+        if (
+            $leaveRequest->status == 1 &&
+            $leaveRequest->accepted_from_date &&
+            $leaveRequest->accepted_to_date
+        ) {
+            $from = Carbon::parse($leaveRequest->accepted_from_date);
+            $to = Carbon::parse($leaveRequest->accepted_to_date);
+
+            for ($date = $from->copy(); $date->lte($to); $date->addDay()) {
+                $formattedDate = $date->toDateString();
+
+                $attendance = Attendance::updateOrCreate(
+                    [
+                        'user_id' => $leaveRequest->user_id,
+                        'leave_date' => $formattedDate,
+                    ],
+                    [
+                        'user_name' => $leaveRequest->user->name,
+                        'check_in' => 'Leave',
+                        'check_out' => null,
+                        'location' => null,
+                        'is_on_leave' => 1,
+                        'leave_date' => $formattedDate,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]
+                );
+
+                if (!$attendance->is_on_leave || !$attendance->leave_date) {
+                    $attendance->is_on_leave = 1;
+                    $attendance->leave_date = $formattedDate;
+                    $attendance->save();
+                }
+            }
+        }
 
         notify()->success('Leave request updated successfully.');
         return redirect()->back();
