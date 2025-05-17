@@ -26,18 +26,5 @@ class UserTableSeeder extends Seeder
             'status' => 1,
             'password' => Hash::make('password'),
         ]);
-
-
-        User::create([
-            'name' => 'Foyzur Rahman Ridoy',
-            'email' => 'manager@app.com',
-            'role' => 2,
-            'designation' => 'HR Manager',
-            'phone_no' => '01714898789',
-            'profile_photo' => null,
-            'email_verified_at' => now(),
-            'status' => 1,
-            'password' => Hash::make('password'),
-        ]);
     }
 }

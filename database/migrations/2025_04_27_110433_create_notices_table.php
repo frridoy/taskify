@@ -22,6 +22,8 @@ return new class extends Migration
             $table->dateTime('publish_date')->nullable();
             $table->dateTime('expire_date')->nullable();
             $table->tinyInteger('is_active');
+            $table->unsignedBigInteger('authorized_by')->nullable();
+            $table->foreign('authorized_by')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

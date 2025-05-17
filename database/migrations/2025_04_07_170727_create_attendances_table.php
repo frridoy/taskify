@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('check_in');
             $table->string('location')->nullable();
             $table->string('check_out')->nullable();
+            $table->tinyInteger('is_on_leave')->default(0);
+            $table->date('leave_date')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

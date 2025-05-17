@@ -10,17 +10,16 @@
                 </a>
             </div>
             <div class="card-body">
-                <!-- Filter Section -->
                 <form action="{{ route('attendance.list') }}" method="GET" id="filterForm">
                     <div class="row mb-3">
                         <div class="col-md-3 mb-2">
                             <label for="user" class="form-label">Users</label>
                             <select name="user_id" id="user_id" class="form-select select2">
                                 <option value="">All Users</option>
-                                @foreach ($users as $active_user)
-                                    <option value="{{ $active_user->user_id }}"
-                                        {{ isset($_GET['user_id']) && $_GET['user_id'] == $active_user->user_id ? 'selected' : '' }}>
-                                        {{ $active_user->name }}
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->id }}"
+                                        {{ request('user_id') == $user->id ? 'selected' : '' }}>
+                                        {{ $user->name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -112,7 +111,6 @@
     </div>
 
     <style>
-        /* Base Styles */
         .table th,
         .table td {
             vertical-align: middle;
@@ -120,7 +118,6 @@
             padding: 0.5rem;
         }
 
-        /* Table Styling */
         .table-hover tbody tr:hover {
             background-color: rgba(0, 123, 255, 0.05);
         }
@@ -130,7 +127,6 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        /* Cards and UI Components */
         .card {
             border-radius: 0.5rem;
             box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
@@ -141,7 +137,6 @@
             border-bottom: 1px solid rgba(0, 0, 0, 0.125);
         }
 
-        /* Button and Badge Styling */
         .badge {
             font-size: 0.75rem;
             padding: 0.35em 0.65em;
@@ -153,7 +148,6 @@
             font-size: 0.75rem;
         }
 
-        /* Form Controls */
         .form-select,
         .form-control {
             border-radius: 0.25rem;
@@ -161,7 +155,6 @@
             min-height: calc(1.5em + 0.5rem + 2px);
         }
 
-        /* Text handling */
         .text-truncate {
             white-space: nowrap;
             overflow: hidden;
@@ -173,13 +166,11 @@
             word-wrap: break-word !important;
         }
 
-        /* Pagination styling */
         .pagination {
             margin-bottom: 0;
             flex-wrap: wrap;
         }
 
-        /* Responsive Adjustments */
         @media (max-width: 767.98px) {
 
             .table th,
@@ -189,7 +180,6 @@
             }
         }
 
-        /* Utility classes */
         .gap-1 {
             gap: 0.25rem !important;
         }

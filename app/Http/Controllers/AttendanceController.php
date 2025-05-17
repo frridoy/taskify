@@ -62,27 +62,31 @@ class AttendanceController extends Controller
                 ->pluck('user_id')
                 ->toArray();
 
-            $userList = User::whereIn('id', $teamMemberIds)
+            $users = User::whereIn('id', $teamMemberIds)
                 ->where('role', 3)
                 ->where('status', 1)
-                ->select(['id', 'name']);
+                ->select(['id', 'name'])
+                ->get();
         } elseif ($role == 1 || $role == 2) {
-            $userList = User::where('status', 1)
-                ->select(['id', 'name']);
+            $users = User::where('status', 1)
+                ->where('role', 3)
+                ->select(['id', 'name'])
+                ->get();
         } else {
-            $userList = User::where('id', $userId)
-                ->select(['id', 'name']);
+            $users = User::where('id', $userId)
+                ->select(['id', 'name'])
+                ->get();
         }
-
-        $users = $userList->get();
-
 
         $attendanceQuery = Attendance::with('user')->orderBy('created_at', 'desc');
 
-        if ($role == 3 && !$teamLeader) {
-            $attendanceQuery->where('user_id', $userId);
+        if ($role == 3) {
+            if ($teamLeader) {
+                $attendanceQuery->whereIn('user_id', $teamMemberIds);
+            } else {
+                $attendanceQuery->where('user_id', $userId);
+            }
         }
-
         if ($request->filled('user_id')) {
             $attendanceQuery->where('user_id', $request->user_id);
         }
@@ -97,7 +101,7 @@ class AttendanceController extends Controller
 
         $attendances = $attendanceQuery->paginate(10);
 
-        return view('attendance.list', compact('attendances', 'users'));
+        return view('attendance.index', compact('attendances', 'users'));
     }
 
     public function check_out($id)

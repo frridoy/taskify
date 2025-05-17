@@ -23,6 +23,8 @@ return new class extends Migration
             $table->text('reason_description')->nullable();
             $table->string('medical_document')->nullable();
             $table->tinyInteger('status')->comment('0-pending, 1-accepted, 2-rejected');
+            $table->date('accepted_from_date')->nullable();
+            $table->date('accepted_to_date')->nullable();
             $table->string('comment')->nullable();
             $table->unsignedBigInteger('reviewed_by')->nullable();
             $table->timestamp('reviewed_at')->nullable();
