@@ -67,12 +67,12 @@
 
                                         <td>
                                             @if ((auth()->user()->role == 1 || auth()->user()->role == 2) && $leave_request->status == 0)
-                                                <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal"
+                                                <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal"
                                                     data-bs-target="#leaveModal{{ $leave_request->id }}">
                                                     </i> Review
                                                 </button>
                                             @endif
-                                            <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal"
+                                            <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal"
                                                 data-bs-target="#viewModal{{ $leave_request->id }}">
                                                 </i> View
                                             </button>

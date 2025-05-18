@@ -67,7 +67,7 @@
                             <tr>
                                 <th>SI</th>
                                 <th>Task Name</th>
-                                <th>Description</th>
+                                {{-- <th>Description</th> --}}
                                 <th>Assigned To</th>
                                 <th>Created By</th>
                                 <th>Date Limit</th>
@@ -86,11 +86,11 @@
                                             {{ $task->task_name }}
                                         </div>
                                     </td>
-                                    <td>
+                                    {{-- <td>
                                         <div class="text-truncate" style="max-width: 150px;" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $task->task_description }}">
                                             {{ $task->task_description }}
                                         </div>
-                                    </td>
+                                    </td> --}}
                                     <td>{{ $task->user->name ?? 'Unassigned' }}</td>
                                     <td>{{ $task->creator->name ?? 'Unknown' }}</td>
                                     <td>

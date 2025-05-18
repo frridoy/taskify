@@ -430,11 +430,12 @@
                                             <label for="notice_type">Notice Type <span class="required-field">*</span></label>
                                             <select name="notice_type" id="notice_type"
                                                 class="form-control @error('notice_type') is-invalid @enderror">
-                                                <option value="">-- Select Notice Type --</option>
+                                                <option value="">Select Notice Type</option>
                                                 @foreach ($notice_types as $key => $value)
                                                     <option value="{{ $key }}"
-                                                        {{ old('notice_type') == $key ? 'selected' : '' }}>
-                                                        {{ $value }}</option>
+                                                        {{ old('notice_type', isset($notice) ? $notice->notice_type : '') == $key ? 'selected' : '' }}>
+                                                        {{ $value }}
+                                                    </option>
                                                 @endforeach
                                             </select>
                                             @error('notice_type')
@@ -447,7 +448,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="meeting_date_time">Meeting Date & Time <span class="required-field">*</span></label>
+                                            <label for="meeting_date_time">Meeting Date & Time</label>
                                             <input type="datetime-local"
                                                 class="form-control @error('meeting_date_time') is-invalid @enderror"
                                                 id="meeting_date_time" name="meeting_date_time"
@@ -484,7 +485,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="publish_date">Publish Date <span class="required-field">*</span></label>
+                                            <label for="publish_date">Publish Date</label>
                                             <div class="date-input-group">
                                                 <input type="datetime-local"
                                                     class="form-control @error('publish_date') is-invalid @enderror"

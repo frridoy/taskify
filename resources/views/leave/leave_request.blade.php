@@ -184,8 +184,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="leave_left">Leave Left {{ date('Y') }}:</label> <span
-                                            class="text-danger">*</span>
+                                        <label for="leave_left">Leave Left {{ date('Y') }}:</label>
                                         <input type="text" class="form-control" id="leave_left" name="leave_left"
                                             value="{{ $leave_days_left }}" readonly>
                                     </div>
