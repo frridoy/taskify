@@ -8,6 +8,7 @@ use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\HomeContoller;
 use App\Http\Controllers\HRController;
 use App\Http\Controllers\NoticeController;
+use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RewardController;
 use App\Http\Controllers\SettingController;
@@ -40,6 +41,8 @@ Route::middleware(['auth', 'isSuperAdmin'])->group(function () {
     Route::post('organization-info-store', [SettingController::class, 'store'])->name('office_info_setup.store');
     Route::get('organization-info-edit/{id}', [SettingController::class, 'edit'])->name('office_info_setup.edit');
     Route::put('organization-info-update/{id}', [SettingController::class, 'update'])->name('office_info_setup.update');
+    Route::post('password-reset/{id}', [PasswordResetController::class, 'password_reset'])->name('password_reset');
+
 });
 
 Route::middleware(['auth', 'isEmployee'])->group(function () {

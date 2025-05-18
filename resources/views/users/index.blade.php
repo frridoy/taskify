@@ -102,11 +102,16 @@
                                                 <a href="{{ route('users.view', $user->id) }}" class="btn btn-sm btn-info">
                                                     <i class="bi bi-eye"></i>
                                                 </a>
+                                                <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                                    data-bs-target="#resetPasswordModal{{ $user->id }}">
+                                                    <i class="bi bi-arrow-clockwise"></i>
+                                                </a>
                                             @else
                                                 <i class="bi bi-x-circle text-muted"></i>
                                             @endif
                                         </td>
                                     </tr>
+                                    @include('modals.password-reset')
                                 @endforeach
                             @else
                                 <tr>
