@@ -60,7 +60,7 @@
                                 <th>Check Out</th>
                                 <th>Check Out Date</th>
                                 @if (auth()->user()->role == 3)
-                                    <th>Action</th>
+                                <th>Action</th>
                                 @endif
                             </tr>
                         </thead>
@@ -68,7 +68,7 @@
                             @foreach ($attendances as $attendance)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $attendance->user_name }}</td>
+                                    <td>{{ $attendance->user->name }}</td>
                                     <td>
                                         @if ($attendance->is_on_leave == 1)
                                             <span class="badge bg-danger">On Leave</span>

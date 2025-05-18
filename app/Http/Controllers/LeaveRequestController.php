@@ -167,7 +167,6 @@ class LeaveRequestController extends Controller
                         'leave_date' => $formattedDate,
                     ],
                     [
-                        'user_name' => $leaveRequest->user->name,
                         'check_in' => 'Leave',
                         'check_out' => null,
                         'location' => null,

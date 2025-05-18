@@ -25,6 +25,16 @@ return [
         3 => 'Employee',
         4 => 'Team Leader',
         5 => 'Canidate',
-    ]
+    ],
 
+    'blood_group' => [
+        1 => 'A+',
+        2 => 'A-',
+        3 => 'B+',
+        4 => 'B-',
+        5 => 'AB+',
+        6 => 'AB-',
+        7 => 'O+',
+        8 => 'O-',
+    ],
 ];

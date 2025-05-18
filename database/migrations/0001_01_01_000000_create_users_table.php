@@ -23,6 +23,18 @@ return new class extends Migration
             $table->string('profile_photo')->nullable();
             $table->string('designation')->nullable();
             $table->string('signature')->nullable();
+            $table->date('joining_date')->nullable();
+            $table->date('resignation_date')->nullable();
+            $table->date('dob')->nullable();
+            $table->string('nid', 20)->nullable();
+            $table->string('blood_group', 3)->nullable();
+            $table->tinyInteger('gender')->nullable();
+            $table->string('pre_area')->nullable();
+            $table->string('pre_thana')->nullable();
+            $table->string('pre_district')->nullable();
+            $table->string('per_area')->nullable();
+            $table->string('per_thana')->nullable();
+            $table->string('per_district')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

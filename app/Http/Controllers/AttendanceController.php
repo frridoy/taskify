@@ -39,7 +39,6 @@ class AttendanceController extends Controller
 
         Attendance::create([
             'user_id'   => $user->id,
-            'user_name' => $user->name,
             'check_in'  => $now->format('H:i'),
             'location'  => $request->input('location'),
             'check_out' => null,
@@ -78,7 +77,8 @@ class AttendanceController extends Controller
                 ->get();
         }
 
-        $attendanceQuery = Attendance::with('user')->orderBy('created_at', 'desc');
+        $attendanceQuery = Attendance::with(['user:id,name'])->orderBy('created_at', 'desc');
+        dd($attendanceQuery->get());
 
         if ($role == 3) {
             if ($teamLeader) {

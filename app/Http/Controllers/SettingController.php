@@ -110,13 +110,12 @@ class SettingController extends Controller
         return redirect()->route('office_info_setup.index');
     }
 
-
     public function index()
     {
         $office_info = Setting::first();
 
         if (!$office_info) {
-            return redirect()->route('office_info_setup.form');
+            return redirect()->back();
         }
 
         return view('settings.office_info_setup_list', compact('office_info'));
