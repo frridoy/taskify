@@ -78,7 +78,6 @@ class AttendanceController extends Controller
         }
 
         $attendanceQuery = Attendance::with(['user:id,name'])->orderBy('created_at', 'desc');
-        dd($attendanceQuery->get());
 
         if ($role == 3) {
             if ($teamLeader) {
