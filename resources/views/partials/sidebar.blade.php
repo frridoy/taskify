@@ -303,7 +303,7 @@
 
                 <div class="menu-item dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#attendanceMenu">
                     <div class="menu-icon">
-                        <i class="bi bi-calendar-check-fill"></i>
+                        <i class="bi-person-check"></i>
                     </div>
                     <span>Attendance</span>
                     <i class="bi bi-chevron-down ms-auto menu-arrow"></i>
@@ -361,7 +361,7 @@
 
                 <div class="menu-item dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#noticeMenu">
                     <div class="menu-icon">
-                        <i class="bi bi-people-fill"></i>
+                      <i class="bi bi-megaphone"></i>
                     </div>
                     <span>Notice</span>
                     <i class="bi bi-chevron-down ms-auto menu-arrow"></i>
@@ -391,7 +391,7 @@
                 </div>
                 <div class="menu-item dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#leaveMenu">
                     <div class="menu-icon">
-                        <i class="bi bi-calendar-check-fill"></i>
+                        <i class="bi-person-exclamation"></i>
                     </div>
                     <span>Leave Request</span>
                     <i class="bi bi-chevron-down ms-auto menu-arrow"></i>
@@ -458,7 +458,7 @@
                     <span class="text-cyan-200 text-uppercase" style="font-size: 12px; letter-spacing: 1px;">User</span>
                 </div>
 
-                <div class="menu-item dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#rewardMenu">
+                <div class="menu-item dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#userMenu">
                     <div class="menu-icon">
                         <i class="bi bi-people-fill"></i>
                     </div>
@@ -466,7 +466,7 @@
                     <i class="bi bi-chevron-down ms-auto menu-arrow"></i>
                 </div>
 
-                <div id="rewardMenu" class="collapse mt-1">
+                <div id="userMenu" class="collapse mt-1">
                     @if (auth()->user()->role == 1)
                         <a href="{{ route('users.create') }}" class="submenu-item">
                             <div class="submenu-bullet"></div>
@@ -490,15 +490,15 @@
                     <span class="text-cyan-200 text-uppercase" style="font-size: 12px; letter-spacing: 1px;">Reward</span>
                 </div>
 
-                <div class="menu-item dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#userMenu">
+                <div class="menu-item dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#rewardMenu">
                     <div class="menu-icon">
-                        <i class="bi bi-people-fill"></i>
+                         <i class="bi bi-trophy"></i>
                     </div>
                     <span>Reward</span>
                     <i class="bi bi-chevron-down ms-auto menu-arrow"></i>
                 </div>
 
-                <div id="userMenu" class="collapse mt-1">
+                <div id="rewardMenu" class="collapse mt-1">
                         <a href="{{ route('reward.index') }}" class="submenu-item">
                             <div class="submenu-bullet"></div>
                             <span>Records</span>

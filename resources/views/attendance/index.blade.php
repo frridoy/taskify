@@ -65,6 +65,7 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @if(!$attendances->isEmpty())
                             @foreach ($attendances as $attendance)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
@@ -96,6 +97,11 @@
 
                                 </tr>
                             @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="7" class="text-center text-danger">No attendance record found.</td>
+                                </tr>
+                            @endif
                         </tbody>
                     </table>
                 </div>
