@@ -114,6 +114,9 @@ Route::middleware(['auth', 'isAdmin_isManager'])->group(function () {
     Route::get('team-build', [TeamController::class, 'team_build'])->name('team.build');
     Route::post('team-store', [TeamController::class, 'store'])->name('team.store');
     Route::get('team-view/{team_number}', [TeamController::class, 'team_view'])->name('team.view');
+    Route::get('/team/{team_number}/edit',  [TeamController::class, 'edit'])->name('team.edit');
+    Route::put('/team/{team_number}/update', [TeamController::class, 'update'])->name('team.update');
+
 
     Route::post('notice', [NoticeController::class, 'store'])->name('notice.store');
     Route::get('notice-edit/{id}', [NoticeController::class, 'edit'])->name('notice.edit');

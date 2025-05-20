@@ -124,4 +124,65 @@ class TeamController extends Controller
 
         return view('team.view', compact('team', 'members'));
     }
+
+    public function edit($team_number)
+    {
+        $teamMembers = Team::where('team_number', $team_number)
+            ->with('employee:id,name')
+            ->get();
+
+        $currentMemberIds = $teamMembers->pluck('user_id')->toArray();
+
+        $alreadyUnderTeam = Team::pluck('user_id')->toArray();
+
+        $alreadyUnderTeam = array_diff($alreadyUnderTeam, $currentMemberIds);
+
+        $employees = User::where('role', 3)
+            ->where('status', 1)
+            ->whereNotIn('id', $alreadyUnderTeam)
+            ->get(['id', 'name']);
+
+        return view('team.edit', compact('teamMembers', 'employees', 'team_number'));
+    }
+
+    public function update(Request $request, $team_number)
+    {
+        $validated = Validator::make($request->all(), [
+            'user_id' => 'required|array',
+            'user_id.*' => 'distinct|exists:users,id',
+            'team_leader' => 'required|exists:users,id',
+            'team_name' => 'required|string|max:255',
+        ]);
+
+        if ($validated->fails()) {
+            notify()->error($validated->getMessageBag());
+            return redirect()->back()->withInput();
+        }
+
+        $existingTeamName = Team::where('team_name', $request->team_name)
+            ->where('team_number', '!=', $team_number)
+            ->exists();
+
+        if ($existingTeamName) {
+            notify()->error('The team name has already been taken.');
+            return redirect()->back()->withInput();
+        }
+
+        Team::where('team_number', $team_number)
+            ->whereNotIn('user_id', $request->user_id)
+            ->delete();
+
+        foreach ($request->user_id as $employeeId) {
+            Team::updateOrCreate(
+                ['team_number' => $team_number, 'user_id' => $employeeId],
+                [
+                    'team_name' => ucwords($request->team_name),
+                    'is_team_leader' => ($request->team_leader == $employeeId) ? 1 : 0,
+                ]
+            );
+        }
+
+        notify()->success('Team updated successfully.');
+        return redirect()->route('team.index');
+    }
 }
