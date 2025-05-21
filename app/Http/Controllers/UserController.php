@@ -35,6 +35,7 @@ class UserController extends Controller
         $user->role = $request->role;
         $user->phone_no = $request->phone_no;
         $user->status = $request->status;
+        $user->basic_salary = $request->basic_salary;
         $user->password = bcrypt($request->password);
 
         if ($request->hasFile('profile_photo')) {
@@ -105,6 +106,7 @@ class UserController extends Controller
         $user->role = $request->role;
         $user->phone_no = $request->phone_no;
         $user->status = $request->status;
+        $user->basic_salary = $request->basic_salary;
         if ($request->filled('password')) {
             $user->password = bcrypt($request->password);
         }

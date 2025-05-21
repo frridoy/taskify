@@ -106,9 +106,10 @@
                                     <div class="form-group">
                                         <label for="name">Name:</label> <span class="text-danger">*</span>
                                         <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                            id="name" name="name" value="{{old('name', isset($user) ? $user->name : '') }}"
+                                            id="name" name="name"
+                                            value="{{ old('name', isset($user) ? $user->name : '') }}"
                                             placeholder="example">
-                                            @error('name')
+                                        @error('name')
                                             <p class="invalid-feedback"> {{ $message }} </p>
                                         @enderror
                                     </div>
@@ -116,14 +117,16 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="email">Email:</label> <span class="text-danger">*</span>
-                                        <input type="text" class="form-control @error('email') is-invalid
+                                        <input type="text"
+                                            class="form-control @error('email') is-invalid
 
-                                        @enderror" id="email" name="email"
-                                            value="{{old('email', isset($user) ? $user->email : '') }}"
+                                        @enderror"
+                                            id="email" name="email"
+                                            value="{{ old('email', isset($user) ? $user->email : '') }}"
                                             placeholder="example@app.com">
-                                            @error('email')
+                                        @error('email')
                                             <p class="invalid-feedback"> {{ $message }} </p>
-                                            @enderror
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -131,25 +134,33 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="role">Role:</label> <span class="text-danger">*</span>
-                                        <select class="custom-select @error('role') is-invalid @enderror" id="role" name="role">
+                                        <select class="custom-select @error('role') is-invalid @enderror" id="role"
+                                            name="role">
                                             <option value="">Select User Role</option>
-                                            <option value="2" {{ old('role', isset($user) ? $user->role : '') == 2 ? 'selected' : '' }}>HR</option>
-                                            <option value="3" {{ old('role', isset($user) ? $user->role : '') == 3 ? 'selected' : '' }}>Employee</option>
+                                            <option value="2"
+                                                {{ old('role', isset($user) ? $user->role : '') == 2 ? 'selected' : '' }}>HR
+                                            </option>
+                                            <option value="3"
+                                                {{ old('role', isset($user) ? $user->role : '') == 3 ? 'selected' : '' }}>
+                                                Employee</option>
                                         </select>
                                         @error('role')
-                                        <p class="invalid-feedback"> {{ $message }} </p>
+                                            <p class="invalid-feedback"> {{ $message }} </p>
                                         @enderror
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="phone_no">Phone Number:</label> <span class="text-danger">*</span>
-                                        <input type="text" class="form-control @error('phone_no') is-invalid
-                                        @enderror" id="phone_no" name="phone_no"
-                                            value="{{old('phone_no', isset($user) ? $user->phone_no : '' )}}" placeholder="01614898789">
-                                            @error('phone_no')
+                                        <input type="text"
+                                            class="form-control @error('phone_no') is-invalid
+                                        @enderror"
+                                            id="phone_no" name="phone_no"
+                                            value="{{ old('phone_no', isset($user) ? $user->phone_no : '') }}"
+                                            placeholder="01614898789">
+                                        @error('phone_no')
                                             <p class="invalid-feedback"> {{ $message }} </p>
-                                            @enderror
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -157,17 +168,21 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="designation">Designation:</label> <span class="text-danger">*</span>
-                                        <input type="text" class="form-control @error('designation') is-invalid
-                                        @enderror" id="designation" name="designation"
-                                            value="{{old('designation', isset($user) ? $user->designation : '' )}}" placeholder="Software Engineer">
-                                            @error('designation')
+                                        <input type="text"
+                                            class="form-control @error('designation') is-invalid
+                                        @enderror"
+                                            id="designation" name="designation"
+                                            value="{{ old('designation', isset($user) ? $user->designation : '') }}"
+                                            placeholder="Software Engineer">
+                                        @error('designation')
                                             <p class="invalid-feedback"> {{ $message }} </p>
-                                            @enderror
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="employee_signature">Signature:</label> <span class="text-danger">*</span>
+                                        <label for="employee_signature">Signature:</label> <span
+                                            class="text-danger">*</span>
                                         <div class="file-input">
                                             <input type="file" class="form-control" id="employee_signature"
                                                 name="employee_signature">
@@ -194,6 +209,23 @@
                                         <div class="file-input">
                                             <input type="file" class="form-control" id="profile_photo"
                                                 name="profile_photo">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="basic_salary">Basic Salary:</label> <span
+                                            class="text-danger">*</span>
+                                        <div class="file-input">
+                                            <input type="text"
+                                                class="form-control @error('basic_salary') is-invalid
+                                        @enderror"
+                                                id="basic_salary" name="basic_salary"
+                                                value="{{ old('basic_salary', isset($user) ? $user->basic_salary : '') }}"
+                                                placeholder="15000">
+                                            @error('basic_salary')
+                                                <p class="invalid-feedback"> {{ $message }} </p>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
@@ -232,7 +264,8 @@
                             </div>
 
                             <div class="form-group d-flex justify-content-center gap-3 mt-4">
-                                <a href="{{ route('users.index') }}" class="btn btn-outline-secondary btn-lg px-4" style="border-radius: 8px;">
+                                <a href="{{ route('users.index') }}" class="btn btn-outline-secondary btn-lg px-4"
+                                    style="border-radius: 8px;">
                                     <i class="fas fa-arrow-left mr-2"></i> Back
                                 </a>
                                 <button type="submit" class="btn btn-primary btn-lg px-4" style="border-radius: 8px;">

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\EmployeeSalary;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EmployeeSalaryController extends Controller
 {
@@ -12,7 +14,15 @@ class EmployeeSalaryController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::where('status', 1)->where('role', 3)->paginate(1000000);
+        $rewards = DB::table('rewards as r')
+            ->join('users as s', 'r.user_id', '=', 's.id')
+            ->select('r.user_id', 's.name', DB::raw('sum(r.total_amount_for_completed_task) as total_points'))
+            ->groupBy('r.user_id', 's.name');
+
+        $bonus = $rewards->pluck('total_points', 'user_id');
+
+        return view('employee_salaries.index', compact('users', 'bonus'));
     }
 
     /**

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeePolicyController;
+use App\Http\Controllers\EmployeeSalaryController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\HomeContoller;
@@ -22,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    return view ('frontend.master');
+    return view('frontend.master');
 });
 
 
@@ -42,7 +43,6 @@ Route::middleware(['auth', 'isSuperAdmin'])->group(function () {
     Route::get('organization-info-edit/{id}', [SettingController::class, 'edit'])->name('office_info_setup.edit');
     Route::put('organization-info-update/{id}', [SettingController::class, 'update'])->name('office_info_setup.update');
     Route::post('password-reset/{id}', [PasswordResetController::class, 'password_reset'])->name('password_reset');
-
 });
 
 Route::middleware(['auth', 'isEmployee'])->group(function () {
@@ -58,14 +58,12 @@ Route::middleware(['auth', 'isEmployee'])->group(function () {
 
     Route::get('task-notification', [TaskNotificationController::class, 'task_notification'])->name('task.notification');
     Route::get('tasks/{task}/details/{notification_id}', [TaskNotificationController::class, 'show'])->name('tasks.show.delete');
-
 });
 
 Route::middleware(['auth', 'isHR'])->group(function () {
 
     Route::get('hr/dashboard', [HRController::class, 'dashboard'])->name('hr.dashboard');
     Route::get('notice', [NoticeController::class, 'notice'])->name('notice.create');
-
 });
 
 
@@ -95,6 +93,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('reward', [RewardController::class, 'index'])->name('reward.index');
 
+    Route::resource('employee_salaries', EmployeeSalaryController::class);
 });
 
 
@@ -126,7 +125,6 @@ Route::middleware(['auth', 'isAdmin_isManager'])->group(function () {
     Route::get('employee-policy-edit/{id}', [EmployeePolicyController::class, 'edit'])->name('employee_policy.edit');
     Route::put('employee-policy-update/{id}', [EmployeePolicyController::class, 'update'])->name('employee_policy.update');
     Route::get('employee-policy-index', [EmployeePolicyController::class, 'index'])->name('employee_policy.index');
-
 });
 
 
