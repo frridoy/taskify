@@ -11,8 +11,44 @@
                 @endif
             </div>
             <div class="card-body">
+                <form action="{{ route('employee-salaries.index') }}" method="GET" id="filterForm">
+                    <div class="row mb-3">
+                        <div class="col-md-3 mb-2">
+                            <label for="selected_month" class="form-label">Month</label>
+                            <select name="selected_month" id="selected_month" class="form-select">
+                                <option value="">Select Month</option>
+                                @foreach ($salaryMonths as $key => $value)
+                                    <option value="{{ $key }}" {{ $key == $selectedMonth ? 'selected' : '' }}>
+                                        {{ $value }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label for="selected_year" class="form-label">Year</label>
+                            <select name="selected_year" id="selected_year" class="form-select">
+                                @foreach ($years as $year)
+                                    <option value="{{ $year }}" {{ $year == $selectedYear ? 'selected' : '' }}>
+                                        {{ $year }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-3 mb-2 d-flex align-items-end">
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-filter"></i> Filter
+                                </button>
+                                <a href="{{ route('employee-salaries.index') }}" class="btn btn-secondary">
+                                    <i class="fas fa-sync"></i> Reset
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover" id="usersTable">
+                    <table class="table table-bordered table-hover" id="salaryTable">
                         <thead class="table-dark">
                             <tr>
                                 <th>SI</th>

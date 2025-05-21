@@ -93,7 +93,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('reward', [RewardController::class, 'index'])->name('reward.index');
 
-    Route::resource('employee_salaries', EmployeeSalaryController::class);
+    Route::resource('employee-salaries', EmployeeSalaryController::class);
 });
 
 

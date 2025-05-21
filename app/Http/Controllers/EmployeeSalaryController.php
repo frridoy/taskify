@@ -12,9 +12,9 @@ class EmployeeSalaryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::where('status', 1)->whereIn('role', [1,2,3])->where('id', '!=', 1)->paginate(1000000);
+        $users = User::where('status', 1)->whereIn('role', [1, 2, 3])->where('id', '!=', 1)->paginate(1000000);
         $rewards = DB::table('rewards as r')
             ->join('users as s', 'r.user_id', '=', 's.id')
             ->select('r.user_id', 's.name', DB::raw('sum(r.total_amount_for_completed_task) as total_points'))
@@ -22,7 +22,22 @@ class EmployeeSalaryController extends Controller
 
         $bonus = $rewards->pluck('total_points', 'user_id');
 
-        return view('employee_salaries.index', compact('users', 'bonus'));
+        $salaryMonths = config('static_array.months');
+
+        $currentMonth = now()->month;
+        $selectedMonth = $currentMonth - 1;
+        if ($selectedMonth == 0) {
+            $selectedMonth = 12;
+        }
+
+        $selectedYear = now()->year;
+        $years = [
+            $selectedYear - 1,
+            $selectedYear,
+            $selectedYear + 1,
+        ];
+
+        return view('employee_salaries.index', compact('users', 'bonus', 'salaryMonths', 'selectedMonth', 'selectedYear', 'years'));
     }
 
     /**
