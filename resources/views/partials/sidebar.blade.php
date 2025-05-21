@@ -482,6 +482,39 @@
 
             @endif
 
+             <!-- Salary Management -->
+
+            @if (auth()->user()->role == 1 || auth()->user()->role == 2)
+
+            <div class="menu-category mt-4">
+
+                <div class="d-flex align-items-center mb-3">
+                    <div class="menu-category-line me-2"></div>
+                    <span class="text-cyan-200 text-uppercase" style="font-size: 12px; letter-spacing: 1px;">Salary</span>
+                </div>
+
+                <div class="menu-item dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#salaryMenu">
+                    <div class="menu-icon">
+                        <span class="bdt-icon" style="font-size: 1.2rem; font-weight: bold;">৳</span>
+                    </div>
+                    <span>Salary</span>
+                    <i class="bi bi-chevron-down ms-auto menu-arrow"></i>
+                </div>
+
+                <div id="salaryMenu" class="collapse mt-1">
+                        <a href="{{ route('employee-salaries.index') }}" class="submenu-item">
+                            <div class="submenu-bullet"></div>
+                            <span>Salary Distribute</span>
+                        </a>
+                    <a href="" class="submenu-item">
+                        <div class="submenu-bullet"></div>
+                        <span>Salary Records</span>
+                    </a>
+                </div>
+            </div>
+
+            @endif
+
             <!-- Reward Management -->
 
             <div class="menu-category mt-4">
