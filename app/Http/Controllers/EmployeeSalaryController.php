@@ -14,7 +14,7 @@ class EmployeeSalaryController extends Controller
      */
     public function index()
     {
-        $users = User::where('status', 1)->where('role', 3)->paginate(1000000);
+        $users = User::where('status', 1)->whereIn('role', [1,2,3])->where('id', '!=', 1)->paginate(1000000);
         $rewards = DB::table('rewards as r')
             ->join('users as s', 'r.user_id', '=', 's.id')
             ->select('r.user_id', 's.name', DB::raw('sum(r.total_amount_for_completed_task) as total_points'))

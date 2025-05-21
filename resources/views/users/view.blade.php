@@ -78,6 +78,10 @@
                                                 <td>{{ $user->designation ?? '' }}</td>
                                             </tr>
                                             <tr>
+                                                <th>Basic Salary</th>
+                                                <td>{{ $user->basic_salary ?? '' }}</td>
+                                            </tr>
+                                            <tr>
                                                 <th>Department</th>
                                                 <td>{{ $user->department ?? '' }}</td>
                                             </tr>

@@ -59,6 +59,7 @@
                                 <th>Email</th>
                                 <th>Contact</th>
                                 <th>Designation</th>
+                                <th>Basic Salary</th>
                                 <th>Role</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -73,6 +74,7 @@
                                         <td>{{ $user->email }}</td>
                                         <td>{{ $user->phone_no }}</td>
                                         <td>{{ $user->designation ?? '' }}</td>
+                                        <td class="text-center">{{ $user->basic_salary ?? '' }}</td>
                                         <td class="text-center">
                                             @if ($user->role == 1)
                                                 <i class="fas fa-user-shield text-danger" title="Admin"></i> Admin

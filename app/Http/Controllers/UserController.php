@@ -8,6 +8,24 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+    public function index(Request $request)
+    {
+        $query = User::where('role', '!=', 1)->orderBy('created_at', 'desc');
+
+        $allUsers = $query->get();
+
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->has('id') && $request->id != '') {
+            $query->where('id', $request->id);
+        }
+
+        $users = $query->paginate(10);
+
+        return view('users.index', compact('users', 'allUsers'));
+    }
     public function create()
     {
         return view('users.create');
@@ -21,6 +39,7 @@ class UserController extends Controller
             'role' => 'required|integer|in:1,2,3',
             'phone_no' => 'required|regex:/^01[3-9]\d{8}$/|string|max:11',
             'status' => 'required|in:0,1',
+            'basic_salary' => 'required|numeric',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
@@ -59,24 +78,6 @@ class UserController extends Controller
         return redirect()->route('users.index');
     }
 
-    public function index(Request $request)
-    {
-        $query = User::where('role', '!=', 1)->orderBy('created_at', 'desc');
-
-        $allUsers = $query->get();
-
-        if ($request->has('status') && $request->status != '') {
-            $query->where('status', $request->status);
-        }
-
-        if ($request->has('id') && $request->id != '') {
-            $query->where('id', $request->id);
-        }
-
-        $users = $query->paginate(5);
-
-        return view('users.index', compact('users', 'allUsers'));
-    }
     public function edit($id)
     {
         $user = User::findOrFail($id);
@@ -92,6 +93,7 @@ class UserController extends Controller
             'role' => 'required|integer|in:1,2,3',
             'phone_no' => 'required|regex:/^01[3-9]\d{8}$/|string|max:11',
             'status' => 'required|in:0,1',
+            'basic_salary' => 'required|numeric',
             'password' => 'nullable|string|min:6|confirmed',
         ]);
 
@@ -140,7 +142,6 @@ class UserController extends Controller
 
     public function view($userId)
     {
-
         $user = User::findOrFail($userId);
         return view('users.view', compact('user'));
     }
