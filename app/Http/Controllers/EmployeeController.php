@@ -106,8 +106,12 @@ class EmployeeController extends Controller
             ->wheremonth('created_at', $currentMonth)
             ->whereYear('created_at', $currentYear)
             ->count();
+        $recentTasks = Task::where('user_id', auth()->id())
+            ->orderBy('updated_at', 'desc')
+            ->limit(5)
+            ->get();
 
-        return view('employee.dashboard', compact('pending_tasks_count', 'processing_tasks_count', 'completed_tasks_count', 'total_tasks', 'missed_pending_tasks', 'missed_processing_tasks', 'pendingTasks', 'processingTasks', 'completedTasks'));
+        return view('employee.dashboard', compact('pending_tasks_count', 'processing_tasks_count', 'completed_tasks_count', 'total_tasks', 'missed_pending_tasks', 'missed_processing_tasks', 'pendingTasks', 'processingTasks', 'completedTasks', 'recentTasks'));
     }
     public function index(Request $request)
     {

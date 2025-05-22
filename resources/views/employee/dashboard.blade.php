@@ -180,19 +180,11 @@
 
     <!-- Keep the same HTML structure but with updated content -->
     <div class="dashboard-container">
-        {{-- <div class="dashboard-header">
-        <h1 class="dashboard-title">Task Dashboard</h1>
-        <p class="dashboard-subtitle">Overview of your task management</p>
-    </div> --}}
-        {{-- <div class="dashboard-header">
-            <h1 class="dashboard-title">Task Dashboard</h1>
-            <a href="{{ route('monthly.graph') }}" class="dashboard-subtitle">Overview of your task management in graph</a>
-        </div> --}}
 
 
         <div class="stats-grid">
             <!-- Total Tasks -->
-            <div class="stat-card total">
+            <a href="{{ route('my.tasks') }}" class="stat-card total">
                 <div class="stat-header">
                     <div class="stat-icon">
                         <i class="fas fa-tasks"></i>
@@ -205,7 +197,7 @@
                     <i class="fas fa-arrow-up me-1 trend-up"></i>
                     <span>5% vs last week</span>
                 </div>
-            </div>
+            </a>
 
             <!-- Pending Tasks -->
             <a href="{{ route('pending_tasks') }}" class="stat-card pending">
