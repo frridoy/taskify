@@ -86,7 +86,11 @@
                                         @endif
                                     </td>
                                     <td>{{ $attendance->check_out ? $attendance->check_out : '' }}</td>
-                                    <td></td>
+                                    <td>
+                                        @if ($attendance->check_out)
+                                            {{ \Carbon\Carbon::parse($attendance->updated_at)->format('d M, y') }}
+                                        @endif
+                                    </td>
                                     @if (auth()->user()->role == 3 && $attendance->is_on_leave == 0)
                                         <td class="text-center">
                                             <a href="{{ route('check_out', $attendance->id) }}">

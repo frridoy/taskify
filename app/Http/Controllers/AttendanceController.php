@@ -28,6 +28,14 @@ class AttendanceController extends Controller
         $checkedInToday = Attendance::where('user_id', $user->id)
             ->whereDate('created_at', Carbon::today())
             ->exists();
+            
+        $leaveDay = Attendance::where('user_id', $user->id)
+                    ->where('is_on_leave', 1)
+                    ->whereDate('created_at', Carbon::today())
+                    ->exists();
+         if($leaveDay){
+            return redirect()->back()->with('error', 'You are on leave today.');
+        }
 
         if ($checkedInToday) {
             return redirect()->back()->with('error', 'You have already checked in today.');
