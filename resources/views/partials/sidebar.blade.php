@@ -439,13 +439,12 @@
                         <span>Policy</span>
                     </a>
                     @endif
+                    @endif
 
                     <a href="{{ route('employee_policy.index') }}" class="submenu-item">
                         <div class="submenu-bullet"></div>
                         <span>Records</span>
                     </a>
-                    @endif
-
                 </div>
             </div>
 

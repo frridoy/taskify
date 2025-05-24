@@ -6,12 +6,16 @@
             <div class="card-header py-3 d-flex flex-wrap justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Attendance Management</h6>
                 <div class="d-flex flex-wrap align-items-center gap-2 mt-2 mt-md-0">
-                    <a href="{{ route('attendance.provide') }}" class="btn btn-primary">
-                        <i class="fas fa-calendar-check"></i> Attendance
-                    </a>
-                    <a href="{{ route('attendance.export.csv', request()->all()) }}" class="btn btn-success">
-                        <i class="fas fa-file-csv"></i> Export CSV
-                    </a>
+                    @if (auth()->user()->role == 2 || auth()->user()->role == 3)
+                        <a href="{{ route('attendance.provide') }}" class="btn btn-primary">
+                            <i class="fas fa-calendar-check"></i> Attendance
+                        </a>
+                    @endif
+                    @if (auth()->user()->role == 1 || auth()->user()->role == 2)
+                        <a href="{{ route('attendance.export.csv', request()->all()) }}" class="btn btn-success">
+                            <i class="fas fa-file-csv"></i> Export CSV
+                        </a>
+                    @endif
                 </div>
             </div>
             <div class="card-body">
@@ -45,8 +49,10 @@
                             <label for="leave_attendance" class="form-label">Leave</label>
                             <select name="leave_attendance" id="leave_attendance" class="form-select">
                                 <option value="">All</option>
-                                <option value="1" {{ request('leave_attendance') == '1' ? 'selected' : '' }}>Yes</option>
-                                <option value="0" {{ request('leave_attendance') == '0' ? 'selected' : '' }}>No</option>
+                                <option value="1" {{ request('leave_attendance') == '1' ? 'selected' : '' }}>Yes
+                                </option>
+                                <option value="0" {{ request('leave_attendance') == '0' ? 'selected' : '' }}>No
+                                </option>
                             </select>
                         </div>
 
@@ -74,47 +80,47 @@
                                 <th>Check Out</th>
                                 <th>Check Out Date</th>
                                 @if (auth()->user()->role == 3)
-                                <th>Action</th>
+                                    <th>Action</th>
                                 @endif
                             </tr>
                         </thead>
                         <tbody>
-                            @if(!$attendances->isEmpty())
-                            @foreach ($attendances as $attendance)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $attendance->user->name }}</td>
-                                    <td>
-                                        @if ($attendance->is_on_leave == 1)
-                                            <span class="badge bg-danger">On Leave</span>
-                                        @else
-                                            {{ $attendance->check_in }}
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if ($attendance->is_on_leave == 1)
-                                            <span
-                                                class="badge bg-danger">{{ \Carbon\Carbon::parse($attendance->leave_date)->format('d M, y') }}</span>
-                                        @else
-                                            {{ \Carbon\Carbon::parse($attendance->created_at)->format('d M, y') }}
-                                        @endif
-                                    </td>
-                                    <td>{{ $attendance->check_out ? $attendance->check_out : '' }}</td>
-                                    <td>
-                                        @if ($attendance->check_out)
-                                            {{ \Carbon\Carbon::parse($attendance->updated_at)->format('d M, y') }}
-                                        @endif
-                                    </td>
-                                    @if (auth()->user()->role == 3 && $attendance->is_on_leave == 0)
-                                        <td class="text-center">
-                                            <a href="{{ route('check_out', $attendance->id) }}">
-                                                <i class="fas fa-sign-out-alt"></i>
-                                            </a>
+                            @if (!$attendances->isEmpty())
+                                @foreach ($attendances as $attendance)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $attendance->user->name }}</td>
+                                        <td>
+                                            @if ($attendance->is_on_leave == 1)
+                                                <span class="badge bg-danger">On Leave</span>
+                                            @else
+                                                {{ $attendance->check_in }}
+                                            @endif
                                         </td>
-                                    @endif
+                                        <td>
+                                            @if ($attendance->is_on_leave == 1)
+                                                <span
+                                                    class="badge bg-danger">{{ \Carbon\Carbon::parse($attendance->leave_date)->format('d M, y') }}</span>
+                                            @else
+                                                {{ \Carbon\Carbon::parse($attendance->created_at)->format('d M, y') }}
+                                            @endif
+                                        </td>
+                                        <td>{{ $attendance->check_out ? $attendance->check_out : '' }}</td>
+                                        <td>
+                                            @if ($attendance->check_out)
+                                                {{ \Carbon\Carbon::parse($attendance->updated_at)->format('d M, y') }}
+                                            @endif
+                                        </td>
+                                        @if (auth()->user()->role == 3 && $attendance->is_on_leave == 0)
+                                            <td class="text-center">
+                                                <a href="{{ route('check_out', $attendance->id) }}">
+                                                    <i class="fas fa-sign-out-alt"></i>
+                                                </a>
+                                            </td>
+                                        @endif
 
-                                </tr>
-                            @endforeach
+                                    </tr>
+                                @endforeach
                             @else
                                 <tr>
                                     <td colspan="7" class="text-center text-danger">No attendance record found.</td>
