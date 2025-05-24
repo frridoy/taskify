@@ -5,9 +5,14 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-wrap justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Attendance Management</h6>
-                <a href="{{ route('attendance.provide') }}" class="btn btn-primary mt-2 mt-md-0">
-                    <i class="fas fa-calendar-check"></i> Attendance
-                </a>
+                <div class="d-flex flex-wrap align-items-center gap-2 mt-2 mt-md-0">
+                    <a href="{{ route('attendance.provide') }}" class="btn btn-primary">
+                        <i class="fas fa-calendar-check"></i> Attendance
+                    </a>
+                    <a href="{{ route('attendance.export.csv', request()->all()) }}" class="btn btn-success">
+                        <i class="fas fa-file-csv"></i> Export CSV
+                    </a>
+                </div>
             </div>
             <div class="card-body">
                 <form action="{{ route('attendance.list') }}" method="GET" id="filterForm">
@@ -24,16 +29,25 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-2 mb-2">
                             <label for="from_date" class="form-label">From Date</label>
                             <input type="date" name="from_date" id="from_date" class="form-control"
                                 value="{{ request('from_date') }}">
                         </div>
 
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-2 mb-2">
                             <label for="to_date" class="form-label">To Date</label>
                             <input type="date" name="to_date" id="to_date" class="form-control"
                                 value="{{ request('to_date') }}">
+                        </div>
+
+                        <div class="col-md-2 mb-2">
+                            <label for="leave_attendance" class="form-label">Leave</label>
+                            <select name="leave_attendance" id="leave_attendance" class="form-select">
+                                <option value="">All</option>
+                                <option value="1" {{ request('leave_attendance') == '1' ? 'selected' : '' }}>Yes</option>
+                                <option value="0" {{ request('leave_attendance') == '0' ? 'selected' : '' }}>No</option>
+                            </select>
                         </div>
 
                         <div class="col-md-3 mb-2 d-flex align-items-end">

@@ -74,6 +74,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('attendance-store', [AttendanceController::class, 'store'])->name('attendance.store');
     Route::get('attendance-check-out/{id}', [AttendanceController::class, 'check_out'])->name('check_out');
     Route::post('attendance-check-out/{id}', [AttendanceController::class, 'check_out_update'])->name('check_out_update');
+    Route::get('attendance-export-csv', [AttendanceController::class, 'exportCsv'])->name('attendance.export.csv');
 
     Route::get('tasks/{task}/details', [TaskController::class, 'show'])->name('tasks.show');
     Route::post('tasks/{id}/transfer', [TaskTransferController::class, 'store'])->name('tasks.transfer.store');
