@@ -88,6 +88,15 @@ class EmployeeSalaryController extends Controller
         return redirect()->back();
     }
 
+    public function records(Request $request)
+    {
+
+        $salaryRecords = EmployeeSalary::with(['user:id,name'])->paginate(5);
+        $months = config('static_array.months');
+
+        return view('employee_salaries.records', compact('salaryRecords', 'months'));
+    }
+
     /**
      * Display the specified resource.
      */

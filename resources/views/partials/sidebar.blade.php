@@ -501,14 +501,16 @@
                 </div>
 
                 <div id="salaryMenu" class="collapse mt-1">
+                    @if(auth()->user()->role == 1 || auth()->user()->role == 2)
                         <a href="{{ route('employee-salaries.index') }}" class="submenu-item">
                             <div class="submenu-bullet"></div>
                             <span>Salary Distribute</span>
                         </a>
-                    <a href="" class="submenu-item">
+                    <a href="{{route('employee_salaries.records')}}" class="submenu-item">
                         <div class="submenu-bullet"></div>
                         <span>Salary Records</span>
                     </a>
+                    @endif
                 </div>
             </div>
 
