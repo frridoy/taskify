@@ -12,23 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('employee_salaries', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->string('salary_month');
-            $table->string('salary_year');
-            $table->decimal('basic_salary', 10, 2);
-            $table->decimal('bonus', 10, 2)->nullable();
-            $table->decimal('deductions', 10, 2)->nullable();
-            $table->decimal('net_salary', 10, 2);
-            $table->date('paid_on_date')->nullable();
-            $table->tinyInteger('payment_status')->default(0)->comment('0: Unpaid, 1: Paid');
-            $table->string('payment_method')->nullable();
-            $table->string('notes')->nullable();
-            $table->unsignedBigInteger('created_by')->nullable();
-            $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('created_by')->references('id')->on('users')->onDelete('set null');
+        $table->id();
+        $table->foreignId('user_id')->constrained()->onDelete('cascade');
+        $table->decimal('basic_salary', 10, 2)->default(0);
+        $table->decimal('bonus', 10, 2)->default(0);
+        $table->decimal('total_salary', 10, 2)->default(0);
+        $table->string('month');
+        $table->string('year');
+        $table->timestamps();
         });
     }
 

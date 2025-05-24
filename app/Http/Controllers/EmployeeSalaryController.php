@@ -51,9 +51,41 @@ class EmployeeSalaryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
     public function store(Request $request)
     {
-        //
+        $month = $request->input('selected_month');
+        $year = $request->input('selected_year');
+        $salaries = $request->input('salaries', []);
+
+        foreach ($salaries as $salary) {
+            if (!isset($salary['selected']) || !$salary['selected']) {
+                continue;
+            }
+
+            $userId = $salary['user_id'];
+
+            $exists = EmployeeSalary::where('month', $month)
+                ->where('year', $year)
+                ->where('user_id', $userId)
+                ->exists();
+
+            if ($exists) {
+                continue;
+            }
+
+            EmployeeSalary::create([
+                'user_id'      => $userId,
+                'month'        => $month,
+                'year'         => $year,
+                'basic_salary' => $salary['basic_salary'],
+                'bonus'        => $salary['bonus'],
+                'total_salary' => $salary['total_salary'],
+            ]);
+        }
+
+        notify()->success('Employee salaries distributed successfully.');
+        return redirect()->back();
     }
 
     /**
