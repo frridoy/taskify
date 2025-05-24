@@ -19,6 +19,7 @@ return new class extends Migration
         $table->decimal('total_salary', 10, 2)->default(0);
         $table->string('month');
         $table->string('year');
+        $table->tinyInteger('distribute_by');
         $table->timestamps();
         });
     }

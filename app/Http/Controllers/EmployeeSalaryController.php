@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\EmployeeSalary;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class EmployeeSalaryController extends Controller
@@ -57,6 +58,7 @@ class EmployeeSalaryController extends Controller
         $month = $request->input('selected_month');
         $year = $request->input('selected_year');
         $salaries = $request->input('salaries', []);
+        $distribute_by = Auth::user()->id;
 
         foreach ($salaries as $salary) {
             if (!isset($salary['selected']) || !$salary['selected']) {
@@ -81,6 +83,7 @@ class EmployeeSalaryController extends Controller
                 'basic_salary' => $salary['basic_salary'],
                 'bonus'        => $salary['bonus'],
                 'total_salary' => $salary['total_salary'],
+                'distribute_by' => $distribute_by
             ]);
         }
 
@@ -91,7 +94,7 @@ class EmployeeSalaryController extends Controller
     public function records(Request $request)
     {
 
-        $salaryRecords = EmployeeSalary::with(['user:id,name'])->paginate(5);
+        $salaryRecords = EmployeeSalary::with(['user:id,name', 'distributeBy:id,name'])->paginate(5);
         $months = config('static_array.months');
 
         return view('employee_salaries.records', compact('salaryRecords', 'months'));

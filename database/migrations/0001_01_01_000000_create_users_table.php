@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('profile_photo')->nullable();
             $table->string('designation')->nullable();
+            $table->decimal('basic_salary', 10, 2)->nullable();
             $table->string('signature')->nullable();
             $table->date('joining_date')->nullable();
             $table->date('resignation_date')->nullable();

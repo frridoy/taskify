@@ -32,7 +32,7 @@
                                         <td>{{ $salaryRecord->total_salary ?? '' }}</td>
                                         <td>{{$months[$salaryRecord->month]}}</td>
                                         <td>{{ $salaryRecord->year ?? '' }}</td>
-                                        <td></td>
+                                        <td>{{$salaryRecord->distribute_by->name}}</td>
                                     </tr>
                                 @endforeach
                             @else
