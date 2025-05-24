@@ -19,6 +19,15 @@
                             <label for="title" class="form-label">Search by Title</label>
                             <input type="text" name="title" id="title" class="form-control" value="{{ $title ?? '' }}" placeholder="Enter notice title...">
                         </div>
+                        <div class="col-md-3 mb-2">
+                            <label for="from_date" class="form-label">From Date</label>
+                            <input type="date" name="from_date" id="from_date" class="form-control" value="{{ request('from_date') }}">
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label for="to_date" class="form-label">To Date</label>
+                            <input type="date" name="to_date" id="to_date" class="form-control" value="{{ request('to_date') }}">
+                        </div>
+
                         <div class="col-md-3 mb-2 d-flex align-items-end">
                             <div class="d-flex gap-2">
                                 <button type="submit" class="btn btn-primary">

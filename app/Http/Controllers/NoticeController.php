@@ -65,50 +65,6 @@ class NoticeController extends Controller
         notify()->success('Notice created successfully.');
         return redirect()->back();
     }
-
-    // public function index(Request $request)
-    // {
-    //     $user_types = config('static_array.user_type');
-    //     $currentDate = Carbon::now();
-
-    //     $authUser = Auth::user();
-    //     $authId = $authUser->id;
-
-    //     $team_leader = Team::where('user_id', $authId)
-    //         ->where('is_team_leader', 1)
-    //         ->first();
-
-    //         $query = Notice::orderBy('id', 'desc');
-
-    //         // if ($request->has('title') && $request->title != '') {
-    //         //     $query->where('title', $request->title);
-    //         // }
-    //         if ($request->has('title') && $request->title != '') {
-    //             $query->where('title', 'like', '%' . $request->title . '%');
-    //         }
-
-    //     if ($authUser->role == 1 || $authUser->role == 2) {
-    //         $notices = Notice::orderBy('id', 'desc')->paginate(5);
-    //     } else {
-    //         if ($authUser->role == 3 && $team_leader) {
-    //             // dd($team_leader);
-    //             $user_type_for_notice_get = "4";  //this $user_type_for_notice_get one form db where 4 is for team leader
-    //         } elseif ($authUser->role == 3) {
-    //             // dd($authUser->role);
-    //             $user_type_for_notice_get = "3";  //this one form db where 3 is for employee
-    //         } else {
-    //             $user_type_for_notice_get = $authUser->role;
-    //         }
-    //         $notices = Notice::orderBy('id', 'desc')
-    //             ->whereJsonContains('notice_for', $user_type_for_notice_get)
-    //             ->where('publish_date', '<=', $currentDate)
-    //             ->where('expire_date', '>=', $currentDate)
-    //             ->where('is_active', 1)
-    //             ->paginate(5);
-    //     }
-    //     return view('notices.index', compact('notices', 'user_types'));
-    // }
-
     public function index(Request $request)
     {
         $user_types = config('static_array.user_type');
@@ -127,17 +83,23 @@ class NoticeController extends Controller
         if ($request->has('title') && $request->title != '') {
             $query->where('title', 'like', '%' . $request->title . '%');
         }
-
+        if ($request->has('from_date') && $request->from_date != '') {
+            $query->whereDate('created_at', '>=', $request->from_date);
+        }
+        if ($request->has('to_date') && $request->to_date != '') {
+            $query->whereDate('created_at', '<=', $request->to_date);
+        }
+        
         if ($authUser->role == 1 || $authUser->role == 2) {
             $notices = $query->paginate(5);
         } else {
 
             if ($authUser->role == 3 && $team_leader) {
 
-                $user_type_for_notice_get = "4";  // This value comes from the database, where 4 represents team leader
+                $user_type_for_notice_get = "4";  // This value comes from the db, where 4 is team leader
             } elseif ($authUser->role == 3) {
 
-                $user_type_for_notice_get = "3";  // This value comes from the database, where 3 represents employee
+                $user_type_for_notice_get = "3";  // This value comes from the db, where 3 is employee
             } else {
 
                 $user_type_for_notice_get = $authUser->role;
