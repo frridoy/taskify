@@ -19,32 +19,21 @@
                     <div class="col-md-3 mb-2">
                         <label for="selected_month" class="form-label">Month</label>
                         <select name="selected_month" id="selected_month" class="form-select" required>
-                            <option value="">Select Month</option>
-                            @foreach ($salaryMonths as $key => $value)
-                                <option value="{{ $key }}" {{ $key == $selectedMonth ? 'selected' : '' }}>
-                                    {{ $value }}
+                                <option value="{{ $selectedMonth }}" {{ $selectedMonth }}>
+                                    {{ $salaryMonthName }}
                                 </option>
-                            @endforeach
                         </select>
                     </div>
                     <div class="col-md-3 mb-2">
                         <label for="selected_year" class="form-label">Year</label>
                         <select name="selected_year" id="selected_year" class="form-select" required>
-                            @foreach ($years as $year)
-                                <option value="{{ $year }}" {{ $year == $selectedYear ? 'selected' : '' }}>
-                                    {{ $year }}
+                                <option value="{{ $selectedYear }}" {{ $selectedYear}}>
+                                    {{ $selectedYear }}
                                 </option>
-                            @endforeach
                         </select>
                     </div>
                     <div class="col-md-3 mb-2 d-flex align-items-end">
                         <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-filter"></i> Filter
-                            </button>
-                            <a href="{{ route('employee-salaries.index') }}" class="btn btn-secondary">
-                                <i class="fas fa-sync"></i> Reset
-                            </a>
                         </div>
                     </div>
                 </div>

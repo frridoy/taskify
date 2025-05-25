@@ -128,6 +128,7 @@ Route::middleware(['auth', 'isAdmin_isManager'])->group(function () {
     Route::put('employee-policy-update/{id}', [EmployeePolicyController::class, 'update'])->name('employee_policy.update');
 
     Route::resource('employee-salaries', EmployeeSalaryController::class);
+    Route::get('/employee-salaries/{month?}/{year?}', [EmployeeSalaryController::class, 'index']);
     Route::get('employee-salaries-records', [EmployeeSalaryController::class, 'records'])->name('employee_salaries.records');
 });
 

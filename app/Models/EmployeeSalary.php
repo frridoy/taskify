@@ -22,7 +22,7 @@ class EmployeeSalary extends Model
     }
     public function distributeBy()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(User::class, 'distribute_by', 'id');
     }
 
 }

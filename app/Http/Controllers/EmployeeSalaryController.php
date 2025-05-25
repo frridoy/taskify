@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\EmployeeSalary;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -13,33 +14,33 @@ class EmployeeSalaryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request, $month = null, $year = null)
     {
-        $users = User::where('status', 1)->whereIn('role', [1, 2, 3])->where('id', '!=', 1)->paginate(1000000);
+        if (!$month || !$year) {
+            return view('employee_salaries.select_month_year');
+        }
+
+        $users = User::where('status', 1)
+            ->whereIn('role', [1, 2, 3])
+            ->where('id', '!=', 1)
+            ->paginate(1000000);
+
         $rewards = DB::table('rewards as r')
             ->join('users as s', 'r.user_id', '=', 's.id')
             ->select('r.user_id', 's.name', DB::raw('sum(r.total_amount_for_completed_task) as total_points'))
+            ->whereMonth('r.created_at', $month)
+            ->whereYear('r.created_at', $year)
             ->groupBy('r.user_id', 's.name');
 
         $bonus = $rewards->pluck('total_points', 'user_id');
+        $salaryMonthName = config('static_array.months')[$month];
 
-        $salaryMonths = config('static_array.months');
+        $selectedMonth = $month;
+        $selectedYear = $year;
 
-        $currentMonth = now()->month;
-        $selectedMonth = $currentMonth - 1;
-        if ($selectedMonth == 0) {
-            $selectedMonth = 12;
-        }
-
-        $selectedYear = now()->year;
-        $years = [
-            $selectedYear - 1,
-            $selectedYear,
-            $selectedYear + 1,
-        ];
-
-        return view('employee_salaries.index', compact('users', 'bonus', 'salaryMonths', 'selectedMonth', 'selectedYear', 'years'));
+        return view('employee_salaries.index', compact('users', 'bonus', 'selectedMonth', 'selectedYear', 'salaryMonthName'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -94,7 +95,7 @@ class EmployeeSalaryController extends Controller
     public function records(Request $request)
     {
 
-        $salaryRecords = EmployeeSalary::with(['user:id,name', 'distributeBy:id,name'])->paginate(5);
+        $salaryRecords = EmployeeSalary::with(['user:id,name', 'distributeBy:id,name'])->paginate(10);
         $months = config('static_array.months');
 
         return view('employee_salaries.records', compact('salaryRecords', 'months'));

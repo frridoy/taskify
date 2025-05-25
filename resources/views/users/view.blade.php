@@ -111,11 +111,11 @@
                                             </tr>
                                             <tr>
                                                 <th>Joining Date</th>
-                                                <td>{{ $user->created_at->format('d M Y, h:i A') }}</td>
+                                                <td>{{ $user->joining_date }}</td>
                                             </tr>
                                             <tr>
                                                 <th>Leaving Date</th>
-                                                <td>{{ $user->updated_at->format('d M Y, h:i A') }}</td>
+                                                <td>{{ $user->resignation_date}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -141,24 +141,28 @@
                                     <table class="table table-bordered">
                                         <tbody>
                                             <tr>
-                                                <th width="30%">Address</th>
-                                                <td>{{ $user->address ?? '' }}</td>
+                                                <th width="30%">Area</th>
+                                                <td>{{ $user->per_area ?? '' }}</td>
                                             </tr>
                                             <tr>
-                                                <th>City</th>
-                                                <td>{{ $user->city ?? '' }}</td>
+                                                <th>Thana</th>
+                                                <td>{{ $user->pre_thana ?? '' }}</td>
                                             </tr>
                                             <tr>
-                                                <th>State</th>
-                                                <td>{{ $user->state ?? '' }}</td>
+                                                <th>District</th>
+                                                <td>{{ $user->per_district ?? '' }}</td>
                                             </tr>
                                             <tr>
                                                 <th>Country</th>
-                                                <td>{{ $user->country ?? '' }}</td>
+                                                <td>{{ $user->country ?? 'Bangladeshi' }}</td>
                                             </tr>
                                             <tr>
                                                 <th>Postal Code</th>
                                                 <td>{{ $user->postal_code ?? '' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Gender</th>
+                                                <td>{{ $user->gender == 1 ? 'Male' : 'Female' ?? '' }}</td>
                                             </tr>
                                              <tr>
                                                 <th>Date of Birth</th>
