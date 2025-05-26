@@ -11,6 +11,7 @@ use App\Http\Controllers\HRController;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RewardController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SuperAdminController;
@@ -43,6 +44,9 @@ Route::middleware(['auth', 'isSuperAdmin'])->group(function () {
     Route::get('organization-info-edit/{id}', [SettingController::class, 'edit'])->name('office_info_setup.edit');
     Route::put('organization-info-update/{id}', [SettingController::class, 'update'])->name('office_info_setup.update');
     Route::post('password-reset/{id}', [PasswordResetController::class, 'password_reset'])->name('password_reset');
+
+    Route::get('search-engine', [ReportController::class, 'searchEngine'])->name('search.engine');
+    Route::get('search-engine/result', [ReportController::class, 'searchEngineResult'])->name('search.engine.result');
 });
 
 Route::middleware(['auth', 'isEmployee'])->group(function () {
