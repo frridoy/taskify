@@ -106,7 +106,13 @@ class EmployeeSalaryController extends Controller
      */
     public function show(EmployeeSalary $employeeSalary)
     {
-        //
+        $salaryRecord = EmployeeSalary::with(['user:id,name', 'distributeBy:id,name'])
+            ->where('id', $employeeSalary->id)
+            ->findorFail($employeeSalary->id);
+
+        $salaryMonth= config('static_array.months')[$salaryRecord->month] ?? 'Unknown';
+
+        return view('employee_salaries.show', compact('salaryRecord', 'salaryMonth'));
     }
 
     /**

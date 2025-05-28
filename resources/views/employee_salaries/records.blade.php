@@ -19,6 +19,7 @@
                                 <th>Month</th>
                                 <th>Year</th>
                                 <th>Distribute By</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -33,6 +34,11 @@
                                         <td>{{$months[$salaryRecord->month]}}</td>
                                         <td>{{ $salaryRecord->year ?? '' }}</td>
                                         <td>{{$salaryRecord->distributeBy->name}}</td>
+                                        <td class="text-center">
+                                            <a href="{{ route('employee-salaries.show', $salaryRecord->id) }}" class="btn btn-sm btn-info" title="Show">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                        </td>
                                     </tr>
                                 @endforeach
                             @else
