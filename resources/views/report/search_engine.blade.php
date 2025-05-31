@@ -143,11 +143,12 @@
                     html += `
                     <div class="col-md-6">
                         <div class="task-card">
-                            <h5>${task.title}</h5>
+                            <h5>${task.task_name}</h5>
                             <p><strong>Assigned to:</strong> ${task.user_name}</p>
+                            <p><strong>Assigned to:</strong> ${task.created_by}</p>
                             <p><strong>Status:</strong> <span class="${statusClass}">${task.status}</span></p>
                             <p><strong>Description:</strong> ${task.description || 'N/A'}</p>
-                            <p><strong>Due Date:</strong> ${task.due_date ? new Date(task.due_date).toLocaleDateString() : 'Not set'}</p>
+                            <p><strong>Due Date:</strong> ${task.dateLimit ? new Date(task.dateLimit).toLocaleDateString() : 'Not set'}</p>
                             <p><strong>Created At:</strong> ${new Date(task.created_at).toLocaleString()}</p>
                         </div>
                     </div>

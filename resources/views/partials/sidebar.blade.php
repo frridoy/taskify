@@ -481,6 +481,34 @@
 
             @endif
 
+
+            <!-- Search Engine -->
+            @if (auth()->user()->role == 1)
+
+            <div class="menu-category mt-4">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="menu-category-line me-2"></div>
+                    <span class="text-cyan-200 text-uppercase" style="font-size: 12px; letter-spacing: 1px;">Search Engine</span>
+                </div>
+
+                <div class="menu-item dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#searchEngineMenu">
+                    <div class="menu-icon">
+                        <i class="bi bi-search"></i>
+                    </div>
+                    <span>Search Engine</span>
+                    <i class="bi bi-chevron-down ms-auto menu-arrow"></i>
+                </div>
+
+                <div id="searchEngineMenu" class="collapse mt-1">
+                        <a href="{{ route('search.engine') }}" class="submenu-item">
+                            <div class="submenu-bullet"></div>
+                            <span>Search Engine</span>
+                        </a>
+                </div>
+            </div>
+
+            @endif
+
              <!-- Salary Management -->
 
             @if (auth()->user()->role == 1 || auth()->user()->role == 2)
