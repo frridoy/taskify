@@ -1,4 +1,4 @@
-@extends('setup.master')
+@extends('admin.layouts.app')
 @section('content')
     <div class="container mt-4">
         <div class="card shadow-sm">

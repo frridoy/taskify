@@ -1,4 +1,4 @@
-@extends('setup.master')
+@extends('admin.layouts.app')
 @section('content')
     <div class="container-fluid py-3">
         {{-- <h2 class="text-center mb-3">{{ $list_title }}</h2> --}}

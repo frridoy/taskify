@@ -1,4 +1,4 @@
-@extends('setup.master')
+@extends('admin.layouts.app')
 @section('content')
     <div class="container-fluid py-4">
         <div class="card shadow-sm">
@@ -185,7 +185,7 @@
             </td>
             <td class="text-center">
                 <button type="button" class="btn btn-outline-danger btn-sm btn-remove-member">
-                    <i class="fas fa-trash-alt"></i> 
+                    <i class="fas fa-trash-alt"></i>
                 </button>
             </td>
         `;

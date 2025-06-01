@@ -1,4 +1,4 @@
-@extends('setup.master')
+@extends('admin.layouts.app')
 @section('content')
     <div class="container-fluid py-3">
         {{-- <h2 class="text-center mb-3">{{ $list_title }}</h2> --}}
@@ -10,7 +10,7 @@
                     <a href="{{ route('tasks.assign') }}" class="btn btn-primary mt-2 mt-md-0">
                         <i class="fas fa-tasks"></i> Create Task
                     </a>
-                
+
             </div>
             <div class="card-body">
                 <!-- Filter Section -->

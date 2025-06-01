@@ -1,4 +1,4 @@
-@extends('setup.master')
+@extends('admin.layouts.app')
 @section('content')
 <style>
     /* Previous styles remain the same until card-specific styles */

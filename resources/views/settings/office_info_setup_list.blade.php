@@ -1,4 +1,4 @@
-@extends('setup.master')
+@extends('admin.layouts.app')
 @section('content')
 <div class="container py-4">
     <div class="office-info-wrapper card border-0 shadow-sm">

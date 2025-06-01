@@ -1,4 +1,4 @@
-@extends('setup.master')
+@extends('admin.layouts.app')
 @section('content')
     <div>
         <div class="px-5 dashboard-main-body-padding">

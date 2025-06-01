@@ -1,4 +1,4 @@
-{{-- @extends('setup.master')
+{{-- @extends('admin.layouts.app')
 @section('content')
 <div class="container">
     <div class="official-notice">
@@ -145,7 +145,7 @@
 @endsection --}}
 
 
-@extends('setup.master')
+@extends('admin.layouts.app')
 @section('content')
     <div class="container-fluid py-5">
         <div class="official-notice">
