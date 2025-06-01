@@ -12,12 +12,20 @@ class ReportController extends Controller
 {
     public function searchEngine()
     {
+        set_time_limit(0);
+        ini_set('memory_limit', '-1');
+        ini_set('max_execution_time', 0);
+
         $users = User::select('id', 'name')->orderBy('id')->get();
         return view('report.search_engine', compact('users'));
     }
 
     public function searchEngineResult(Request $request)
     {
+        set_time_limit(0);
+        ini_set('memory_limit', '-1');
+        ini_set('max_execution_time', 0);
+
         $query = DB::table('tasks')
             ->join('users as assigned_user', 'tasks.user_id', '=', 'assigned_user.id')
             ->join('users as creator_user', 'tasks.created_by', '=', 'creator_user.id')
