@@ -31,12 +31,19 @@
                                         <td>{{ $salaryRecord->basic_salary }}</td>
                                         <td>{{ $salaryRecord->bonus ?? '' }}</td>
                                         <td>{{ $salaryRecord->total_salary ?? '' }}</td>
-                                        <td>{{$months[$salaryRecord->month]}}</td>
+                                        <td>{{ $months[$salaryRecord->month] }}</td>
                                         <td>{{ $salaryRecord->year ?? '' }}</td>
-                                        <td>{{$salaryRecord->distributeBy->name}}</td>
+                                        <td>{{ $salaryRecord->distributeBy->name }}</td>
                                         <td class="text-center">
-                                            <a href="{{ route('employee-salaries.show', $salaryRecord->id) }}" class="btn btn-sm btn-info" title="Show">
-                                                <i class="fas fa-eye"></i>
+                                            @if (auth()->user()->role == 1 || auth()->user()->role == 2)
+                                                <a href="{{ route('employee-salaries.show', $salaryRecord->id) }}"
+                                                    class="btn btn-sm btn-info" title="Show">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                            @endif
+                                            <a href="{{ route('employee_salary.details', $salaryRecord->id) }}"
+                                                class="btn btn-sm btn-danger" title="Show">
+                                                <i class="fas fa-list"></i>
                                             </a>
                                         </td>
                                     </tr>

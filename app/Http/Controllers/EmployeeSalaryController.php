@@ -94,8 +94,17 @@ class EmployeeSalaryController extends Controller
 
     public function records(Request $request)
     {
+        $user = Auth::user();
+        $is_admin = $user->role == 1;
+        $is_manager = $user->role == 2;
 
-        $salaryRecords = EmployeeSalary::with(['user:id,name', 'distributeBy:id,name'])->paginate(10);
+        if($is_admin || $is_manager){
+            $salaryRecords = EmployeeSalary::with(['user:id,name', 'distributeBy:id,name'])->paginate(10);
+        }else{
+            $salaryRecords = EmployeeSalary::with(['user:id,name', 'distributeBy:id,name'])
+                ->where('user_id', Auth::id())
+                ->paginate(10);
+        }
         $months = config('static_array.months');
 
         return view('employee_salaries.records', compact('salaryRecords', 'months'));
@@ -137,5 +146,29 @@ class EmployeeSalaryController extends Controller
     public function destroy(EmployeeSalary $employeeSalary)
     {
         //
+    }
+
+    public function perEmployeeDetails($id)
+    {
+        $salary = EmployeeSalary::with(['user:id,name', 'distributeBy:id,name'])
+            ->findOrFail($id);
+
+        $authID = Auth::user();
+        $is_employee = $authID->role == 3;
+        
+        if ($is_employee) {
+            if($authID->id != $salary->user_id){
+
+                notify()->error('You do not have permission to view this page.');
+                return redirect()->back();
+            }
+        }
+
+         $allSalaries =EmployeeSalary::where('user_id', $salary->user_id)
+            ->orderByDesc('year')
+            ->orderByDesc('month')
+            ->get();
+
+        return view('employee_salaries.employee_salary_details', compact('salary', 'allSalaries'));
     }
 }

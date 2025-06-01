@@ -98,6 +98,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('reward', [RewardController::class, 'index'])->name('reward.index');
 
+    Route::get('employee-salaries-records', [EmployeeSalaryController::class, 'records'])->name('employee_salaries.records');
+    Route::get('/employee-salary-details/{id}', [EmployeeSalaryController::class, 'perEmployeeDetails'])->name('employee_salary.details');
+
     Route::get('employee-policy-index', [EmployeePolicyController::class, 'index'])->name('employee_policy.index');
 
 });
@@ -133,7 +136,6 @@ Route::middleware(['auth', 'isAdmin_isManager'])->group(function () {
 
     Route::resource('employee-salaries', EmployeeSalaryController::class);
     Route::get('/employee-salaries/{month?}/{year?}', [EmployeeSalaryController::class, 'index']);
-    Route::get('employee-salaries-records', [EmployeeSalaryController::class, 'records'])->name('employee_salaries.records');
 });
 
 
