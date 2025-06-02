@@ -98,17 +98,36 @@ class EmployeeSalaryController extends Controller
         $is_admin = $user->role == 1;
         $is_manager = $user->role == 2;
 
-        if($is_admin || $is_manager){
-            $salaryRecords = EmployeeSalary::with(['user:id,name', 'distributeBy:id,name'])->paginate(10);
-        }else{
-            $salaryRecords = EmployeeSalary::with(['user:id,name', 'distributeBy:id,name'])
-                ->where('user_id', Auth::id())
-                ->paginate(10);
-        }
-        $months = config('static_array.months');
+        $query = EmployeeSalary::with(['user:id,name', 'distributeBy:id,name']);
 
-        return view('employee_salaries.records', compact('salaryRecords', 'months'));
+        if (!($is_admin || $is_manager)) {
+            $query->where('user_id', Auth::id());
+        } else {
+            if ($request->filled('employee_id')) {
+                $query->where('user_id', $request->employee_id);
+            }
+            if ($request->filled('month')) {
+                $query->where('month', $request->month);
+            }
+            if ($request->filled('year')) {
+                $query->where('year', $request->year);
+            }
+        }
+
+        $sumQuery = clone $query;
+        $salaryRecords = $query->paginate(10);
+        $months = config('static_array.months');
+        $employees = User::where('role', 3)->pluck('name', 'id');
+
+
+        $totals = $sumQuery->selectRaw('
+        SUM(basic_salary) as total_basic_salary,
+        SUM(bonus) as total_bonus,
+        SUM(total_salary) as total_salary')->first();
+
+        return view('employee_salaries.records', compact('salaryRecords', 'months', 'employees', 'totals'));
     }
+
 
     /**
      * Display the specified resource.
@@ -119,7 +138,7 @@ class EmployeeSalaryController extends Controller
             ->where('id', $employeeSalary->id)
             ->findorFail($employeeSalary->id);
 
-        $salaryMonth= config('static_array.months')[$salaryRecord->month] ?? 'Unknown';
+        $salaryMonth = config('static_array.months')[$salaryRecord->month] ?? 'Unknown';
 
         return view('employee_salaries.show', compact('salaryRecord', 'salaryMonth'));
     }
@@ -155,16 +174,16 @@ class EmployeeSalaryController extends Controller
 
         $authID = Auth::user();
         $is_employee = $authID->role == 3;
-        
+
         if ($is_employee) {
-            if($authID->id != $salary->user_id){
+            if ($authID->id != $salary->user_id) {
 
                 notify()->error('You do not have permission to view this page.');
                 return redirect()->back();
             }
         }
 
-         $allSalaries =EmployeeSalary::where('user_id', $salary->user_id)
+        $allSalaries = EmployeeSalary::where('user_id', $salary->user_id)
             ->orderByDesc('year')
             ->orderByDesc('month')
             ->get();

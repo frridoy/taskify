@@ -1,12 +1,47 @@
 @extends('admin.layouts.app')
 @section('content')
     <div class="container-fluid py-3">
-
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-wrap justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Salary Records</h6>
             </div>
             <div class="card-body">
+                @if (auth()->user()->role == 1 || auth()->user()->role == 2)
+                    <form method="GET" action="{{ route('employee_salaries.records') }}" class="row g-2 mb-3">
+                        <div class="col-md-3">
+                            <select name="employee_id" class="form-select select2">
+                                <option value="">Select Employee</option>
+                                @foreach ($employees as $id => $name)
+                                    <option value="{{ $id }}"
+                                        {{ request('employee_id') == $id ? 'selected' : '' }}>
+                                        {{ $name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select name="month" class="form-select">
+                                <option value="">Select Month</option>
+                                @foreach ($months as $key => $monthName)
+                                    <option value="{{ $key }}" {{ request('month') == $key ? 'selected' : '' }}>
+                                        {{ $monthName }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="number" name="year" class="form-control" placeholder="Enter Year"
+                                value="{{ request('year') }}">
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary w-100">Filter</button>
+                        </div>
+                        <div class="col-md-2">
+                            <a href="{{ route('employee_salaries.records') }}" class="btn btn-secondary w-100">Reset</a>
+                        </div>
+                    </form>
+                @endif
+
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover" id="salaryRecordsTable">
                         <thead class="table-dark">
@@ -57,6 +92,50 @@
                         </tbody>
                     </table>
                 </div>
+                @if (auth()->user()->role == 1 || (auth()->user()->role == 2 && $salaryRecords->count() > 0))
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <div class="card border-success">
+                                <div class="card-body">
+                                    @php
+                                        $employeeName = request('employee_id')
+                                            ? $employees[request('employee_id')] ?? 'Unknown'
+                                            : null;
+                                        $monthName = request('month') ? $months[request('month')] ?? '' : null;
+                                        $year = request('year');
+                                    @endphp
+
+                                    <h6 class="card-title text-success">
+                                        <strong>
+                                            Total Summary
+                                            @if ($employeeName || $monthName || $year)
+                                                for
+                                                {{ $employeeName ? $employeeName : 'All Employees' }}
+                                                @if ($monthName)
+                                                    {{ $monthName }}
+                                                @endif
+                                                @if ($year)
+                                                    -{{ $year }}
+                                                @endif
+                                            @else
+                                                (All Records)
+                                            @endif
+                                        </strong>
+                                    </h6>
+
+                                    <ul class="list-unstyled mb-0">
+                                        <li><strong>Basic Salary:</strong>
+                                            {{ number_format($totals->total_basic_salary, 2) }}</li>
+                                        <li><strong>Bonus:</strong> {{ number_format($totals->total_bonus, 2) }}</li>
+                                        <li><strong>Total Salary:</strong> {{ number_format($totals->total_salary, 2) }}
+                                        </li>
+                                    </ul>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
 
                 <div class="d-flex justify-content-end mt-3">
                     @if (isset($salaryRecords) && $salaryRecords->hasPages())
@@ -65,7 +144,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <style>
