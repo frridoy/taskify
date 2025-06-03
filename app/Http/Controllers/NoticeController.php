@@ -15,7 +15,6 @@ class NoticeController extends Controller
 {
     public function notice()
     {
-
         $notice_types = config('static_array.notice_type');
         $user_types = config('static_array.user_type');
 
@@ -30,7 +29,6 @@ class NoticeController extends Controller
 
     public function store(Request $request)
     {
-
         $validation = Validator::make($request->all(), [
             'title' => 'required',
             'notice_type' => 'required',
@@ -89,17 +87,17 @@ class NoticeController extends Controller
         if ($request->has('to_date') && $request->to_date != '') {
             $query->whereDate('created_at', '<=', $request->to_date);
         }
-        
+
         if ($authUser->role == 1 || $authUser->role == 2) {
             $notices = $query->paginate(5);
         } else {
 
             if ($authUser->role == 3 && $team_leader) {
 
-                $user_type_for_notice_get = "4";  // This value comes from the db, where 4 is team leader
+                $user_type_for_notice_get = "4";
             } elseif ($authUser->role == 3) {
 
-                $user_type_for_notice_get = "3";  // This value comes from the db, where 3 is employee
+                $user_type_for_notice_get = "3"; 
             } else {
 
                 $user_type_for_notice_get = $authUser->role;
@@ -169,7 +167,28 @@ class NoticeController extends Controller
 
     public function view($id)
     {
+        $authUser = Auth::user();
+        $isEmployee = $authUser->role == 3;
+        $isTeamLeader = Team::where('user_id', $authUser->id)
+            ->where('is_team_leader', 1)
+            ->exists();
+
         $notice = Notice::with(['user:id,name,designation,signature'])->findOrFail($id);
+
+        $noticeFor = json_decode($notice->notice_for, true);
+
+        if ($isEmployee) {
+            if (!in_array(3, $noticeFor)) {
+                notify()->error('You are not authorized to view this notice.');
+                return back();
+            }
+        } elseif ($isTeamLeader) {
+            if (!in_array(4, $noticeFor)) {
+                notify()->error('You are not authorized to view this notice.');
+                return back();
+            }
+        }
+
         $notice_types = config('static_array.notice_type');
         $user_types = config('static_array.user_type');
         $organization_info = Setting::select(['company_name', 'company_location', 'company_phone', 'company_email', 'company_logo'])->first();
