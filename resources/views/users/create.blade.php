@@ -284,6 +284,35 @@
     </html>
 @endsection
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function () {
+    $('#phone_no').on('input', function () {
+        let phone = $(this).val();
+        phone = phone.replace(/\D/g, '');
+
+        if (phone.length > 11) {
+            phone = phone.substring(0, 11);
+        }
+
+        $(this).val(phone);
+        let pattern = /^01[3-8][0-9]{8}$/;
+
+        if (pattern.test(phone)) {
+            $(this).removeClass('is-invalid').addClass('is-valid');
+            $(this).next('.invalid-feedback').hide();
+        } else {
+            $(this).removeClass('is-valid').addClass('is-invalid');
+            if (!$(this).next('.invalid-feedback').length) {
+                $(this).after('<p class="invalid-feedback">Phone number must be exactly 11 digits.</p>');
+            } else {
+                $(this).next('.invalid-feedback').show().text('Phone number must be exactly 11 digits.');
+            }
+        }
+    });
+});
+</script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
 
 <script>
