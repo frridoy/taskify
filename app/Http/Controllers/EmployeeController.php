@@ -15,7 +15,6 @@ class EmployeeController extends Controller
 {
     public function dashboard()
     {
-
         $userId = Auth::id();
 
         $teamLeader = Team::where('user_id', $userId)
@@ -56,7 +55,6 @@ class EmployeeController extends Controller
 
         $processing_tasks_count = $processing_tasks->count();
 
-
         if ($teamLeader) {
             $teamMemberIds = Team::where('team_number', $teamLeader->team_number)
                 ->pluck('user_id')
@@ -74,7 +72,6 @@ class EmployeeController extends Controller
 
         $completed_tasks_count = $completed_tasks->count();
 
-
         $missed_pending_tasks = Task::where('user_id', $userId)
             ->where('status', 0)
             ->whereDate('dateLimit', '<', Carbon::now()->format('Y-m-d'))
@@ -84,7 +81,6 @@ class EmployeeController extends Controller
             ->where('status', 1)
             ->whereDate('dateLimit', '<', Carbon::now()->format('Y-m-d'))
             ->count();
-
 
         $total_tasks = $pending_tasks_count + $processing_tasks_count + $completed_tasks_count;
 
@@ -244,9 +240,7 @@ class EmployeeController extends Controller
 
     public function processing_tasks(Request $request)
     {
-
         $userId = Auth::id();
-
         $teamLeader = Team::where('user_id', $userId)
             ->where('is_team_leader', 1)
             ->first();
@@ -336,7 +330,6 @@ class EmployeeController extends Controller
     public function completed_tasks(Request $request)
     {
         $userId = Auth::id();
-
         $teamLeader = Team::where('user_id', $userId)
             ->where('is_team_leader', 1)
             ->first();

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\EmployeeSalary;
+use App\Models\Setting;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -119,7 +120,6 @@ class EmployeeSalaryController extends Controller
         $months = config('static_array.months');
         $employees = User::where('role', 3)->pluck('name', 'id');
 
-
         $totals = $sumQuery->selectRaw('
         SUM(basic_salary) as total_basic_salary,
         SUM(bonus) as total_bonus,
@@ -169,15 +169,13 @@ class EmployeeSalaryController extends Controller
 
     public function perEmployeeDetails($id)
     {
-        $salary = EmployeeSalary::with(['user:id,name', 'distributeBy:id,name'])
-            ->findOrFail($id);
+        $salary = EmployeeSalary::with(['user:id,name,profile_photo,designation', 'distributeBy:id,name'])->findOrFail($id);
 
         $authID = Auth::user();
-        $is_employee = $authID->role == 3;
+        $isEmployee = $authID->role == 3;
 
-        if ($is_employee) {
+        if ($isEmployee) {
             if ($authID->id != $salary->user_id) {
-
                 notify()->error('You do not have permission to view this page.');
                 return redirect()->back();
             }

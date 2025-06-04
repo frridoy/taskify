@@ -22,7 +22,6 @@ class TeamController extends Controller
 
         return view('team.build', compact('employees'));
     }
-
     public function store(Request $request)
     {
 

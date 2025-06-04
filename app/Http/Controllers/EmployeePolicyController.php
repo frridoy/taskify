@@ -41,10 +41,14 @@ class EmployeePolicyController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
+      $validation = Validator::make($request->all(), [
             'points_for_completed_tasks' => 'required|numeric',
             'amount_for_point' => 'required|numeric',
         ]);
+
+        if ($validation->fails()) {
+            return redirect()->back()->withErrors($validation)->withInput();
+        }
 
         $employeePolicy = EmployeePolicy::findOrFail($id);
         $employeePolicy->points_for_completed_tasks = $request->input('points_for_completed_tasks');

@@ -97,7 +97,7 @@ class NoticeController extends Controller
                 $user_type_for_notice_get = "4";
             } elseif ($authUser->role == 3) {
 
-                $user_type_for_notice_get = "3"; 
+                $user_type_for_notice_get = "3";
             } else {
 
                 $user_type_for_notice_get = $authUser->role;
@@ -153,7 +153,6 @@ class NoticeController extends Controller
             'title' => ucwords($request->title),
             'notice_type' => ucwords($request->notice_type),
             'notice_for' => $notice_for,
-            // 'reference_no' => $request->reference_no,
             'meeting_date_time' => $request->meeting_date_time,
             'publish_date' => $publish_date,
             'expire_date' => $request->expire_date,

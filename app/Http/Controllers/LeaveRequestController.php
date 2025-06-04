@@ -17,7 +17,6 @@ class LeaveRequestController extends Controller
     public function leave_request()
     {
         $leave_request_type = config('static_array.leave_request_type');
-
         $total_leave_days = Setting::value('total_leave_days_for_employee_in_year');
 
         $userId = Auth::user()->id;
@@ -29,7 +28,6 @@ class LeaveRequestController extends Controller
             ->sum('number_of_days_leave_requested_accepted');
 
         $leave_days_left = $total_leave_days - $leave_spent_days;
-
 
         $pending_request = LeaveRequest::where('user_id', $userId)
             ->where('status', 0)
@@ -50,20 +48,11 @@ class LeaveRequestController extends Controller
             return redirect()->back()->withErrors($validate)->withInput();
         }
 
-
         $userId = Auth::id();
-
         $start = Carbon::parse($request->start_date)->startOfDay();
         $end = Carbon::parse($request->end_date)->endOfDay();
 
-        // $totalDays = $start->diffInDaysFiltered(function (Carbon $date) {
-        //     return !in_array($date->dayOfWeek, [Carbon::FRIDAY, Carbon::SATURDAY]);
-        // }, $end);
-
-        // $totalDays = $start->diffInDays($end);
         $totalDays = (int) $start->diffInDays($end) + 1;
-
-
         $total_leave_days = Setting::value('total_leave_days_for_employee_in_year');
         $currentYear = now()->year;
 
@@ -71,7 +60,6 @@ class LeaveRequestController extends Controller
             ->where('status', 1)
             ->whereYear('created_at', $currentYear)
             ->sum('number_of_days_leave_requested_accepted');
-
         $leave_days_left = $total_leave_days - $leave_spent_days;
 
         if ($totalDays > $leave_days_left) {
@@ -97,7 +85,6 @@ class LeaveRequestController extends Controller
     public function leave_request_index()
     {
         $userId = Auth::id();
-
         $user_type = User::whereIn('role', [1, 2])
             ->where('status', 1)
             ->pluck('id')

@@ -10,7 +10,6 @@ class SuperAdminController extends Controller
 {
     public function dashboard()
     {
-
         $pending_tasks = Task::where('status', 0)
             ->count();
         $processing_tasks = Task::where('status', 1)

@@ -71,8 +71,6 @@ class TaskController extends Controller
 
     public function exportCsv(Request $request)
     {
-        // $query = Task::with(['user', 'creator']);
-
         $query = Task::with(['user:id,name', 'creator:id,name']);
 
         if ($request->has('status')) {
