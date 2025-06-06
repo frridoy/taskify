@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Validator;
 
 class SettingController extends Controller
 {
-    public function office_info_setup()
+    public function officeSetUp()
     {
         return view('settings.office_info_setup');
     }

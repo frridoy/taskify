@@ -166,7 +166,7 @@ class EmployeeController extends Controller
         return view('tasks.my_task', compact('tasks', 'list_title', 'teamLeader', 'users', 'userId'));
     }
 
-    public function pending_tasks(Request $request)
+    public function pendingTasks(Request $request)
     {
         $userId = Auth::id();
 
@@ -238,7 +238,7 @@ class EmployeeController extends Controller
         return redirect()->back()->with('error', 'You are not authorized to receive this task.');
     }
 
-    public function processing_tasks(Request $request)
+    public function processingTasks(Request $request)
     {
         $userId = Auth::id();
         $teamLeader = Team::where('user_id', $userId)
@@ -327,7 +327,7 @@ class EmployeeController extends Controller
         return redirect()->back()->with('error', 'You are not authorized to complete this task.');
     }
 
-    public function completed_tasks(Request $request)
+    public function completedTasks(Request $request)
     {
         $userId = Auth::id();
         $teamLeader = Team::where('user_id', $userId)

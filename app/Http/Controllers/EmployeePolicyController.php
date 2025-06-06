@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator as FacadesValidator;
 
 class EmployeePolicyController extends Controller
 {
-    public function employee_policy()
+    public function employeePolicy()
     {
         return view('employeePolicy.create');
     }

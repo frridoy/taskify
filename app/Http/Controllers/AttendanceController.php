@@ -115,12 +115,12 @@ class AttendanceController extends Controller
         return view('attendance.index', compact('attendances', 'users'));
     }
 
-    public function check_out($id)
+    public function checkOut($id)
     {
         $checkout = Attendance::findOrFail($id);
         return view('attendance.checkout', compact('checkout'));
     }
-    public function check_out_update($id)
+    public function checkOutUpdate($id)
     {
         $attendance = Attendance::findOrFail($id);
 

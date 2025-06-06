@@ -11,7 +11,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class TeamController extends Controller
 {
-    public function team_build()
+    public function teamBuild()
     {
         $already_under_a_team = Team::pluck('user_id')->toArray();
 
@@ -53,7 +53,7 @@ class TeamController extends Controller
         return redirect()->back();
     }
 
-    public function team_index(Request $request)
+    public function index(Request $request)
     {
         $teamNames = Team::select('team_name')
             ->distinct()
@@ -116,7 +116,7 @@ class TeamController extends Controller
         return view('team.index', compact('teamSummaryPaginated', 'userId', 'teamNames'));
     }
 
-    public function team_view($team_number)
+    public function view($team_number)
     {
         $team = Team::where('team_number', $team_number)->first();
         $members = Team::where('team_number', $team_number)->get();

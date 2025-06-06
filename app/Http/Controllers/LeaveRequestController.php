@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Validator;
 
 class LeaveRequestController extends Controller
 {
-    public function leave_request()
+    public function leaveRequest()
     {
         $leave_request_type = config('static_array.leave_request_type');
         $total_leave_days = Setting::value('total_leave_days_for_employee_in_year');
@@ -82,7 +82,7 @@ class LeaveRequestController extends Controller
         return redirect()->route('leave_request');
     }
 
-    public function leave_request_index()
+    public function index()
     {
         $userId = Auth::id();
         $user_type = User::whereIn('role', [1, 2])
