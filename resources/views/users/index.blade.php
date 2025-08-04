@@ -62,6 +62,7 @@
                                 <th>Basic Salary</th>
                                 <th>Role</th>
                                 <th>Status</th>
+                                <th>Mail Send</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -93,6 +94,13 @@
                                                 <i class="text-success fas fa-check-circle" title="Active"></i>
                                             @else
                                                 <i class="text-danger fas fa-times-circle" title="Inactive"></i>
+                                            @endif
+                                        </td>
+                                        <td class="text-center">
+                                            @if ($user->email_send == 1)
+                                                <i class="text-success fas fa-envelope-open" title="Email Sent"></i>
+                                            @else
+                                                <i class="text-danger fas fa-envelope-square" title="Email Not Sent"></i>
                                             @endif
                                         </td>
                                         <td class="text-center">
