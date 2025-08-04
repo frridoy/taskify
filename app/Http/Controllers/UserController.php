@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\UserCreatedMail;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -47,6 +49,8 @@ class UserController extends Controller
             return redirect()->back()->withErrors($validation)->withInput();
         }
 
+        $password = $request->password;
+
         $user = new User();
         $user->name = ucwords($request->name);
         $user->email = $request->email;
@@ -55,7 +59,7 @@ class UserController extends Controller
         $user->phone_no = $request->phone_no;
         $user->status = $request->status;
         $user->basic_salary = $request->basic_salary;
-        $user->password = bcrypt($request->password);
+        $user->password = bcrypt($password);
 
         if ($request->hasFile('profile_photo')) {
             $image = $request->file('profile_photo');
@@ -74,6 +78,11 @@ class UserController extends Controller
         $user->save();
 
         notify()->success('User created successfully.');
+        
+        Mail::to($user->email)->send(new UserCreatedMail($user->email, $password, $user->name));
+
+        notify()->success('User created and email sent successfully.');
+
 
         return redirect()->route('users.index');
     }
