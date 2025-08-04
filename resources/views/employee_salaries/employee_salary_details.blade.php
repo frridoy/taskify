@@ -67,7 +67,7 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>Basic Salary</td>
+                                            <td>Basic Salary (Current)</td>
                                             <td>{{ number_format($salary->basic_salary, 2) }}</td>
                                         </tr>
                                         <tr>
@@ -80,44 +80,6 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="table-responsive">
-                                <table class="table table-bordered">
-                                    <thead class="bg-light">
-                                        <tr>
-                                            <th>Deductions</th>
-                                            <th>Amount</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Tax</td>
-                                            <td>0.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Late Deductions</td>
-                                            <td>0.00</td>
-                                        </tr>
-                                        <tr class="table-danger">
-                                            <td><strong>Total Deductions</strong></td>
-                                            <td><strong>0.00</strong></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mt-3">
-                        <div class="col-md-12">
-                            <div class="alert alert-success">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h5 class="mb-0">Current Salary</h5>
-                                    <h4 class="mb-0">{{ number_format($salary->basic_salary, 2) }}</h4>
-                                </div>
                             </div>
                         </div>
                     </div>

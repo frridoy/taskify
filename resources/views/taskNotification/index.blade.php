@@ -44,7 +44,6 @@
     </div>
 
     <style>
-        /* Base Styles */
         .table th,
         .table td {
             vertical-align: middle;
@@ -52,7 +51,6 @@
             padding: 0.5rem;
         }
 
-        /* Table Styling */
         .table-hover tbody tr:hover {
             background-color: rgba(0, 123, 255, 0.05);
         }
@@ -62,7 +60,6 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        /* Cards and UI Components */
         .card {
             border-radius: 0.5rem;
             box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
@@ -73,7 +70,6 @@
             border-bottom: 1px solid rgba(0, 0, 0, 0.125);
         }
 
-        /* Button and Badge Styling */
         .badge {
             font-size: 0.75rem;
             padding: 0.35em 0.65em;
@@ -85,7 +81,6 @@
             font-size: 0.75rem;
         }
 
-        /* Form Controls */
         .form-select,
         .form-control {
             border-radius: 0.25rem;
@@ -93,7 +88,6 @@
             min-height: calc(1.5em + 0.5rem + 2px);
         }
 
-        /* Text handling */
         .text-truncate {
             white-space: nowrap;
             overflow: hidden;
@@ -105,13 +99,11 @@
             word-wrap: break-word !important;
         }
 
-        /* Pagination styling */
         .pagination {
             margin-bottom: 0;
             flex-wrap: wrap;
         }
 
-        /* Responsive Adjustments */
         @media (max-width: 767.98px) {
 
             .table th,
@@ -121,7 +113,6 @@
             }
         }
 
-        /* Utility classes */
         .gap-1 {
             gap: 0.25rem !important;
         }

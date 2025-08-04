@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class TaskNotificationController extends Controller
 {
-     public function task_notification(){
+     public function taskNotification(){
         $authid = Auth::id();
         $taskNotifications = TaskNotification::where('user_id', $authid)->paginate(5);
         return view('taskNotification.index', compact('taskNotifications'));
