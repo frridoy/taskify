@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\UserCreatedMail;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
@@ -77,9 +78,16 @@ class UserController extends Controller
 
         $user->save();
 
-        notify()->success('User created successfully.');
-        
-        Mail::to($user->email)->send(new UserCreatedMail($user->email, $password, $user->name));
+        try {
+            Mail::to($user->email)->send(new UserCreatedMail($user->email, $password, $user->name));
+            $user->email_send = 1;
+            $user->save();
+            
+        } catch (\Exception $e) {
+            notify()->error('User created but email sending failed.');
+            Log::error('Email sending failed for user: ' . $user->email, ['error' => $e->getMessage()]);
+            return redirect()->route('users.index');
+        }
 
         notify()->success('User created and email sent successfully.');
 
