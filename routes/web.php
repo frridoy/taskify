@@ -60,9 +60,27 @@ Route::middleware(['auth', 'isEmployee'])->group(function () {
 });
 
 Route::middleware(['auth', 'isHR'])->group(function () {
-
     Route::get('hr/dashboard', [HRController::class, 'dashboard'])->name('hr.dashboard');
     Route::get('notice', [NoticeController::class, 'notice'])->name('notice.create');
+
+    Route::resource('hr/degrees', \App\Http\Controllers\HR\DegreeController::class)->names([
+        'index' => 'hr.degrees.index',
+        'create' => 'hr.degrees.create',
+        'store' => 'hr.degrees.store',
+        'edit' => 'hr.degrees.edit',
+        'update' => 'hr.degrees.update',
+        'destroy' => 'hr.degrees.destroy'
+    ])->except(['show']);
+
+    Route::resource('hr/job-posts', \App\Http\Controllers\HR\JobPostController::class)->names([
+        'index' => 'hr.job_posts.index',
+        'create' => 'hr.job_posts.create',
+        'store' => 'hr.job_posts.store',
+        'show' => 'hr.job_posts.show',
+        'edit' => 'hr.job_posts.edit',
+        'update' => 'hr.job_posts.update',
+        'destroy' => 'hr.job_posts.destroy'
+    ]);
 });
 
 Route::middleware(['auth'])->group(function () {
