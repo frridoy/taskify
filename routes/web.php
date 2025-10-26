@@ -22,9 +22,11 @@ use App\Http\Controllers\TeamController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('frontend.master');
-});
+// Route::get('/', function () {
+//     return view('frontend.master');
+// });
+
+Route::get('/', [HomeController::class, 'index'])->name('frontend.home');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

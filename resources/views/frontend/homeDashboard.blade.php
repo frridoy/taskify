@@ -1,3 +1,7 @@
+@extends('frontend.master')
+@section('content')
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,13 +34,21 @@ https://templatemo.com/tm-586-scholar
 
 <body>
 
- 
+     <!-- ***** Preloader Start ***** -->
+  <div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+  <!-- ***** Preloader End ***** -->
 
-  <!-- ***** Header Area Start ***** -->
-  @include('frontend.partials.header')
-  <!-- ***** Header Area End ***** -->
 
-  {{-- <div class="main-banner" id="top">
+  <div class="main-banner" id="top">
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
@@ -90,9 +102,9 @@ https://templatemo.com/tm-586-scholar
         </div>
       </div>
     </div>
-  </div> --}}
+  </div>
 
-  {{-- <div class="services section" id="services">
+  <div class="services section" id="services">
     <div class="container">
       <div class="row">
         <div class="col-lg-4 col-md-6">
@@ -139,9 +151,9 @@ https://templatemo.com/tm-586-scholar
         </div>
       </div>
     </div>
-  </div> --}}
+  </div>
 
-  {{-- <div class="section about-us">
+  <div class="section about-us">
     <div class="container">
       <div class="row">
         <div class="col-lg-6 offset-lg-1">
@@ -208,9 +220,9 @@ https://templatemo.com/tm-586-scholar
         </div>
       </div>
     </div>
-  </div> --}}
+  </div>
 
-  {{-- <section class="section courses" id="courses" >
+  <section class="section courses" id="courses" >
     <div class="container">
       <div class="row">
         <div class="col-lg-12 text-center">
@@ -315,9 +327,9 @@ https://templatemo.com/tm-586-scholar
         </div>
       </div>
     </div>
-  </section> --}}
+  </section>
 
-  {{-- <div class="section fun-facts">
+  <div class="section fun-facts">
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
@@ -352,9 +364,9 @@ https://templatemo.com/tm-586-scholar
         </div>
       </div>
     </div>
-  </div> --}}
+  </div>
 
-  {{-- <div class="team section" id="team">
+  <div class="team section" id="team">
     <div class="container">
       <div class="row">
         <div class="col-lg-3 col-md-6">
@@ -415,9 +427,9 @@ https://templatemo.com/tm-586-scholar
         </div>
       </div>
     </div>
-  </div> --}}
+  </div>
 
-  {{-- <div class="section testimonials">
+  <div class="section testimonials">
     <div class="container">
       <div class="row">
         <div class="col-lg-7">
@@ -457,9 +469,9 @@ https://templatemo.com/tm-586-scholar
         </div>
       </div>
     </div>
-  </div> --}}
+  </div>
 
-  {{-- <div class="section events" id="events">
+  <div class="section events" id="events">
     <div class="container">
       <div class="row">
         <div class="col-lg-12 text-center">
@@ -566,9 +578,9 @@ https://templatemo.com/tm-586-scholar
         </div>
       </div>
     </div>
-  </div> --}}
+  </div>
 
-  {{-- <div class="contact-us section" id="contact">
+  <div class="contact-us section" id="contact">
     <div class="container">
       <div class="row">
         <div class="col-lg-6  align-self-center">
@@ -614,11 +626,8 @@ https://templatemo.com/tm-586-scholar
         </div>
       </div>
     </div>
-  </div> --}}
+  </div>
 
-  @yield('content')
-
-  @include('frontend.partials.footer')
 
   <!-- Scripts -->
   <!-- Bootstrap core JavaScript -->
@@ -631,3 +640,5 @@ https://templatemo.com/tm-586-scholar
 
   </body>
 </html>
+
+@endsection
